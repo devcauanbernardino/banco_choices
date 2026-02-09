@@ -1,3 +1,14 @@
+<?php
+session_start();
+
+require_once '../config/conexao.php';
+require_once '../App/Models/Usuario.php';
+require_once '../App/Controllers/UsuarioController.php';
+
+$controller->cadastrar();
+?>
+
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -77,10 +88,22 @@
                         <p class="text-muted small">Sumate a la plataforma de estudio líder</p>
                     </div>
                     <div class="card-body p-4">
-                        <form action="#" method="POST">
+                        <?php if (isset($_GET['error'])): ?>
+                            <div class="alert alert-danger">
+                                <?= htmlspecialchars($_GET['error']) ?>
+                            </div>
+                        <?php endif; ?>
+
+                        <?php if (isset($_GET['success'])): ?>
+                            <div class="alert alert-success">
+                                <?= htmlspecialchars($_GET['success']) ?>
+                            </div>
+                        <?php endif; ?>
+
+                        <form action="cadastro.php" method="POST">
                             <div class="mb-3">
                                 <label class="form-label" for="name">Nombre Completo</label>
-                                <input class="form-control" id="name" name="name" placeholder="Ej: Juan Pérez"
+                                <input class="form-control" id="name" name="nome" placeholder="Ej: Juan Pérez"
                                     required="" type="text" />
                             </div>
                             <div class="mb-3">
@@ -90,12 +113,12 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label" for="password">Contraseña</label>
-                                <input class="form-control" id="password" name="password" placeholder="••••••••"
+                                <input class="form-control" id="password" name="senha" placeholder="••••••••"
                                     required="" type="password" />
                             </div>
                             <div class="mb-3">
                                 <label class="form-label" for="confirm-password">Confirmar Contraseña</label>
-                                <input class="form-control" id="confirm-password" name="confirm-password"
+                                <input class="form-control" id="confirm-password" name="confirma-senha"
                                     placeholder="••••••••" required="" type="password" />
                             </div>
                             <div class="mb-4">
