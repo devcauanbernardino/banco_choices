@@ -1,19 +1,34 @@
 <?php
 
-$host = 'localhost';
-$dbname = 'bancodechoices';
-$user = 'root';
-$pass = '';
-$charset = 'utf8mb4';
+class Conexao
+{
 
-try {
-    $dsn = "mysql:host=$host;dbname=$dbname;charset=$charset";
-    $conn = new PDO($dsn, $user, $pass, [
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-    ]);
-} catch (PDOException $e) {
-    die('Erro na conexão: ' . $e->getMessage());
+    private $host = 'localhost';
+    private $dbname = 'bancodechoices';
+    private $user = 'root';
+    private $pass = '';
+
+
+    public function conectar()
+    {
+        try {
+            $conexao = new PDO(
+                "mysql:host={$this->host};dbname={$this->dbname}",
+                $this->user,
+                $this->pass
+            );
+
+            return $conexao;
+        } catch (PDOException $e) {
+            echo '<p>' . $e->getMessage() . '</p>';
+           
+        }
+    }
+
+
+
+
+
 }
-
 
 ?>

@@ -1,3 +1,14 @@
+<?php
+$mensagensErro = [
+    'naologado' => 'Você precisa estar logado para acessar o sistema.',
+    'logininvalido' => 'E-mail ou senha incorretos.',
+    'acessoinvalido' => 'Acesso inválido.',
+];
+
+$erro = $_GET['error'] ?? null;
+$mensagem = $mensagensErro[$erro] ?? null;
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -120,18 +131,25 @@
                         <h2 class="fw-bold mb-1">Iniciá sesión</h2>
                         <p class="text-muted small">Ingresá a tu cuenta de BancodeChoices</p>
                     </div>
-                    <form action="../" method="post">
+                    <?php if ($mensagem): ?>
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                            <?= htmlspecialchars($mensagem) ?>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    <?php endif; ?>
+
+                    <form action="/banco_choices/App/Controllers/LoginController.php" method="post">
                         <div class="mb-3">
                             <label class="form-label fw-medium small" for="emailInput">Email</label>
                             <input class="form-control form-control-lg" id="emailInput" placeholder="ejemplo@mail.com"
-                                required="" type="email" />
+                                required type="email" name="email" />
                         </div>
                         <div class="mb-3">
                             <div class="d-flex justify-content-between">
                                 <label class="form-label fw-medium small" for="passwordInput">Contraseña</label>
                             </div>
                             <input class="form-control form-control-lg" id="passwordInput" placeholder="••••••••"
-                                required="" type="password" />
+                                type="password" name="senha" />
                         </div>
                         <div class="d-flex justify-content-between align-items-center mb-4">
                             <div class="form-check">
@@ -177,7 +195,8 @@
                     </form>
                     <div class="text-center mb-5">
                         <p class="text-muted small">¿No tenés una cuenta? <a
-                                class="text-primary fw-bold text-decoration-none" href="cadastro.php">Registrate gratis</a></p>
+                                class="text-primary fw-bold text-decoration-none" href="cadastro.php">Registrate
+                                gratis</a></p>
                     </div>
                     <footer class="mt-auto border-top pt-4 text-center">
                         <div class="mb-2">
@@ -193,6 +212,12 @@
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        if (window.location.search.includes('error=')) {
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+    </script>
+
 
 </body>
 

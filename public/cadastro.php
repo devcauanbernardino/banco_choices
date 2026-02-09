@@ -1,13 +1,21 @@
 <?php
-session_start();
+$messages = [
+    'error' => [
+        'acessoinvalido' => 'Acesso inválido.',
+        'camposobrigatorios' => 'Preencha todos os campos.',
+        'emailinvalido' => 'Informe um e-mail válido.',
+        'naocoincidem' => 'As senhas não coincidem.',
+        'emailcadastrado' => 'Este e-mail já está cadastrado.'
+    ],
+    'success' => [
+        'success' => 'Conta criada com sucesso!'
+    ]
+];
 
-require_once '../config/conexao.php';
-require_once '../App/Models/Usuario.php';
-require_once '../App/Controllers/UsuarioController.php';
-
-$controller->cadastrar();
+// captura os códigos da URL
+$errorCode = $_GET['error'] ?? null;
+$successCode = $_GET['success'] ?? null;
 ?>
-
 
 <!DOCTYPE html>
 <html lang="es">
@@ -88,19 +96,13 @@ $controller->cadastrar();
                         <p class="text-muted small">Sumate a la plataforma de estudio líder</p>
                     </div>
                     <div class="card-body p-4">
-                        <?php if (isset($_GET['error'])): ?>
-                            <div class="alert alert-danger">
-                                <?= htmlspecialchars($_GET['error']) ?>
+                        <?php if ($errorCode && isset($messages['error'][$errorCode])): ?>
+                            <div class="alert alert-danger text-center">
+                                <?= $messages['error'][$errorCode] ?>
                             </div>
                         <?php endif; ?>
 
-                        <?php if (isset($_GET['success'])): ?>
-                            <div class="alert alert-success">
-                                <?= htmlspecialchars($_GET['success']) ?>
-                            </div>
-                        <?php endif; ?>
-
-                        <form action="cadastro.php" method="POST">
+                        <form action="../App/Controllers/UsuarioController.php" method="POST">
                             <div class="mb-3">
                                 <label class="form-label" for="name">Nombre Completo</label>
                                 <input class="form-control" id="name" name="nome" placeholder="Ej: Juan Pérez"
@@ -151,7 +153,40 @@ $controller->cadastrar();
             </div>
         </div>
     </main>
+
+    <!-- Modal de Sucesso -->
+    <div class="modal fade" id="successModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title">Conta criada com sucesso</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body text-center py-4">
+                    <p class="fs-5 mb-2">
+                        <?= $messages['success'][$successCode] ?? '' ?>
+                    </p>
+
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <a href="login.php" class="btn btn-success px-4">
+                        Ir para o login
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        <?php if (isset($_GET['success'])): ?>
+            const successModal = new bootstrap.Modal(
+                document.getElementById('successModal')
+            );
+            successModal.show();
+        <?php endif; ?>
+    </script>
+
 
 </body>
 

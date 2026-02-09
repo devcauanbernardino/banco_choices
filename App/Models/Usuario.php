@@ -1,25 +1,22 @@
 <?php
 
-namespace App\Models;
-
-use PDO;
-
-
 class Usuario
 {
-    private PDO $conn;
+    private $conn;
 
-    public function __construct($conn)
+    public function __construct($db)
     {
-        $this->conn = $conn;
+        $this->conn = $db;
     }
 
     //metodo para cadastrar um novo usuario
     public function cadastrar($nome, $email, $senha)
     {
-        $sql = "INSERT INTO users (nome, email, senha) VALUES (:nome, :email, :senha)";
-        $stmt = $this->conn->prepare($sql);
         $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
+        $sql = "INSERT INTO users (nome, email, senha) VALUES (:nome, :email, :senha)";
+
+        $stmt = $this->conn->prepare($sql);
+
         return $stmt->execute([
             ':nome' => $nome,
             ':email' => $email,
@@ -33,7 +30,7 @@ class Usuario
         $stmt = $this->conn->prepare($sql);
         $stmt->execute([':email' => $email]);
 
-        return $stmt->fetch();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
     
     //validar o login
