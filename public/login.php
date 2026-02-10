@@ -212,13 +212,7 @@ $mensagem = $mensagensErro[$erro] ?? null;
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        if (window.location.search.includes('error=')) {
-            window.history.replaceState({}, document.title, window.location.pathname);
-        }
-    </script>
-
-
+    <script src="../App/assets/js/reload.js"></script>
 </body>
 
 </html>

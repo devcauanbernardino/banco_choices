@@ -11,128 +11,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
         rel="stylesheet" />
-    <style>
-        :root {
-            --bs-primary: #6a0392;
-            --bs-primary-rgb: 26, 35, 126;
-            --bs-secondary: #26a69a;
-            --bs-font-sans-serif: 'Inter', system-ui, -apple-system, sans-serif;
-        }
-
-        body {
-            font-family: var(--bs-font-sans-serif);
-            color: #334155;
-            background-color: #f8fafc;
-        }
-
-        #listo {
-            background-color: var(--bs-primary);
-        }
-
-        .navbar {
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            background-color: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-        }
-
-        .btn{
-            background-color: var(--bs-primary);
-            border-color: var(--bs-primary);
-            padding: 0.75rem 1.5rem;
-            font-weight: 600;
-        }
-
-        .btn:hover {
-            background-color: #121858;
-            border-color: #121858;
-        }
-
-        .btn-outline-primary {
-            color: var(--bs-primary);
-            border-color: var(--bs-primary);
-        }
-
-        .btn-outline-primary:hover {
-            background-color: var(--bs-primary);
-            border-color: var(--bs-primary);
-        }
-
-        .hero-section {
-            padding: 100px 0;
-            background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
-        }
-
-        .card {
-            border: none;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-        }
-
-        .feature-icon {
-            width: 60px;
-            height: 60px;
-            background-color: rgba(var(--bs-primary-rgb), 0.1);
-            color: var(--bs-primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 12px;
-            margin-bottom: 1.5rem;
-        }
-
-        .subject-icon {
-            width: 40px;
-            height: 40px;
-            background-color: rgba(38, 53, 51, 0.1);
-            color: var(--bs-primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-        }
-
-        .badge-soft {
-            background-color: rgba(var(--bs-primary-rgb), 0.1);
-            color: var(--bs-primary);
-            padding: 0.5em 1em;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: 700;
-            font-size: 0.75rem;
-        }
-
-        .pricing-card.featured {
-            border: 2px solid var(--bs-primary);
-            transform: scale(1.05);
-            z-index: 10;
-        }
-
-        .hero-image-container {
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-            border: 8px solid white;
-        }
-
-        .footer {
-            background-color: #0f172a;
-            color: #94a3b8;
-        }
-
-        .material-symbols-outlined {
-            vertical-align: middle;
-        }
-
-        .container {
-            max-width: 1320px;
-        }
-    </style>
+    <link rel="stylesheet" href="../App/assets/css/index.css" />
 </head>
 
 <body>
@@ -153,13 +32,13 @@
                     <li class="nav-item">
                         <a class="nav-link fw-medium px-3" href="#materias">Materias</a>
                     </li>
-                    <li class="nav-item">
+                    <!-- <li class="nav-item">
                         <a class="nav-link fw-medium px-3" href="#planes">Planes</a>
-                    </li>
+                    </li> -->
                 </ul>
                 <div class="d-flex gap-2">
-                    <a class="btn btn-link text-decoration-none text-dark fw-bold" href="login.php">Iniciá Sesión</a>
-                    <a class="btn btn-primary rounded-pill px-4" href="#">Inscribite gratis</a>
+                    <a class="btn btn-link text-decoration-none rounded-pill fw-bold" href="login.php">Iniciá Sesión</a>
+                    <a class="btn btn-reverse text-decoration-none rounded-pill px-4" href="#">Inscribite gratis</a>
                 </div>
             </div>
         </div>
@@ -176,7 +55,7 @@
                         banco de preguntas más completo, actualizado y comentado por especialistas.
                     </p>
                     <div class="d-flex flex-column flex-md-row gap-3">
-                        <a class="btn btn-primary btn-lg rounded-pill px-5" href="#">Empezá hoy gratis</a>
+                        <a class="btn btn-reverse btn-lg rounded-pill px-5" href="#">Empezá hoy gratis</a>
                         <a class="btn btn-outline-primary btn-lg rounded-pill px-5" href="#">Mirá la demo</a>
                     </div>
                 </div>
@@ -326,7 +205,7 @@
             </div>
         </div>
     </section>
-    <section class="py-5 bg-white" id="planes">
+    <!-- <section class="py-5 bg-white" id="planes">
         <div class="container py-5">
             <div class="text-center mb-5">
                 <h2 class="display-5 fw-bold mb-3">Planes que se adaptan a vos</h2>
@@ -359,7 +238,7 @@
                             <div class="text-center mb-3">
                                 <span class="badge rounded-pill bg-primary px-3 py-2">MÁS POPULAR</span>
                             </div>
-                            <h5 class="fw-bold text-primary mb-3 text-center">Plan Pro</h5>
+                            <h5 class="fw-bold mb-3 text-center">Plan Pro</h5>
                             <h2 class="fw-black mb-4 text-center">ARS $12.000 <small class="fs-6 fw-normal ">/
                                     mes</small></h2>
                             <ul class="list-unstyled mb-5">
@@ -379,7 +258,7 @@
                                         class="material-symbols-outlined text-primary me-2">check_circle</span> Ranking
                                     nacional</li>
                             </ul>
-                            <a class="btn btn-primary w-100 py-3 fw-bold shadow" href="#">Elegí Plan Pro</a>
+                            <a class="btn btn-reverse w-100 py-3 fw-bold shadow" href="#">Elegí Plan Pro</a>
                         </div>
                     </div>
                 </div>
@@ -405,7 +284,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> -->
     <section class="py-5 text-white text-center" id="listo">
         <div class="container py-5">
             <h2 class="display-4 fw-bold mb-4">¿Listo para asegurar tu vacante?</h2>
@@ -414,12 +293,12 @@
                 médica más avanzada de la región.
             </p>
             <div class="d-flex flex-column flex-sm-row justify-content-center gap-3">
-                <a class="btn btn-light btn-lg rounded-pill px-5 py-3 fw-bold text-primary" href="#">Inscribite
-                    ahora</a>
-                <a class="btn btn-outline-light btn-lg rounded-pill px-5 py-3 fw-bold" href="#">Mirá planes anuales</a>
+                <a class="btn btn-outline btn-lg rounded-pill px-5 py-3 fw-bold text-primary" href="#">Inscribite ahora</a>
+                <a class="btn btn-lg rounded-pill px-5 py-3 fw-bold" href="#">Mirá planes anuales</a>
             </div>
         </div>
     </section>
+
     <footer class="footer pt-5 pb-4">
         <div class="container pt-5">
             <div class="row g-4">
@@ -428,45 +307,64 @@
                         <span class="material-symbols-outlined me-2">school</span>
                         BancodeChoices
                     </a>
-                    <p class=" pe-lg-5">
+                    <p class="pe-lg-5">
                         Formando a los especialistas del mañana con tecnología de vanguardia y contenido médico de la
                         más alta calidad científica en Argentina.
                     </p>
                 </div>
+
                 <div class="col-md-2 col-6">
                     <h6 class="text-white fw-bold mb-4">Plataforma</h6>
                     <ul class="list-unstyled">
-                        <li class="mb-2"><a class=" text-decoration-none" href="#">Banco de Preguntas</a></li>
-                        <li class="mb-2"><a class=" text-decoration-none" href="#">Simulacros Examen</a></li>
-                        <li class="mb-2"><a class=" text-decoration-none" href="#">Especialidades</a></li>
+                        <li class="mb-2"><a class="text-decoration-none nav-link" href="#">Banco de Preguntas</a></li>
+                        <li class="mb-2"><a class="text-decoration-none nav-link" href="#">Simulacros Examen</a></li>
+                        <li class="mb-2"><a class="text-decoration-none nav-link" href="#">Especialidades</a></li>
                     </ul>
                 </div>
+
                 <div class="col-md-2 col-6">
                     <h6 class="text-white fw-bold mb-4">Soporte</h6>
                     <ul class="list-unstyled">
-                        <li class="mb-2"><a class="text-decoration-none" href="#">Centro de ayuda</a></li>
-                        <li class="mb-2"><a class="text-decoration-none" href="#">Contacto</a></li>
-                        <li class="mb-2"><a class="text-decoration-none" href="#">Blog médico</a></li>
+                        <li class="mb-2"><a class="text-decoration-none nav-link" href="#">Centro de ayuda</a></li>
+                        <li class="mb-2"><a class="text-decoration-none nav-link" href="#">Contacto</a></li>
+                        <li class="mb-2"><a class="text-decoration-none nav-link" href="#">Blog médico</a></li>
                     </ul>
                 </div>
+
                 <div class="col-md-2">
                     <h6 class="text-white fw-bold mb-4">Legal</h6>
                     <ul class="list-unstyled">
-                        <li class="mb-2"><a class="text-decoration-none" href="#">Términos y condiciones</a>
+                        <li class="mb-2">
+                            <a class="text-decoration-none nav-link" href="#">Términos y condiciones</a>
                         </li>
-                        <li class="mb-2"><a class="text-decoration-none" href="#">Política de Privacidad</a>
+                        <li class="mb-2">
+                            <a class="text-decoration-none nav-link" href="#">Política de Privacidad</a>
                         </li>
-                        <li class="mb-2"><a class="text-decoration-none" href="#">Cookies</a></li>
+                        <li class="mb-2">
+                            <a class="text-decoration-none nav-link" href="#">Protección de Datos (LGPD)</a>
+                        </li>
+                        <li class="mb-2">
+                            <a class="text-decoration-none nav-link" href="#">Cookies</a>
+                        </li>
                     </ul>
                 </div>
             </div>
+
             <hr class="mt-5 mb-4 border-secondary opacity-25" />
+
             <div class="text-center">
-                <p class="small mb-0">© 2024 BancodeChoices. Todos los derechos reservados. Desarrollado para la
-                    excelencia médica argentina.</p>
+                <p class="small mb-1">
+                    © 2026 BancodeChoices. Todos los derechos reservados.
+                </p>
+                <p class="small opacity-75 mb-0">
+                    Este sitio cumple con la Ley General de Protección de Datos (Ley Nº 13.709/2018 – LGPD).
+                    Los datos personales son tratados de forma segura, transparente y únicamente para los fines
+                    informados.
+                </p>
             </div>
         </div>
     </footer>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
