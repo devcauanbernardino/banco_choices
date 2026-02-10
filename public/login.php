@@ -10,7 +10,7 @@ $mensagem = $mensagensErro[$erro] ?? null;
 ?>
 
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es-AR">
 
 <head>
     <meta charset="utf-8" />
@@ -19,66 +19,9 @@ $mensagem = $mensagensErro[$erro] ?? null;
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap"
         rel="stylesheet" />
-    <style>
-        :root {
-            --bs-primary: #6000df;
-            --bs-primary-rgb: 15, 73, 189;
-        }
+    <link rel="stylesheet" href="../App/assets/css/login.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f8f9fa;
-            color: #212529;
-        }
-
-        .btn-primary {
-            background-color: var(--bs-primary);
-            border-color: var(--bs-primary);
-        }
-
-        .btn-primary:hover {
-            background-color: #6000df;
-            border-color: #0d3da1;
-        }
-
-        .login-wrapper {
-            min-height: 100vh;
-        }
-
-        .login-sidebar {
-            background-size: cover;
-            background-position: center;
-            position: relative;
-        }
-
-        .login-sidebar-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(180deg, rgba(15, 73, 189, 0.85) 0%, rgba(10, 31, 75, 0.95) 100%);
-        }
-
-        .sidebar-content {
-            position: relative;
-            z-index: 2;
-        }
-
-        .form-control:focus {
-            border-color: rgba(15, 73, 189, 0.5);
-            box-shadow: 0 0 0 0.25rem rgba(15, 73, 189, 0.25);
-        }
-
-        .social-btn {
-            border: 1px solid #dee2e6;
-            transition: background-color 0.2s;
-        }
-
-        .social-btn:hover {
-            background-color: #f8f9fa;
-        }
-    </style>
 </head>
 
 <body>
@@ -124,13 +67,21 @@ $mensagem = $mensagensErro[$erro] ?? null;
                                     d="M24 45.8096C19.6865 45.8096 15.4698 44.5305 11.8832 42.134C8.29667 39.7376 5.50128 36.3314 3.85056 32.3462C2.19985 28.361 1.76794 23.9758 2.60947 19.7452C3.451 15.5145 5.52816 11.6284 8.57829 8.5783C11.6284 5.52817 15.5145 3.45101 19.7452 2.60948C23.9758 1.76795 28.361 2.19986 32.3462 3.85057C36.3314 5.50129 39.7376 8.29668 42.134 11.8833C44.5305 15.4698 45.8096 19.6865 45.8096 24L24 24L24 45.8096Z"
                                     fill="#6000df"></path>
                             </svg>
-                            <span class="h4 mb-0 fw-bold text-dark">BancodeChoices</span>
+                            <span class="h4 mb-0 fw-bold text-dark">Banco de Choices</span>
                         </div>
                     </div>
                     <div class="mb-4">
+                        <a href="/banco_choices/public/index.php"
+                            class="voltar-inicio gap-2 text-decoration-none text-muted small mb-3">
+                            <i class="bi bi-arrow-left"></i>
+                            Volver al inicio
+                        </a>
+
                         <h2 class="fw-bold mb-1">Iniciá sesión</h2>
                         <p class="text-muted small">Ingresá a tu cuenta de BancodeChoices</p>
                     </div>
+
+
                     <?php if ($mensagem): ?>
                         <div class="alert alert-warning alert-dismissible fade show" role="alert">
                             <?= htmlspecialchars($mensagem) ?>
@@ -158,13 +109,13 @@ $mensagem = $mensagensErro[$erro] ?? null;
                                     Recordarme
                                 </label>
                             </div>
-                            <a class="text-decoration-none small fw-bold" href="#">¿Olvidaste tu contraseña?</a>
+                            <a class="text-navy text-decoration-none small fw-bold" href="#">¿Olvidaste tu contraseña?</a>
                         </div>
                         <div class="d-grid mb-4">
-                            <button class="btn btn-primary btn-lg py-3 fw-bold shadow-sm"
+                            <button class="btn btn-lg py-3 fw-bold shadow-sm"
                                 type="submit">Ingresar</button>
                         </div>
-                        <div class="position-relative text-center mb-4">
+                        <!-- <div class="position-relative text-center mb-4">
                             <hr class="text-muted" />
                             <span
                                 class="position-absolute top-50 start-50 translate-middle bg-white px-3 text-muted small">O
@@ -191,11 +142,11 @@ $mensagem = $mensagensErro[$erro] ?? null;
                                     <span class="small fw-medium">Apple</span>
                                 </button>
                             </div>
-                        </div>
+                        </div> -->
                     </form>
                     <div class="text-center mb-5">
                         <p class="text-muted small">¿No tenés una cuenta? <a
-                                class="text-primary fw-bold text-decoration-none" href="cadastro.php">Registrate
+                                class="text-navy fw-bold text-decoration-none" href="cadastro.php">Registrate
                                 gratis</a></p>
                     </div>
                     <footer class="mt-auto border-top pt-4 text-center">

@@ -48,8 +48,15 @@ body {
 }
 
 .btn-outline {
-  color: var(--bs-primary);
+  background-color: var(--bs-primary);
+  border-color: white;
+  color: white;
+}
+
+.btn-outline:hover {
   background-color: white;
+  border-color: var(--bs-primary);
+  color: var(--bs-primary);
 }
 
 

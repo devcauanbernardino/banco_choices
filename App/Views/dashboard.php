@@ -7,7 +7,7 @@ $usuario = $_SESSION['usuario'];
 ?>
 
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="es-AR">
 <head>
     <meta charset="UTF-8">
     <title>Dashboard | BancoChoices</title>

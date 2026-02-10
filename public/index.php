@@ -38,7 +38,7 @@
                 </ul>
                 <div class="d-flex gap-2">
                     <a class="btn btn-link text-decoration-none rounded-pill fw-bold" href="login.php">Iniciá Sesión</a>
-                    <a class="btn btn-reverse text-decoration-none rounded-pill px-4" href="#">Inscribite gratis</a>
+                    <a class="btn btn-reverse text-decoration-none rounded-pill px-4" href="cadastro.php">Inscribite gratis</a>
                 </div>
             </div>
         </div>
@@ -293,15 +293,15 @@
                 médica más avanzada de la región.
             </p>
             <div class="d-flex flex-column flex-sm-row justify-content-center gap-3">
-                <a class="btn btn-outline btn-lg rounded-pill px-5 py-3 fw-bold text-primary" href="#">Inscribite ahora</a>
-                <a class="btn btn-lg rounded-pill px-5 py-3 fw-bold" href="#">Mirá planes anuales</a>
+                <a class="btn btn-outline btn-lg rounded-pill px-5 py-3 fw-bold" href="cadastro.php">Inscribite ahora</a>
+                <!-- <a class="btn btn-outline btn-lg rounded-pill px-5 py-3 fw-bold" href="#">Mirá planes anuales</a> -->
             </div>
         </div>
     </section>
 
     <footer class="footer pt-5 pb-4">
         <div class="container pt-5">
-            <div class="row g-4">
+            <div class="row justify-content-around">
                 <div class="col-md-4 mb-4">
                     <a class="navbar-brand d-flex align-items-center fw-bold text-white mb-3" href="#">
                         <span class="material-symbols-outlined me-2">school</span>

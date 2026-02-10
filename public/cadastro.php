@@ -18,49 +18,16 @@ $successCode = $_GET['success'] ?? null;
 ?>
 
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es-AR">
 
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Registro - BancodeChoices</title>
+    <title>Banco de Choices | Registro</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap"
         rel="stylesheet" />
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f8f9fa;
-        }
-
-        .bg-navy {
-            background-color: #1a237e !important;
-        }
-
-        .btn-primary {
-            background-color: #1a237e !important;
-            border-color: #1a237e !important;
-        }
-
-        .btn-primary:hover {
-            background-color: #121858 !important;
-            border-color: #121858 !important;
-        }
-
-        .text-navy {
-            color: #1a237e !important;
-        }
-
-        .card {
-            border: none;
-            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
-        }
-
-        .navbar-brand {
-            font-weight: 700;
-            color: #1a237e !important;
-        }
-    </style>
+    <link rel="stylesheet" href="../App/assets/css/cadastro.css" />
 </head>
 
 <body>
@@ -78,13 +45,6 @@ $successCode = $_GET['success'] ?? null;
             <button class="navbar-toggler" data-bs-target="#navbarNav" data-bs-toggle="collapse" type="button">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <span class="nav-link disabled text-muted">Sistema de Banco de Preguntas Médicas</span>
-                    </li>
-                </ul>
-            </div>
         </div>
     </nav>
     <main class="container py-5">
@@ -134,7 +94,7 @@ $successCode = $_GET['success'] ?? null;
                                 </div>
                             </div>
                             <div class="d-grid">
-                                <button class="btn btn-primary py-2 fw-bold" type="submit">Registrarme</button>
+                                <button class="btn py-2 fw-bold" type="submit">Registrarme</button>
                             </div>
                         </form>
                         <div class="mt-4 pt-3 border-top text-center">
