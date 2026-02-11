@@ -4,6 +4,10 @@ session_start();
 require_once __DIR__ . '/auth/AuthController.php';
 
 $usuario = $_SESSION['usuario'];
+
+// echo '<pre>';
+// print_r($usuario);
+// echo '</pre>';
 ?>
 
 <!DOCTYPE html>
@@ -18,40 +22,9 @@ $usuario = $_SESSION['usuario'];
 
     <!-- Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/dashboard.css">
+    <link rel="stylesheet" href="../assets/css/sidebar.css">
 
-    <style>
-        body {
-            background-color: #f6f6f8;
-        }
-        .sidebar {
-            width: 260px;
-            min-height: 100vh;
-            background-color: #0f172a;
-        }
-        .sidebar a {
-            color: #cbd5e1;
-            text-decoration: none;
-        }
-        .sidebar a.active,
-        .sidebar a:hover {
-            background-color: #0f49bd;
-            color: #fff;
-            border-radius: 8px;
-        }
-        .content {
-            margin-left: 260px;
-        }
-        .icon-box {
-            width: 48px;
-            height: 48px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 10px;
-            background: rgba(15,73,189,.1);
-            color: #0f49bd;
-        }
-    </style>
 </head>
 <body>
 
@@ -73,7 +46,7 @@ $usuario = $_SESSION['usuario'];
 
         <!-- Welcome -->
         <div class="mb-4">
-            <h2 class="fw-bold">Olá, Dr. <?= $_SESSION['usuario']['nome'] ?></h2>
+            <h2 class="fw-bold">Olá, Dr. <?= $usuario['nome'] ?></h2>
             <p class="text-muted">Você tem 3 simulados pendentes essa semana.</p>
         </div>
 

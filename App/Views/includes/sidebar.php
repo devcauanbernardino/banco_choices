@@ -3,7 +3,7 @@
     <h4 class="text-white fw-bold mb-4">BancoChoices</h4>
 
     <nav class="d-flex flex-column gap-2">
-        <a class="p-3 active" href="#">
+        <a class="p-3 active" href="./dashboard.php">
             <span class="material-icons align-middle me-2">dashboard</span>
             Dashboard
         </a>
@@ -11,7 +11,7 @@
             <span class="material-icons align-middle me-2">bar_chart</span>
             Estatísticas
         </a>
-        <a class="p-3" href="#">
+        <a class="p-3" href="./bancoperguntas.php">
             <span class="material-icons align-middle me-2">quiz</span>
             Banco de Perguntas
         </a>

@@ -1,0 +1,15 @@
+.sidebar {
+  width: 260px;
+  min-height: 100vh;
+  background-color: #6a0392;
+}
+.sidebar a {
+  color: #cbd5e1;
+  text-decoration: none;
+}
+.sidebar a.active,
+.sidebar a:hover {
+  background-color: #6000df;
+  color: #fff;
+  border-radius: 8px;
+}
