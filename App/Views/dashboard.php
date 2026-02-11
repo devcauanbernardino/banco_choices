@@ -35,6 +35,7 @@ $usuario = $_SESSION['usuario'];
 
     <!-- Header -->
     <header class="bg-white border-bottom px-4 py-3 d-flex justify-content-between align-items-center sticky-top">
+        <img src="../assets/img/logo-bd-transparente.png" alt="logo" style="width: 40px; height: 40px;">
         <h5 class="mb-0 fw-bold">Painel Principal</h5>
         <div class="d-flex gap-3">
             <span class="material-icons text-secondary">notifications</span>

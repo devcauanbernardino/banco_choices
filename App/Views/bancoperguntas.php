@@ -74,7 +74,7 @@
 
                 <div class="card-body">
 
-                    <form action="questionario.php" method="post">
+                    <form action="../Controllers/CriarController.php" method="post">
 
                         <!-- Matéria -->
                         <div class="mb-4">

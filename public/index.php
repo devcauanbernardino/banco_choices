@@ -18,7 +18,7 @@
     <nav class="navbar navbar-expand-lg navbar-light sticky-top py-3">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center fw-bold text-primary" href="#">
-                <img src="../App/assets/img/logo_bd.png" alt="logo" style="width: 60px; height: 60px;"/>
+                <img src="../App/assets/img/logo-bd-transparente.png" alt="logo" style="width: 60px; height: 60px;"/>
             </a>
             <button class="navbar-toggler" data-bs-target="#navbarNav" data-bs-toggle="collapse" type="button">
                 <span class="navbar-toggler-icon"></span>
