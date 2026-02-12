@@ -1,4 +1,5 @@
-<?php require_once __DIR__ . '/../Controllers/QuestionarioController.php'; ?>
+<?php require_once __DIR__ . '/../Controllers/QuestionarioController.php';
+?>
 <!DOCTYPE html>
 <html lang="es-AR">
 
@@ -92,29 +93,67 @@
                             </h5>
 
                             <div class="vstack gap-3">
-                                <?php foreach ($questao['opcoes'] as $opcao): ?>
-                                    <label class="border rounded p-3 d-flex gap-3 option-card">
-                                        <input type="radio" name="resposta" value="<?= $opcao['letra'] ?>"
-                                            class="form-check-input mt-1" <?= (isset($respostas[$indiceAtual]) && $respostas[$indiceAtual] === $opcao['letra']) ? 'checked' : '' ?>>
-                                        <strong><?= $opcao['letra'] ?></strong>
+                                <?php foreach ($questao['opcoes'] as $opcao):
+
+                                    $letra = $opcao['letra'];
+
+                                    $classe = 'border rounded p-3 d-flex gap-3 option-card';
+
+                                    // se já respondeu e está no modo estudo
+                                    if ($modo === 'estudo' && $feedback) {
+
+                                        // alternativa correta
+                                        if ($letra === $feedback['resposta_correta']) {
+                                            $classe .= ' border-success bg-success bg-opacity-10';
+                                        }
+
+                                        // alternativa errada marcada pelo usuário
+                                        elseif ($letra === $feedback['resposta_usuario']) {
+                                            $classe .= ' border-danger bg-danger bg-opacity-10';
+                                        }
+                                    }
+                                    ?>
+                                    <label class="<?= $classe ?>">
+                                        <input type="radio" name="resposta" value="<?= $letra ?>"
+                                            class="form-check-input mt-1" <?= isset($respostas[$indiceAtual]) && $respostas[$indiceAtual] === $letra ? 'checked' : '' ?>     <?= $feedback ? 'disabled' : '' ?> onchange="this.form.submit()">
+                                        <strong><?= $letra ?></strong>
                                         <span><?= htmlspecialchars($opcao['texto']) ?></span>
                                     </label>
                                 <?php endforeach; ?>
+
+                                <?php if ($modo === 'estudo' && $feedback): ?>
+                                    <div class="alert mt-4 <?= $feedback['acertou'] ? 'alert-success' : 'alert-danger' ?>">
+                                        <strong>
+                                            <?= $feedback['acertou'] ? '✔ Resposta correta!' : '✖ Resposta incorreta' ?>
+                                        </strong>
+                                        <hr>
+                                        <p class="mb-0">
+                                            <?= htmlspecialchars($feedback['feedback']) ?>
+                                        </p>
+                                    </div>
+                                <?php endif; ?>
+
+
                             </div>
                         </div>
 
-                        <div class="card-footer d-flex justify-content-between">
+
+                    </form>
+                    <div class="card-footer d-flex justify-content-between">
+                        <form action="../Controllers/ProcessaController.php" method="post">
                             <button name="voltar" value="1"
                                 class="btn btn-outline-secondary <?= $indiceAtual == 0 ? 'disabled' : '' ?>  d-flex gap-2 align-items-center">
                                 <span class="material-icons">chevron_left</span> Anterior
                             </button>
+                        </form>
 
-                            <button class="btn btn-go d-flex gap-2 align-items-center">
+                        <form method="post" action="../Controllers/ProcessaController.php">
+                            <button class="btn btn-go d-flex gap-2 align-items-center" name="avancar" value="1">
                                 Siguiente <span class="material-icons">chevron_right</span>
                             </button>
-                        </div>
+                        </form>
 
-                    </form>
+                    </div>
                 </div>
             </div>
 
@@ -133,15 +172,18 @@
                                 <?php foreach ($questoes as $i => $q):
 
                                     $classe = 'btn-light';
-                                    if ($i == $indiceAtual)
+
+                                    if ($i == $indiceAtual) {
                                         $classe = 'question-map-color';
-                                    elseif (isset($respostas[$i]))
-                                        $classe = 'btn-success';
+                                    } elseif (isset($simulado['feedback'][$i])) {
+                                        $classe = $simulado['feedback'][$i]['acertou'] ? 'btn-success' : 'btn-danger';
+                                    }
                                     ?>
                                     <button name="ir" value="<?= $i ?>" class="btn <?= $classe ?>">
                                         <?= $i + 1 ?>
                                     </button>
                                 <?php endforeach; ?>
+
                             </div>
                         </form>
 

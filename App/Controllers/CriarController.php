@@ -31,7 +31,7 @@ $_SESSION['simulado'] = [
 
 if ($modo === 'exame') {
     $_SESSION['simulado']['inicio'] = time(); // timestamp atual
-    $_SESSION['simulado']['tempo_total'] = 2 * 60 * 60; // 2 horas (em segundos)
+    $_SESSION['simulado']['tempo_total'] = 1 * 60 * 60; // 2 horas (em segundos)
 }
 
 

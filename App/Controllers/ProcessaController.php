@@ -10,6 +10,10 @@ if (!isset($_SESSION['simulado'])) {
     exit;
 }
 
+$simulado = $_SESSION['simulado'];
+$indice = $simulado['atual'];
+
+
 /* ================= MAPA ================= */
 // Verifica se o formulário enviou um campo chamado 'ir' (clique no mapa de questões)
 if (isset($_POST['ir'])) {
@@ -21,11 +25,50 @@ if (isset($_POST['ir'])) {
     exit;
 }
 
+
+
 /* ================= SALVAR RESPOSTA ================= */
 // Verifica se uma resposta foi selecionada no formulário (radio button)
 if (isset($_POST['resposta'])) {
-    // Salva a resposta escolhida no array de respostas da sessão, usando o índice da questão atual como chave
-    $_SESSION['simulado']['respostas'][$_SESSION['simulado']['atual']] = $_POST['resposta'];
+
+    $indice = $_SESSION['simulado']['atual'];
+    $respostaUsuario = $_POST['resposta'];
+
+    // salva resposta
+    $_SESSION['simulado']['respostas'][$indice] = $respostaUsuario;
+
+    // pega questão atual
+    $questao = $_SESSION['simulado']['questoes'][$indice];
+
+    $respostaCorreta = $questao['resposta_correta'];
+    $acertou = ($respostaUsuario === $respostaCorreta);
+
+    // salva feedback (MODO ESTUDO)
+    if ($_SESSION['simulado']['modo'] === 'estudo') {
+        $_SESSION['simulado']['feedback'][$indice] = [
+            'acertou'            => $acertou,
+            'resposta_usuario'   => $respostaUsuario,
+            'resposta_correta'   => $respostaCorreta,
+            'feedback'           => $questao['feedback'] ?? 'Sem explicação disponível'
+        ];
+    }
+}
+
+/* ================= AVANÇAR ================= */
+// Se não foi 'ir' (mapa) nem 'voltar', assume-se que é para avançar. Incrementa o índice para a próxima questão.
+if (isset($_POST['avancar'])) {
+
+    $_SESSION['simulado']['atual']++;
+
+    $total = count($_SESSION['simulado']['questoes']);
+
+    if ($_SESSION['simulado']['atual'] >= $total) {
+        header('Location: ../Views/resultado.php');
+        exit;
+    }
+
+    header('Location: ../Views/questionario.php');
+    exit;
 }
 
 /* ================= VOLTAR ================= */
@@ -44,20 +87,7 @@ if (isset($_POST['voltar'])) {
     exit;
 }
 
-/* ================= AVANÇAR ================= */
-// Se não foi 'ir' (mapa) nem 'voltar', assume-se que é para avançar. Incrementa o índice para a próxima questão.
-$_SESSION['simulado']['atual']++;
 
-// Conta o número total de questões no simulado
-$total = count($_SESSION['simulado']['questoes']);
-
-// Verifica se o índice atual ultrapassou ou igualou o total de questões (significa que acabou o simulado)
-if ($_SESSION['simulado']['atual'] >= $total) {
-    // Redireciona para a página de resultados
-    header('Location: ../Views/resultado.php');
-    // Encerra o script
-    exit;
-}
 
 // Comentários de debug (código inativo para testes)
 // echo '<pre>';
