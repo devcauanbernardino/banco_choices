@@ -52,6 +52,37 @@
             background-color: var(--bs-primary);
             color: white;
         }
+
+        .btn:hover {
+            background-color: var(--bs-primary);
+            color: white;
+        }
+
+
+        .radio-custom input {
+            display: none;
+        }
+
+        /* .checkmark {
+            width: 18px;
+            height: 18px;
+            border: 2px solid var(--bs-primary);
+            border-radius: 50%;
+            margin-right: 8px;
+            position: relative;
+        }
+
+        .radio-custom:has(input:checked) .checkmark::after {
+            content: "";
+            width: 10px;
+            height: 10px;
+            background-color: var(--bs-primary);
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        } */
     </style>
 </head>
 
@@ -113,11 +144,12 @@
                                         }
                                     }
                                     ?>
-                                    <label class="<?= $classe ?>">
+                                    <label class="<?= $classe ?> radio-custom">
                                         <input type="radio" name="resposta" value="<?= $letra ?>"
                                             class="form-check-input mt-1" <?= isset($respostas[$indiceAtual]) && $respostas[$indiceAtual] === $letra ? 'checked' : '' ?>     <?= $feedback ? 'disabled' : '' ?> onchange="this.form.submit()">
                                         <strong><?= $letra ?></strong>
                                         <span><?= htmlspecialchars($opcao['texto']) ?></span>
+
                                     </label>
                                 <?php endforeach; ?>
 

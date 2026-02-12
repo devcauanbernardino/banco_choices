@@ -28,27 +28,45 @@ if (isset($_POST['ir'])) {
 
 
 /* ================= SALVAR RESPOSTA ================= */
-// Verifica se uma resposta foi selecionada no formulário (radio button)
+// Verifica se o formulário enviou uma resposta selecionada
+// Isso acontece quando o usuário marca uma alternativa
 if (isset($_POST['resposta'])) {
-
+    // Recupera o índice da questão atual direto da sessão
     $indice = $_SESSION['simulado']['atual'];
+
+    // Armazena a resposta escolhida pelo usuário (ex: A, B, C ou D)
     $respostaUsuario = $_POST['resposta'];
 
-    // salva resposta
+    // Salva a resposta do usuário no array de respostas do simulado
+    // O índice garante que cada resposta fique ligada à sua questão
     $_SESSION['simulado']['respostas'][$indice] = $respostaUsuario;
 
-    // pega questão atual
+    // Recupera os dados da questão atual
     $questao = $_SESSION['simulado']['questoes'][$indice];
 
+    // Obtém a resposta correta da questão
     $respostaCorreta = $questao['resposta_correta'];
+
+    // Verifica se o usuário acertou a questão
+    // Retorna true ou false
     $acertou = ($respostaUsuario === $respostaCorreta);
 
-    // salva feedback (MODO ESTUDO)
+    // Se o modo do simulado for "estudo",
+    // salvamos feedback detalhado para mostrar na tela
     if ($_SESSION['simulado']['modo'] === 'estudo') {
+        // Armazena o feedback para a questão atual, incluindo se acertou, a resposta do usuário, a resposta correta e uma explicação
         $_SESSION['simulado']['feedback'][$indice] = [
+            // Indica se a resposta está correta ou não
             'acertou'            => $acertou,
+
+            // Guarda a alternativa escolhida pelo usuário
             'resposta_usuario'   => $respostaUsuario,
+
+            // Guarda a alternativa correta da questão
             'resposta_correta'   => $respostaCorreta,
+
+            // Texto explicativo da questão
+            // Se não existir, mostra uma mensagem padrão
             'feedback'           => $questao['feedback'] ?? 'Sem explicação disponível'
         ];
     }
@@ -56,10 +74,12 @@ if (isset($_POST['resposta'])) {
 
 /* ================= AVANÇAR ================= */
 // Se não foi 'ir' (mapa) nem 'voltar', assume-se que é para avançar. Incrementa o índice para a próxima questão.
+// Verifica se o botão "avançar" foi clicado
 if (isset($_POST['avancar'])) {
-
+    // Incrementa o índice da questão atual para avançar para a próxima questão
     $_SESSION['simulado']['atual']++;
 
+    // Conta quantas questões existem no simulado para verificar se já chegamos ao final
     $total = count($_SESSION['simulado']['questoes']);
 
     if ($_SESSION['simulado']['atual'] >= $total) {
