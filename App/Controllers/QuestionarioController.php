@@ -1,19 +1,42 @@
 <?php
-
 session_start();
 
 if (!isset($_SESSION['simulado'])) {
-    header('Location: dashboard.php');
+    header('Location: index.php');
     exit;
 }
 
+if ($_SESSION['simulado']['modo'] === 'exame') {
+    $inicio = $_SESSION['simulado']['inicio'];
+    $tempoTotal = $_SESSION['simulado']['tempo_total'];
 
+    if (time() - $inicio >= $tempoTotal) {
+        header('Location: ../Views/resultado.php');
+        exit;
+    }
+}
 
 $simulado = $_SESSION['simulado'];
-$indiceAtual = $simulado['atual'];
-$questoes = $simulado['questoes'];
 
-$totalQuestoes = count($questoes);
+$indiceAtual = $simulado['atual'] ?? 0;
+$questoes = $simulado['questoes'] ?? [];
+$respostas = $simulado['respostas'] ?? [];
+$modo = $simulado['modo'];
+
+if ($modo === 'exame') {
+    $inicio = $simulado['inicio'];
+    $tempoTota = $simulado['tempo_total'];
+
+    $agora = time();
+    $tempoPassado = $agora - $inicio;
+    $tempoRestante = max(0, $tempoTotal - $tempoPassado);
+
+}
+
+
+if (empty($questoes)) {
+    die('Erro: nenhuma questão carregada.');
+}
 
 if (!isset($questoes[$indiceAtual])) {
     $indiceAtual = 0;
@@ -21,10 +44,5 @@ if (!isset($questoes[$indiceAtual])) {
 }
 
 $questao = $questoes[$indiceAtual];
-// echo '<pre>';
-// print_r($questao);
-// echo '</pre>';
-
-require_once __DIR__ . '/../Views/questionario.php';
 
 ?>

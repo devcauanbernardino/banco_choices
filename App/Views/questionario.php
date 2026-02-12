@@ -1,4 +1,4 @@
-<?php require_once __DIR__ . '/../Controllers/QuestionarioController.php';?>
+<?php require_once __DIR__ . '/../Controllers/QuestionarioController.php'; ?>
 <!DOCTYPE html>
 <html lang="es-AR">
 
@@ -7,69 +7,84 @@
     <title>Simulador | BancoChoices</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     <style>
+        :root {
+            --bs-primary: #6a0392;
+            --bs-primary-rgb: 26, 35, 126;
+            --bs-secondary: #26a69a;
+            --bs-font-sans-serif: "Inter", system-ui, -apple-system, sans-serif;
+        }
+
         body {
             background-color: #f6f6f8;
         }
 
         .option-card:hover {
-            border-color: #0d6efd;
-            background-color: rgba(13, 110, 253, .05);
+            border-color: #6a0392;
+            background-color: rgba(106, 3, 146, .05);
             cursor: pointer;
         }
 
         .question-map button {
-            width: 38px;
+            width: 40px;
             height: 38px;
             font-size: 12px;
             font-weight: bold;
+        }
+
+        .question-map-color {
+            background-color: #6a0392;
+            color: #fff;
+        }
+
+        .btn-go {
+            color: var(--bs-primary);
+            border-color: var(--bs-primary);
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+        }
+
+        .btn-go:hover {
+            background-color: var(--bs-primary);
+            color: white;
         }
     </style>
 </head>
 
 <body>
-
-    <header class="bg-white border-bottom sticky-top">
-        <div class="container py-3 d-flex justify-content-between align-items-center">
-            <div class="d-flex align-items-center gap-3">
-                <div class="bg-primary text-white p-2 rounded">
-                    <span class="material-icons">biotech</span>
-                </div>
-                <div>
-                    <h6 class="fw-bold mb-0 text-primary">BancoChoices</h6>
-                    <small class="text-muted">Examen de Residencia Médica</small>
-                </div>
+    <header class="bg-white border-bottom px-4 py-3 d-flex justify-content-between align-items-center sticky-top">
+        <img src="../assets/img/logo-bd-transparente.png" alt="logo" style="width: 40px; height: 40px;">
+        <h5 class="mb-0 fw-bold">Questionario</h5>
+        <?php if ($modo === 'estudo'): ?>
+            <div class="d-flex gap-3">
+                <span class="material-icons text-secondary">notifications</span>
+                <span class="material-icons text-secondary">help_outline</span>
             </div>
-
+        <?php endif; ?>
+        <?php if ($modo === 'exame'): ?>
             <div class="text-end">
                 <small class="text-muted d-block">Tiempo restante</small>
                 <strong class="text-primary fs-5">
-                    <span class="material-icons fs-6">timer</span> 01:42:15
+                    <span class="material-icons fs-6">timer</span>
+                    <span id="timer">01:42:15</span>
                 </strong>
             </div>
-        </div>
-    </header>
+        <?php endif; ?>
 
+    </header>
     <main class="container my-5">
         <div class="row g-4">
 
-            <!-- ================= QUESTION ================= -->
+            <!-- ================= QUESTÃO ================= -->
             <div class="col-lg-8">
                 <div class="card shadow-sm">
 
                     <form method="post" action="../Controllers/ProcessaController.php">
 
                         <input type="hidden" name="indice" value="<?= $indiceAtual ?>">
-
-                        <div class="card-header d-flex justify-content-between align-items-center bg-light">
-                            <span class="badge bg-primary-subtle text-primary">Microbiología</span>
-                        </div>
 
                         <div class="card-body p-4">
                             <h5 class="fw-bold mb-4">
@@ -80,7 +95,7 @@
                                 <?php foreach ($questao['opcoes'] as $opcao): ?>
                                     <label class="border rounded p-3 d-flex gap-3 option-card">
                                         <input type="radio" name="resposta" value="<?= $opcao['letra'] ?>"
-                                            class="form-check-input mt-1" <?= isset($respostas[$indiceAtual]) && $respostas[$indiceAtual] === $opcao['letra'] ? 'checked' : '' ?>>
+                                            class="form-check-input mt-1" <?= (isset($respostas[$indiceAtual]) && $respostas[$indiceAtual] === $opcao['letra']) ? 'checked' : '' ?>>
                                         <strong><?= $opcao['letra'] ?></strong>
                                         <span><?= htmlspecialchars($opcao['texto']) ?></span>
                                     </label>
@@ -89,11 +104,12 @@
                         </div>
 
                         <div class="card-footer d-flex justify-content-between">
-                            <button name="acao" value="anterior" class="btn btn-outline-secondary" <?= $indiceAtual == 0 ? 'disabled' : '' ?>>
+                            <button name="voltar" value="1"
+                                class="btn btn-outline-secondary <?= $indiceAtual == 0 ? 'disabled' : '' ?>  d-flex gap-2 align-items-center">
                                 <span class="material-icons">chevron_left</span> Anterior
                             </button>
 
-                            <button name="acao" value="proximo" class="btn btn-primary">
+                            <button class="btn btn-go d-flex gap-2 align-items-center">
                                 Siguiente <span class="material-icons">chevron_right</span>
                             </button>
                         </div>
@@ -104,7 +120,7 @@
 
             <!-- ================= MAPA ================= -->
             <div class="col-lg-4">
-                <div class="card shadow-sm sticky-top" style="top: 100px">
+                <div class="card shadow-sm sticky-top" style="top:100px">
                     <div class="card-body">
 
                         <h6 class="fw-bold mb-3">
@@ -113,12 +129,12 @@
                         </h6>
 
                         <form method="post" action="../Controllers/ProcessaController.php">
-                            <div class="d-flex flex-wrap gap-2 question-map mb-4">
+                            <div class="d-flex flex-wrap gap-2 question-map">
                                 <?php foreach ($questoes as $i => $q):
 
                                     $classe = 'btn-light';
                                     if ($i == $indiceAtual)
-                                        $classe = 'btn-primary';
+                                        $classe = 'question-map-color';
                                     elseif (isset($respostas[$i]))
                                         $classe = 'btn-success';
                                     ?>
@@ -135,6 +151,33 @@
 
         </div>
     </main>
+
+    <?php if ($modo === 'exame'): ?>
+        <script>
+            let tempoRestante = <?= $tempoRestante ?>;
+
+            function formatarTempo(segundos) {
+                const h = String(Math.floor(segundos / 3600)).padStart(2, '0');
+                const m = String(Math.floor((segundos % 3600) / 60)).padStart(2, '0');
+                const s = String(segundos % 60).padStart(2, '0');
+                return `${h}:${m}:${s}`;
+            }
+
+            function atualizarTimer() {
+                if (tempoRestante <= 0) {
+                    window.location.href = "resultado.php";
+                    return;
+                }
+
+                document.getElementById('timer').textContent = formatarTempo(tempoRestante);
+                tempoRestante--;
+            }
+
+            atualizarTimer();
+            setInterval(atualizarTimer, 1000);
+        </script>
+    <?php endif; ?>
+
 
 </body>
 

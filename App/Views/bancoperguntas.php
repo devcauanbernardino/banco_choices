@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Configurar Simulado | BancoChoices</title>
+    <title>Configurar Simulado | Banco de Choices</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Bootstrap -->
@@ -13,6 +13,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="../assets/css/sidebar.css">
     <link rel="stylesheet" href="../assets/css/dashboard.css">
+    <link rel="stylesheet" href="../assets/css/banco.css">
 
     <style>
         body {
@@ -20,27 +21,27 @@
         }
 
         .badge-primary {
-            background-color: #0f49bd;
+            background-color: #6a0392;
         }
 
         .card-header-primary {
-            background-color: #0f49bd;
+            background-color: #6a0392;
             color: #fff;
         }
 
         .form-control:focus,
         .form-select:focus {
-            border-color: #0f49bd;
-            box-shadow: 0 0 0 0.2rem rgba(15, 73, 189, 0.15);
+            border-color: #6a0392;
+            box-shadow: 0 0 0 0.2rem #6a03928e;
         }
 
         .btn-primary {
-            background-color: #0f49bd;
+            background-color: #6a0392;
             border-color: #0f49bd;
         }
 
         .btn-primary:hover {
-            background-color: #0d3fa6;
+            background-color: #6a0392;
         }
     </style>
 </head>
@@ -54,10 +55,6 @@
     <!-- Header -->
     <header class="bg-white border-bottom px-4 py-3 d-flex justify-content-between align-items-center sticky-top">
         <h5 class="mb-0 fw-bold">Banco de Perguntas</h5>
-        <a href="dashboard.php" class="btn btn-outline-primary btn-sm">
-            <span class="material-icons align-middle fs-6">arrow_back</span>
-            Voltar ao painel
-        </a>
     </header>
 
     <main class="p-4">
@@ -97,7 +94,7 @@
                                 <label class="form-label fw-bold">Tempo estimado</label>
                                 <div class="form-control bg-light">
                                     <span class="material-icons align-middle text-primary">timer</span>
-                                    60 minutos
+                                    90 minutos
                                 </div>
                             </div>
                         </div>
@@ -107,7 +104,7 @@
                             <label class="form-label fw-bold">Modo de Simulado</label>
 
                             <div class="form-check mb-2">
-                                <input class="form-check-input" type="radio" name="modo" value="estudo" checked>
+                                <input class="form-check-input" type="radio" name="modo" value="estudo" checked id="estudo">
                                 <label class="form-check-label">
                                     <strong>Modo Estudo</strong><br>
                                     <small class="text-muted">Feedback imediato</small>
@@ -115,7 +112,7 @@
                             </div>
 
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="modo" value="exame">
+                                <input class="form-check-input" type="radio" name="modo" value="exame" id="exame">
                                 <label class="form-check-label">
                                     <strong>Modo Exame</strong><br>
                                     <small class="text-muted">Resultado apenas no final</small>
@@ -124,7 +121,7 @@
                         </div>
 
                         <!-- Alerta -->
-                        <div class="alert alert-primary d-flex align-items-start gap-2">
+                        <div id="alert-exame" class="alert alert-primary d-flex align-items-start gap-2">
                             <span class="material-icons">info</span>
                             <div>
                                 <ul class="mb-0 small">
@@ -158,5 +155,26 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    const modoEstudo = document.getElementById('estudo');
+    const modoExame = document.getElementById('exame');
+    const alertExame = document.getElementById('alert-exame');
+
+    function atualizarAlerta() {
+        if (modoExame.checked) {
+            alertExame.classList.add('d-block');
+            alertExame.classList.remove('d-none');
+
+        } else {
+            alertExame.classList.remove('d-block');
+            alertExame.classList.add('d-none');
+        }
+    }
+
+    modoEstudo.addEventListener('change', atualizarAlerta);
+    modoExame.addEventListener('change', atualizarAlerta);
+
+    atualizarAlerta()
+</script>
 </body>
 </html>

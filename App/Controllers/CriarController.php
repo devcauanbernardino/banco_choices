@@ -29,6 +29,13 @@ $_SESSION['simulado'] = [
     'respostas' => []
 ];
 
+if ($modo === 'exame') {
+    $_SESSION['simulado']['inicio'] = time(); // timestamp atual
+    $_SESSION['simulado']['tempo_total'] = 2 * 60 * 60; // 2 horas (em segundos)
+}
+
+
+
 // redireciona
 header('Location: ../Views/questionario.php');
 exit;
