@@ -94,7 +94,7 @@
                                 <label class="form-label fw-bold">Tempo estimado</label>
                                 <div class="form-control bg-light">
                                     <span class="material-icons align-middle text-primary">timer</span>
-                                    90 minutos
+                                    60 minutos
                                 </div>
                             </div>
                         </div>
