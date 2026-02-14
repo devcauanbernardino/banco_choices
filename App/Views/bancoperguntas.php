@@ -1,47 +1,151 @@
 <!DOCTYPE html>
-<html lang="es-AR">
+<html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
     <title>Configurar Simulado | Banco de Choices</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- Bootstrap -->
+    <!-- Bootstrap & Google Fonts -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="../assets/css/sidebar.css">
-    <link rel="stylesheet" href="../assets/css/dashboard.css">
-    <link rel="stylesheet" href="../assets/css/banco.css">
-
+    
     <style>
+        :root {
+            --primary-color: #6a0392;
+            --primary-light: #f3e5f5;
+            --bg-body: #f6f6f8;
+            --card-radius: 16px;
+        }
+
         body {
-            background-color: #f6f6f8;
+            background-color: var(--bg-body);
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
 
-        .badge-primary {
-            background-color: #6a0392;
+        .sidebar-space {
+            margin-left: 260px;
         }
 
-        .card-header-primary {
-            background-color: #6a0392;
-            color: #fff;
+        /* Estilo do Card Principal */
+        .setup-card {
+            border: none;
+            border-radius: var(--card-radius);
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
         }
 
-        .form-control:focus,
-        .form-select:focus {
-            border-color: #6a0392;
-            box-shadow: 0 0 0 0.2rem #6a03928e;
+        .setup-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #a342cd 100%);
+            padding: 2.5rem 2rem;
+            color: white;
+            text-align: center;
         }
 
-        .btn-primary {
-            background-color: #6a0392;
-            border-color: #0f49bd;
+        .setup-body {
+            padding: 2.5rem;
+            background: white;
         }
 
-        .btn-primary:hover {
-            background-color: #6a0392;
+        /* Estilização de Inputs e Selects */
+        .form-label {
+            font-size: 0.9rem;
+            color: #555;
+            margin-bottom: 0.6rem;
+        }
+
+        .form-select, .form-control {
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+            border: 1px solid #e0e0e0;
+            background-color: #fcfcfc;
+            transition: all 0.2s ease;
+        }
+
+        .form-select:focus, .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(106, 3, 146, 0.1);
+            background-color: #fff;
+        }
+
+        /* Estilo dos Rádios (Modos) */
+        .mode-option {
+            border: 2px solid #f0f0f0;
+            border-radius: 14px;
+            padding: 1.2rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: block;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .mode-option:hover {
+            border-color: var(--primary-light);
+            background-color: #fafafa;
+        }
+
+        .form-check-input:checked + .mode-option {
+            border-color: var(--primary-color);
+            background-color: var(--primary-light);
+        }
+
+        .form-check-input {
+            display: none;
+        }
+
+        .mode-title {
+            display: block;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 0.2rem;
+        }
+
+        .mode-desc {
+            font-size: 0.85rem;
+            color: #777;
+        }
+
+        /* Botão Iniciar */
+        .btn-start {
+            background: var(--primary-color);
+            border: none;
+            border-radius: 12px;
+            padding: 1rem;
+            font-weight: 700;
+            color: white;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(106, 3, 146, 0.3);
+        }
+
+        .btn-start:hover {
+            background: #5a027c;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(106, 3, 146, 0.4);
+            color: white;
+        }
+
+        .btn-start:active {
+            transform: translateY(0);
+        }
+
+        /* Alerta de Exame */
+        .exam-warning {
+            background-color: #fff4e5;
+            border-left: 4px solid #ffa000;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1.5rem;
+            display: none; /* Escondido por padrão */
+        }
+
+        @media (max-width: 992px) {
+            .sidebar-space { margin-left: 0; }
         }
     </style>
 </head>
@@ -50,131 +154,136 @@
 
 <?php require_once './includes/sidebar.php'; ?>
 
-<div class="content">
-
-    <!-- Header -->
-    <header class="bg-white border-bottom px-4 py-3 d-flex justify-content-between align-items-center sticky-top">
-        <h5 class="mb-0 fw-bold">Banco de Perguntas</h5>
-    </header>
-
-    <main class="p-4">
-
-        <div class="container" style="max-width: 700px;">
-
-            <!-- Card -->
-            <div class="card shadow-sm">
-
-                <div class="card-header card-header-primary">
-                    <h4 class="mb-0 fw-bold">Configurar Simulado</h4>
-                    <small>Personalize sua sessão antes de começar</small>
+<main class="sidebar-space p-4">
+    
+    <div class="container py-4" style="max-width: 750px;">
+        
+        <div class="setup-card card shadow-sm">
+            <!-- Cabeçalho com Gradiente -->
+            <div class="setup-header">
+                <div class="mb-2">
+                    <span class="material-icons fs-1">psychology</span>
                 </div>
+                <h2 class="fw-bold mb-1">Configurar Simulado</h2>
+                <p class="opacity-75 mb-0">Prepare sua mente para o próximo desafio</p>
+            </div>
 
-                <div class="card-body">
+            <!-- Corpo do Formulário -->
+            <div class="setup-body">
+                <form action="../Controllers/CriarController.php" method="post">
+                    
+                    <!-- Seleção de Matéria -->
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">Matéria do Simulado</label>
+                        <select class="form-select form-select-lg" name="materia" required>
+                            <option value="" disabled>Selecione uma disciplina...</option>
+                            <option value="microbiologia" selected>Microbiologia</option>
+                            <option value="cardiologia" disabled>Cardiologia (Em breve)</option>
+                        </select>
+                        <div class="mt-2 small text-muted d-flex align-items-center gap-1">
+                            <span class="material-icons fs-6">info</span>
+                            Novas matérias são adicionadas semanalmente.
+                        </div>
+                    </div>
 
-                    <form action="../Controllers/CriarController.php" method="post">
-
-                        <!-- Matéria -->
-                        <div class="mb-4">
-                            <label class="form-label fw-bold">Matéria</label>
-                            <select class="form-select" name="materia" required>
-                                <option value="">Selecione</option>
-                                <option value="microbiologia">Microbiologia</option>
-                            </select>
-                            <small class="text-muted">No momento, apenas Microbiologia</small>
+                    <div class="row g-4 mb-4">
+                        <!-- Quantidade de Questões -->
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Número de Questões</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-white border-end-0 rounded-start-3" style="border-radius: 12px 0 0 12px;">
+                                    <span class="material-icons text-muted">format_list_numbered</span>
+                                </span>
+                                <input type="number" class="form-control border-start-0" name="quantidade" 
+                                       min="5" max="100" value="20" style="border-radius: 0 12px 12px 0;">
+                            </div>
+                            <div class="form-text">Recomendado: 20 a 50 questões.</div>
                         </div>
 
-                        <!-- Quantidade -->
-                        <div class="row mb-4">
-                            <div class="col-md-6">
-                                <label class="form-label fw-bold">Quantidade de questões</label>
-                                <input type="number" class="form-control" name="quantidade" min="10" max="100" value="50">
+                        <!-- Tempo Estimado -->
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Tempo Disponível</label>
+                            <div class="d-flex align-items-center p-2 px-3 bg-light rounded-3" style="height: 48px;">
+                                <span class="material-icons text-primary me-2">schedule</span>
+                                <span class="fw-bold text-dark">60 Minutos</span>
                             </div>
-
-                            <div class="col-md-6">
-                                <label class="form-label fw-bold">Tempo estimado</label>
-                                <div class="form-control bg-light">
-                                    <span class="material-icons align-middle text-primary">timer</span>
-                                    60 minutos
-                                </div>
-                            </div>
+                            <div class="form-text">Tempo padrão para o modo exame.</div>
                         </div>
+                    </div>
 
-                        <!-- Modo -->
-                        <div class="mb-4">
-                            <label class="form-label fw-bold">Modo de Simulado</label>
-
-                            <div class="form-check mb-2">
-                                <input class="form-check-input" type="radio" name="modo" value="estudo" checked id="estudo">
-                                <label class="form-check-label">
-                                    <strong>Modo Estudo</strong><br>
-                                    <small class="text-muted">Feedback imediato</small>
+                    <!-- Seleção de Modo (Cards) -->
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">Modo de Aplicação</label>
+                        
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <input type="radio" name="modo" value="estudo" id="radioEstudo" checked>
+                                <label for="radioEstudo" class="mode-option">
+                                    <span class="mode-title">Modo Estudo</span>
+                                    <span class="mode-desc">Veja a resposta correta e o comentário após cada questão.</span>
                                 </label>
                             </div>
-
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="modo" value="exame" id="exame">
-                                <label class="form-check-label">
-                                    <strong>Modo Exame</strong><br>
-                                    <small class="text-muted">Resultado apenas no final</small>
+                            <div class="col-md-6">
+                                <input type="radio" name="modo" value="exame" id="radioExame">
+                                <label for="radioExame" class="mode-option">
+                                    <span class="mode-title">Modo Exame</span>
+                                    <span class="mode-desc">Simulação real. Resultado e revisão apenas ao finalizar.</span>
                                 </label>
                             </div>
                         </div>
+                    </div>
 
-                        <!-- Alerta -->
-                        <div id="alert-exame" class="alert alert-primary d-flex align-items-start gap-2">
-                            <span class="material-icons">info</span>
+                    <!-- Alerta Dinâmico para Modo Exame -->
+                    <div id="examWarning" class="exam-warning mb-4">
+                        <div class="d-flex gap-3">
+                            <span class="material-icons text-warning">warning</span>
                             <div>
-                                <ul class="mb-0 small">
-                                    <li>Tempo máximo: <strong>60 minutos</strong></li>
-                                    <li>Modo exame não pode ser pausado</li>
-                                    <li>Certifique-se de estar em ambiente estável</li>
+                                <h6 class="fw-bold mb-1 text-dark">Atenção ao Modo Exame</h6>
+                                <ul class="mb-0 small text-muted ps-3">
+                                    <li>O cronômetro não pode ser pausado.</li>
+                                    <li>As respostas certas não serão exibidas durante o teste.</li>
+                                    <li>Certifique-se de ter uma conexão estável.</li>
                                 </ul>
                             </div>
                         </div>
+                    </div>
 
-                        <!-- Botão -->
-                        <div class="d-grid mt-4">
-                            <button class="btn btn-primary btn-lg fw-bold">
-                                <span class="material-icons align-middle">play_arrow</span>
-                                Iniciar Simulado
-                            </button>
-                        </div>
+                    <!-- Botão de Ação -->
+                    <button type="submit" class="btn btn-start w-100 mt-2">
+                        <span class="material-icons">rocket_launch</span>
+                        INICIAR SIMULADO AGORA
+                    </button>
 
-                    </form>
-
-                </div>
+                </form>
             </div>
-
-            <p class="text-center text-muted mt-4 small">
-                © 2026 BancoChoices — Avaliação Médica
-            </p>
-
+            
+            <div class="card-footer bg-light border-0 py-3 text-center">
+                <small class="text-muted">© 2026 Banco de Choices — Preparação Médica de Elite</small>
+            </div>
         </div>
 
-    </main>
-</div>
+    </div>
+
+</main>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    const modoEstudo = document.getElementById('estudo');
-    const modoExame = document.getElementById('exame');
-    const alertExame = document.getElementById('alert-exame');
+    // Lógica para mostrar/esconder o alerta de exame
+    const radioEstudo = document.getElementById('radioEstudo');
+    const radioExame = document.getElementById('radioExame');
+    const examWarning = document.getElementById('examWarning');
 
-    function atualizarAlerta() {
-        if (modoExame.checked) {
-            alertExame.classList.add('d-block');
-            alertExame.classList.remove('d-none');
-
+    function toggleWarning() {
+        if (radioExame.checked) {
+            examWarning.style.display = 'block';
         } else {
-            alertExame.classList.remove('d-block');
-            alertExame.classList.add('d-none');
+            examWarning.style.display = 'none';
         }
     }
 
-    modoEstudo.addEventListener('change', atualizarAlerta);
-    modoExame.addEventListener('change', atualizarAlerta);
-
-    atualizarAlerta()
+    radioEstudo.addEventListener('change', toggleWarning);
+    radioExame.addEventListener('change', toggleWarning);
 </script>
+
 </body>
 </html>

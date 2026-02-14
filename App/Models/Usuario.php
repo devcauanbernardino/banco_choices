@@ -47,6 +47,42 @@ class Usuario
 
         return false;
     }
+
+     /**
+     * Busca os dados completos de um usuário pelo ID
+     */
+    public function buscarPorId($id) {
+        $sql = "SELECT * FROM users WHERE id = :id";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([':id' => $id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+     /**
+     * Atualiza os dados básicos do perfil
+     */
+    public function atualizarPerfil($id, $nome) {
+        $sql = "UPDATE users SET nome = :nome WHERE id = :id";
+        $stmt = $this->conn->prepare($sql);
+        return $stmt->execute([
+            ':nome' => $nome,
+            ':id'   => $id
+        ]);
+    }
+
+     /**
+     * Atualiza a senha do usuário
+     */
+    public function atualizarSenha($id, $novaSenhaHash) {
+        $sql = "UPDATE users SET senha = :senha WHERE id = :id";
+        $stmt = $this->conn->prepare($sql);
+        return $stmt->execute([
+            ':senha' => $novaSenhaHash,
+            ':id'    => $id
+        ]);
+    }
+
+
 }
 
 
