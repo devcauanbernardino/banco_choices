@@ -1,37 +1,5 @@
 <?php
-
-/**
- * Representa uma questão individual do simulado.
- */
-
-class Question
-{
-    private array $data;
-
-    public function __construct(array $data)
-    {
-        // Armazena os dados da questão
-        $this->data = $data;
-    }
-
-    public function getCorrectAnswer(): string
-    {
-        // Retorna a resposta correta ou string vazia se não existir
-        return $this->data['resposta_correta'] ?? '';
-    }
-
-    public function getFeedback(): string
-    {
-        // Retorna o feedback ou uma mensagem padrão
-        return $this->data['feedback'] ?? 'Sem explicação disponível';
-    }
-
-    public function isCorrect(string $answer): bool
-    {
-        // Verifica se a resposta fornecida é igual à correta
-        return $this->getCorrectAnswer() === $answer;
-    }
-}
+require_once __DIR__ . '/../Models/Question.php';
 
 /**
  * Gerencia o estado do Simulado na sessão.

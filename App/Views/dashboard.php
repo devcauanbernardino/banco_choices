@@ -1,6 +1,5 @@
 <?php
 session_start();
-
 require_once __DIR__ . '/auth/AuthController.php';
 require_once __DIR__ . '/../Controllers/QuestionarioController.php'; 
 require_once __DIR__ . '/../../config/conexao.php';

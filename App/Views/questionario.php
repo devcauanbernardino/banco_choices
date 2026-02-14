@@ -12,17 +12,20 @@ $controller->validateState();
 $viewData = $controller->getViewData();
 
 // Extração de variáveis para facilitar o uso no HTML
-$questao       = $viewData['questao'];       // Objeto da classe Question
-$indiceAtual   = $viewData['indiceAtual'];   // Número da questão atual (0, 1, 2...)
+$questao = $viewData['questao'];       // Objeto da classe Question
+$indiceAtual = $viewData['indiceAtual'];   // Número da questão atual (0, 1, 2...)
 $totalQuestoes = $viewData['totalQuestoes']; // Quantidade total de questões
-$respostas     = $viewData['respostas'];     // Respostas já dadas pelo usuário
-$modo          = $viewData['modo'];          // 'estudo' ou 'exame'
-$feedback      = $viewData['feedback'];      // Feedback da questão atual (se houver)
+$respostas = $viewData['respostas'];     // Respostas já dadas pelo usuário
+$modo = $viewData['modo'];          // 'estudo' ou 'exame'
+$feedback = $viewData['feedback'];      // Feedback da questão atual (se houver)
 $tempoRestante = $viewData['tempoRestante']; // Segundos que faltam (no modo exame)
 
 // Para o Mapa de Questões, precisamos de todas as questões e feedbacks da sessão
-$todasQuestoes = (array)($session->get('questoes') ?? []);
-$todosFeedbacks = (array)($session->get('feedback') ?? []);
+$todasQuestoes = (array) ($session->get('questoes') ?? []);
+$todosFeedbacks = (array) ($session->get('feedback') ?? []);
+
+
+
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -94,30 +97,30 @@ $todosFeedbacks = (array)($session->get('feedback') ?? []);
             color: white;
         }
 
-        .modo-estudo .radio-custom input {
-            display: none;
+        .modo-estudo .radio-custom input[type="radio"] {
+            display: none !important;
         }
 
         /* Se quiser que no modo exame ele apareça normalmente */
-        .modo-exame .radio-custom input {
-            display: inline-block;
+        .modo-exame .radio-custom input[type="radio"] {
+            display: inline-block !important;
             margin-top: 5px;
         }
     </style>
 </head>
 
-<body>
+<body <?= $modo === 'exame' ? 'modo-exame' : 'modo-estudo' ?>>
     <header class="bg-white border-bottom px-4 py-3 d-flex justify-content-between align-items-center sticky-top">
         <img src="../assets/img/logo-bd-transparente.png" alt="logo" style="width: 40px; height: 40px;">
-        <h5 class="mb-0 fw-bold">Simulado: <?= ucfirst(htmlspecialchars((string)$session->get('materia'))) ?></h5>
-        
+        <h5 class="mb-0 fw-bold">Simulado: <?= ucfirst(htmlspecialchars((string) $session->get('materia'))) ?></h5>
+
         <?php if ($modo === 'estudo'): ?>
             <div class="d-flex gap-3">
                 <span class="badge bg">Modo Estudo</span>
             </div>
         <?php endif; ?>
-        
-         <!-- Mostra o Timer apenas se estiver no modo exame -->
+
+        <!-- Mostra o Timer apenas se estiver no modo exame -->
         <?php if ($modo === 'exame' && $tempoRestante !== null): ?>
             <div class="text-end">
                 <small class="text-muted d-block">Tempo restante</small>
@@ -150,15 +153,15 @@ $todosFeedbacks = (array)($session->get('feedback') ?? []);
                             <div class="vstack gap-3">
                                 <?php
                                 // Percorre as opções (A, B, C...) da questão
-                                $opcoes = (array)($questao->getData()['opcoes'] ?? []);
+                                $opcoes = (array) ($questao->getData()['opcoes'] ?? []);
                                 foreach ($opcoes as $opcao):
                                     $letra = $opcao['letra'];
                                     $texto = $opcao['texto'];
                                     $respondida = isset($respostas[$indiceAtual]) && $respostas[$indiceAtual] === $letra;
-                                    
+
                                     $modoClasse = ($modo === 'exame') ? 'modo-exame' : 'modo-estudo';
                                     $classe = 'border rounded p-3 d-flex gap-3 option-card';
-                                    
+
                                     // Lógica de cores no modo estudo após responder
                                     if ($modo === 'estudo' && $feedback) {
                                         if ($letra === $feedback['resposta_correta']) {
@@ -168,13 +171,12 @@ $todosFeedbacks = (array)($session->get('feedback') ?? []);
                                         }
                                         $classe .= ' disabled'; // Desabilita cliques após responder
                                     }
-                                ?>
+                                    ?>
                                     <label class="<?= $classe ?> radio-custom">
                                         <input type="radio" name="resposta" value="<?= $letra ?>"
-                                            class="form-check-input mt-1" 
-                                            <?= $respondida ? 'checked' : '' ?> 
-                                            <?= $feedback ? 'disabled' : '' ?> 
-                                            onchange="this.form.submit()"> <!-- Envia o form automaticamente ao clicar -->
+                                            style="<?= $modo === 'estudo' ? 'display:none' : '' ?>"
+                                            class="form-check-input mt-1" <?= $respondida ? 'checked' : '' ?>     <?= $feedback ? 'disabled' : '' ?> onchange="this.form.submit()">
+                                        <!-- Envia o form automaticamente ao clicar -->
                                         <strong><?= $letra ?>)</strong>
                                         <span><?= htmlspecialchars($texto) ?></span>
                                     </label>
@@ -182,7 +184,8 @@ $todosFeedbacks = (array)($session->get('feedback') ?? []);
 
                                 <!-- ALERTA DE FEEDBACK: Aparece apenas após responder no modo estudo -->
                                 <?php if ($modo === 'estudo' && $feedback): ?>
-                                    <div class="alert mt-4 <?= $feedback['acertou'] ? 'alert-success' : 'alert-danger' ?> border-0 shadow-sm">
+                                    <div
+                                        class="alert mt-4 <?= $feedback['acertou'] ? 'alert-success' : 'alert-danger' ?> border-0 shadow-sm">
                                         <div class="d-flex align-items-center gap-2 mb-2">
                                             <span class="material-icons">
                                                 <?= $feedback['acertou'] ? 'check_circle' : 'cancel' ?>
@@ -204,14 +207,15 @@ $todosFeedbacks = (array)($session->get('feedback') ?? []);
 
                     <div class="card-footer bg-white d-flex justify-content-between py-3">
                         <form action="../Controllers/ProcessaController.php" method="post">
-                            <button name="voltar" value="1" class="btn btn-back d-flex gap-2 align-items-center" <?= $indiceAtual == 0 ? 'disabled' : '' ?>>
+                            <button name="voltar" value="1" class="btn btn-back d-flex gap-2 align-items-center"
+                                <?= $indiceAtual == 0 ? 'disabled' : '' ?>>
                                 <span class="material-icons">chevron_left</span> Anterior
                             </button>
                         </form>
 
                         <form method="post" action="../Controllers/ProcessaController.php">
                             <button class="btn btn-go d-flex gap-2 align-items-center" name="avancar" value="1">
-                                <?= ($indiceAtual + 1 === $totalQuestoes) ? 'Finalizar' : 'Próxima' ?> 
+                                <?= ($indiceAtual + 1 === $totalQuestoes) ? 'Finalizar' : 'Próxima' ?>
                                 <span class="material-icons">chevron_right</span>
                             </button>
                         </form>
@@ -232,7 +236,7 @@ $todosFeedbacks = (array)($session->get('feedback') ?? []);
                             <div class="d-flex flex-wrap gap-2 question-map">
                                 <?php foreach ($todasQuestoes as $i => $q):
                                     $classeBotao = 'btn-light text-muted';
-                                    
+
                                     if ($i == $indiceAtual) {
                                         $classeBotao = 'question-map-current';
                                     } elseif (isset($todosFeedbacks[$i])) {
@@ -240,24 +244,27 @@ $todosFeedbacks = (array)($session->get('feedback') ?? []);
                                     } elseif (isset($respostas[$i])) {
                                         $classeBotao = 'btn-primary'; // Respondida mas sem feedback (modo exame)
                                     }
-                                ?>
+                                    ?>
                                     <button name="ir" value="<?= $i ?>" class="btn shadow-sm <?= $classeBotao ?>">
                                         <?= $i + 1 ?>
                                     </button>
                                 <?php endforeach; ?>
                             </div>
                         </form>
-                        
+
                         <div class="mt-4 pt-3 border-top">
                             <div class="d-flex flex-column gap-2 small text-muted">
                                 <div class="d-flex align-items-center gap-2">
-                                    <span class="badge bg-success" style="width:12px; height:12px; padding:0;">&nbsp;</span> Correta
+                                    <span class="badge bg-success"
+                                        style="width:12px; height:12px; padding:0;">&nbsp;</span> Correta
                                 </div>
                                 <div class="d-flex align-items-center gap-2">
-                                    <span class="badge bg-danger" style="width:12px; height:12px; padding:0;">&nbsp;</span> Incorreta
+                                    <span class="badge bg-danger"
+                                        style="width:12px; height:12px; padding:0;">&nbsp;</span> Incorreta
                                 </div>
                                 <div class="d-flex align-items-center gap-2">
-                                    <span class="badge bg-primary" style="width:12px; height:12px; padding:0;">&nbsp;</span> Respondida
+                                    <span class="badge bg-primary"
+                                        style="width:12px; height:12px; padding:0;">&nbsp;</span> Respondida
                                 </div>
                             </div>
                         </div>
@@ -270,7 +277,7 @@ $todosFeedbacks = (array)($session->get('feedback') ?? []);
 
     <?php if ($modo === 'exame' && $tempoRestante !== null): ?>
         <script>
-            let tempoRestante = <?= (int)$tempoRestante ?>;
+            let tempoRestante = <?= (int) $tempoRestante ?>;
 
             function formatarTempo(segundos) {
                 const h = String(Math.floor(segundos / 3600)).padStart(2, '0');
@@ -288,7 +295,7 @@ $todosFeedbacks = (array)($session->get('feedback') ?? []);
                 const timerElement = document.getElementById('timer');
                 if (timerElement) {
                     timerElement.textContent = formatarTempo(tempoRestante);
-                    
+
                     // Alerta visual quando faltar menos de 5 minutos
                     if (tempoRestante < 300) {
                         timerElement.parentElement.classList.remove('text-primary');
@@ -303,4 +310,5 @@ $todosFeedbacks = (array)($session->get('feedback') ?? []);
         </script>
     <?php endif; ?>
 </body>
+
 </html>

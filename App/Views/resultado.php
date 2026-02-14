@@ -1,40 +1,46 @@
 <?php
 
-/**
- * ARQUIVO: resultado.php
- * OBJETIVO: Exibir o desempenho final do usuário no simulado.
- */
-
-// 1. Incluímos as classes necessárias para acessar a sessão
 require_once __DIR__ . '/../../config/conexao.php';
-require_once __DIR__ . '/../Controllers/QuestionarioController.php';
+require_once __DIR__ . '/../Models/Question.php';
 require_once __DIR__ . '/../Models/HistoricoModel.php';
+require_once __DIR__ . '/../Controllers/QuestionarioController.php';
 
+
+// ==========================
+// 1. INICIA A SESSÃO
+// ==========================
 $session = new SimulationSession();
 
-// 2. SEGURANÇA: Se não houver simulado na sessão, redireciona para o início
 if (!$session->isActive()) {
     header('Location: dashboard.php');
     exit;
 }
 
-// 3. RECUPERAÇÃO DE DADOS
-$materia = (string) ($session->get('materia') ?? 'Geral');
-$questoes = (array) ($session->get('questoes') ?? []);
-$respostas = (array) ($session->get('respostas') ?? []);
-$modo = (string) ($session->get('modo') ?? 'estudo');
-$inicio = (int) $session->get('inicio');
+// ==========================
+// 2. RECUPERA DADOS DA SESSÃO
+// ==========================
+$materia   = $session->get('materia') ?? 'Geral';
+$questoes  = $session->get('questoes') ?? [];
+$respostas = $session->get('respostas') ?? [];
+$inicio    = $session->get('inicio') ?? 0;
+$usuario   = $_SESSION['usuario'] ?? null;
+
 $total = count($questoes);
 
-// 4. CÁLCULO DE MÉTRICAS
-$acertos = 0;
-$erros = 0;
+// ==========================
+// 3. CALCULA RESULTADO
+// ==========================
+$acertos  = 0;
+$erros    = 0;
 $detalhes = [];
 
-foreach ($questoes as $i => $qData) {
-    $questao = new Question($qData);
-    $respostaUsuario = $respostas[$i] ?? null;
-    $acertou = ($respostaUsuario === $questao->getCorrectAnwser());
+foreach ($questoes as $index => $dadosQuestao) {
+
+    $questao = new Question($dadosQuestao);
+    $respostaUsuario = $respostas[$index] ?? null;
+    $correta = $questao->getCorrectAnswer();
+
+    $acertou = ($respostaUsuario === $correta);
 
     if ($acertou) {
         $acertos++;
@@ -42,63 +48,60 @@ foreach ($questoes as $i => $qData) {
         $erros++;
     }
 
-    // Guardamos os detalhes para a tabela
     $detalhes[] = [
-        'numero' => $i + 1,
-        'pergunta' => $qData['pergunta'] ?? $qData['texto'] ?? 'Questão sem título',
-        'acertou' => $acertou,
-        'resposta_usuario' => $respostaUsuario,
-        'resposta_correta' => $questao->getCorrectAnwser()
+        'numero'            => $index + 1,
+        'pergunta'          => $dadosQuestao['pergunta'] ?? 'Pergunta não encontrada',
+        'resposta_usuario'  => $respostaUsuario,
+        'resposta_correta'  => $correta,
+        'acertou'           => $acertou
     ];
 }
 
-// 2. Salva no banco se ainda não foi salvo nesta sessão
-// 5. SALVAMENTO NO BANCO DE DADOS (Versão Final e Corrigida)
-// Usamos uma variável de controle para garantir que salve apenas UMA vez por simulado
-if (!isset($_SESSION['simulado_salvo_id']) || $_SESSION['simulado_salvo_id'] !== session_id()) {
+
+// ==========================
+// 4. SALVA NO BANCO (1 VEZ)
+// ==========================
+if (!$session->get('simulado_salvo') && $usuario && isset($usuario['id'])) {
+
     try {
-        $objConexao = new Conexao();
-        $db = $objConexao->conectar();
+        $conexao = new Conexao();
+        $pdo = $conexao->conectar();
 
-        if ($db instanceof PDO) {
-            $historico = new HistoricoModel($db);
+        $historico = new HistoricoModel($pdo);
 
-            // Recupera o ID do usuário logado
-            $uid = $_SESSION['usuario']['id'] ?? null;
+        $salvo = $historico->salvarResultado(
+            $usuario['id'],
+            $materia,
+            $acertos,
+            $total
+        );
 
-            if ($uid) {
-                $sucesso = $historico->salvarResultado(
-                    $uid,
-                    $materia,
-                    $acertos,
-                    $total
-                );
-
-                if ($sucesso) {
-                    // Marcamos que este simulado específico já foi salvo
-                    $_SESSION['simulado_salvo_id'] = session_id();
-                }
-            }
+        if ($salvo) {
+            $session->set('simulado_salvo', true);
         }
-    } catch (Exception $e) {
-        // Silencioso para o usuário, mas registra no log do servidor
-        error_log("Erro ao salvar simulado: " . $e->getMessage());
+
+    } catch (Throwable $e) {
+        error_log('Erro ao salvar resultado: ' . $e->getMessage());
     }
 }
 
+// ==========================
+// 5. MÉTRICAS FINAIS
+// ==========================
+$porcentagem = $total > 0 ? round(($acertos / $total) * 100) : 0;
 
-
-// Cálculo da porcentagem de aproveitamento
-$porcentagem = ($total > 0) ? round(($acertos / $total) * 100) : 0;
-
-// Cálculo do tempo total gasto (se houver timestamp de início)
-$tempoGasto = "N/A";
+$tempoGasto = 'N/A';
 if ($inicio > 0) {
-    $segundosGasto = time() - $inicio;
-    $minutos = floor($segundosGasto / 60);
-    $segundos = $segundosGasto % 60;
-    $tempoGasto = sprintf("%02d:%02d", $minutos, $segundos);
+    $segundos = time() - $inicio;
+    $tempoGasto = sprintf('%02d:%02d', floor($segundos / 60), $segundos % 60);
 }
+
+// var_dump([
+//     'simulado_salvo' => $session->get('simulado_salvo'),
+//     'usuario'        => $session->get('usuario'),
+//     'usuario_id'     => $session->get('usuario')['id'] ?? null
+// ]);
+// exit;
 
 ?>
 <!DOCTYPE html>

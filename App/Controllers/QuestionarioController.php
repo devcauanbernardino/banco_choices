@@ -1,65 +1,5 @@
 <?php
-
-/**
- * Representa uma questão individual do simulado.
- */
-/**
- * CLASSE: Question
- * OBJETIVO: Representar o objeto "Questão".
- * Por que usar: Em vez de manipular arrays puros, usamos métodos que deixam o código mais legível.
- */
-
-class Question
-{
-    // Propriedade privada para guardar os dados brutos da questão
-    private array $data;
-
-    /**
-     * Construtor recebe o array de dados da questão (vinda do JSON).
-     */
-    public function __construct($data)
-    {
-        // Atribui os dados recebidos à propriedade privada $data
-        $this->data = $data;
-    }
-
-    /**
-     * Retorna a letra da resposta correta.
-     */
-    public function getCorrectAnwser()
-    {
-        // Acessa o array de dados e retorna o valor da chave 'resposta_correta'
-        return $this->data['resposta_correta'];
-    }
-
-    /**
-     * Retorna o texto explicativo (feedback).
-     */
-    public function getFeedback()
-    {
-        // Acessa o array de dados e retorna o valor da chave 'feedback'
-        return $this->data['feedback'];
-    }
-
-     /**
-     * Compara uma resposta enviada com a correta e retorna true ou false.
-     */
-    public function isCorrect($answer)
-    {
-        // Compara a resposta correta (obtida pelo método getCorrectAnwser) com a resposta fornecida ($answer)
-        return $this->getCorrectAnwser() === $answer;
-    }
-
-     /**
-     * Retorna todos os dados da questão (pergunta, opções, etc).
-     */
-    public function getData()
-    {
-        // Retorna o array completo de dados da questão
-        return $this->data;
-    }
-
-}
+require_once __DIR__ . '/../Models/Question.php';
 
 /**
  * CLASSE: SimulationTimer
@@ -181,7 +121,7 @@ class QuestionarioController
     {
         // Se não há sessão ativa, redireciona para o início
         if (!$this->session->isActive()) {
-            $this->redirect('index.php');
+            $this->redirect('dashboard.php');
         }
 
         // Verifica se as questões estão carregadas
@@ -243,15 +183,15 @@ class QuestionarioController
 // --- Inicialização e Uso ---
 
  // Cria a sessão
-$session = new SimulationSession();
- // Cria o controlador passando a sessão
-$controller = new QuestionarioController($session);
+// $session = new SimulationSession();
+//  // Cria o controlador passando a sessão
+// $controller = new QuestionarioController($session);
 
-// 1. Valida se o simulado é válido e se o tempo não expirou
-$controller->validateState();
+// // 1. Valida se o simulado é válido e se o tempo não expirou
+// $controller->validateState();
 
-// 2. Prepara os dados para a View
-$viewData = $controller->getViewData();
+// // 2. Prepara os dados para a View
+// $viewData = $controller->getViewData();
 
 ?>
 
