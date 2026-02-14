@@ -8,7 +8,7 @@ session_start();
 
 // 1. Carregamos as dependências
 require_once __DIR__ . '/auth/AuthController.php';
-require_once __DIR__ . '/../Controllers/QuestionarioController.php'; 
+require_once __DIR__ . '/../Controllers/QuestionarioController.php';
 require_once __DIR__ . '/../../config/conexao.php';
 require_once __DIR__ . '/../Controllers/DashboardController.php';
 
@@ -32,6 +32,7 @@ $recentes = $dashboard->getRecentSimulados();
 
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <title>Meu Painel | Banco de Choices</title>
@@ -41,7 +42,7 @@ $recentes = $dashboard->getRecentSimulados();
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="../assets/css/sidebar.css">
-    
+
     <style>
         :root {
             --primary-color: #6a0392;
@@ -49,13 +50,16 @@ $recentes = $dashboard->getRecentSimulados();
             --bg-body: #f6f6f8;
         }
 
-        body { 
+        body {
             background-color: var(--bg-body);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        .content { margin-left: 260px; transition: 0.3s; }
-        
+        .content {
+            margin-left: 260px;
+            transition: 0.3s;
+        }
+
         /* Header Moderno */
         header {
             background: rgba(255, 255, 255, 0.8);
@@ -69,9 +73,10 @@ $recentes = $dashboard->getRecentSimulados();
             border-radius: 16px;
             transition: transform 0.2s ease, shadow 0.2s ease;
         }
+
         .card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05) !important;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05) !important;
         }
 
         .icon-box {
@@ -83,10 +88,23 @@ $recentes = $dashboard->getRecentSimulados();
             border-radius: 12px;
         }
 
-        .text-primary { color: var(--primary-color) !important; }
-        .bg-primary-soft { background-color: var(--primary-light); }
-        .btn-primary { background-color: var(--primary-color); border-color: var(--primary-color); }
-        .btn-primary:hover { background-color: #550275; border-color: #550275; }
+        .text-primary {
+            color: var(--primary-color) !important;
+        }
+
+        .bg-primary-soft {
+            background-color: var(--primary-light);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            background-color: #550275;
+            border-color: #550275;
+        }
 
         /* Banner de Chamada */
         .cta-banner {
@@ -95,6 +113,7 @@ $recentes = $dashboard->getRecentSimulados();
             overflow: hidden;
             position: relative;
         }
+
         .cta-banner::after {
             content: '';
             position: absolute;
@@ -102,7 +121,7 @@ $recentes = $dashboard->getRecentSimulados();
             right: -50px;
             width: 150px;
             height: 150px;
-            background: rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.1);
             border-radius: 50%;
         }
 
@@ -115,163 +134,185 @@ $recentes = $dashboard->getRecentSimulados();
             color: #888;
             border-bottom: 1px solid #eee;
         }
-        .table tbody td { border-bottom: 1px solid #f8f8f8; padding: 15px 10px; }
+
+        .table tbody td {
+            border-bottom: 1px solid #f8f8f8;
+            padding: 15px 10px;
+        }
 
         @media (max-width: 992px) {
-            .content { margin-left: 0; }
+            .content {
+                margin-left: 0;
+            }
         }
     </style>
 </head>
+
 <body>
 
-<?php require_once 'includes/sidebar.php'; ?>
+    <?php require_once 'includes/sidebar.php'; ?>
 
-<div class="content">
-    <header class="px-4 py-3 d-flex justify-content-between align-items-center sticky-top border-bottom bg-white">
-        <div class="d-flex align-items-center gap-2">
-            <img src="../assets/img/logo-bd-transparente.png" alt="logo" style="width: 35px;">
-        </div>
-        <div class="d-flex gap-3 align-items-center">
-            <div class="position-relative">
-                <span class="material-icons text-secondary cursor-pointer">notifications</span>
-                <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"></span>
-            </div>
-            <a href="perfil.php">
-                <img src="https://ui-avatars.com/api/?name=<?= urlencode($usuario['nome']) ?>&background=6a0392&color=fff"
-                     class="rounded-circle" style="width: 35px;" alt="avatar">
-            </a>
-        </div>
-    </header>
+    <div class="content">
+        <header class="px-4 py-3 d-flex justify-content-between align-items-center sticky-top border-bottom bg-white">
+            <button class="btn btn-outline-secondary d-md-none" data-bs-toggle="offcanvas"
+                data-bs-target="#sidebarMobile">
+                <span class="material-icons">menu</span>
+            </button>
 
-    <main class="p-4">
-        <!-- Boas-vindas -->
-        <div class="mb-4 d-flex justify-content-between align-items-end">
-            <div>
-                <h2 class="fw-bold mb-1">Olá, Dr. <?= htmlspecialchars(explode(' ', $usuario['nome'])[0]) ?> </h2>
-                <p class="text-muted mb-0">Seu progresso está incrível hoje. Continue assim!</p>
+            <div class="d-flex align-items-center gap-2">
+                <img src="../assets/img/logo-bd-transparente.png" alt="logo" style="width: 35px;">
             </div>
-            <div class="d-none d-md-block">
-                <span class="badge bg-primary-soft text-primary p-2 px-3 rounded-pill">
-                    <i class="material-icons fs-6 align-middle me-1">calendar_today</i>
-                    <?= date('d M, Y') ?>
-                </span>
+            <div class="d-flex gap-3 align-items-center">
+                <div class="position-relative">
+                    <span class="material-icons text-secondary cursor-pointer">notifications</span>
+                    <span
+                        class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"></span>
+                </div>
+                <a href="perfil.php">
+                    <img src="https://ui-avatars.com/api/?name=<?= urlencode($usuario['nome']) ?>&background=6a0392&color=fff"
+                        class="rounded-circle" style="width: 35px;" alt="avatar">
+                </a>
             </div>
-        </div>
+        </header>
 
-        <!-- Estatísticas Rápidas -->
-        <div class="row g-4 mb-5">
-            <div class="col-md-6 col-lg-3">
-                <div class="card shadow-sm h-100">
-                    <div class="card-body">
-                        <div class="icon-box bg-success-subtle mb-3">
-                            <span class="material-icons text-success">task_alt</span>
+        <main class="p-4">
+            <!-- Boas-vindas -->
+            <div class="mb-4 d-flex justify-content-between align-items-end">
+                <div>
+                    <h2 class="fw-bold mb-1">Olá, Dr. <?= htmlspecialchars(explode(' ', $usuario['nome'])[0]) ?> </h2>
+                    <p class="text-muted mb-0">Seu progresso está incrível hoje. Continue assim!</p>
+                </div>
+                <div class="d-none d-md-block">
+                    <span class="badge bg-primary-soft text-primary p-2 px-3 rounded-pill">
+                        <i class="material-icons fs-6 align-middle me-1">calendar_today</i>
+                        <?= date('d M, Y') ?>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Estatísticas Rápidas -->
+            <div class="row g-4 mb-5">
+                <div class="col-md-6 col-lg-3">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <div class="icon-box bg-success-subtle mb-3">
+                                <span class="material-icons text-success">task_alt</span>
+                            </div>
+                            <h3 class="fw-bold mb-0"><?= number_format($stats['questoes_respondidas'], 0, ',', '.') ?>
+                            </h3>
+                            <small class="text-muted text-uppercase fw-semibold" style="font-size: 11px;">Questões
+                                Respondidas</small>
                         </div>
-                        <h3 class="fw-bold mb-0"><?= number_format($stats['questoes_respondidas'], 0, ',', '.') ?></h3>
-                        <small class="text-muted text-uppercase fw-semibold" style="font-size: 11px;">Questões Respondidas</small>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <div class="icon-box bg-primary-soft mb-3">
+                                <span class="material-icons text-primary">insights</span>
+                            </div>
+                            <h3 class="fw-bold mb-0"><?= $stats['aproveitamento_geral'] ?>%</h3>
+                            <small class="text-muted text-uppercase fw-semibold" style="font-size: 11px;">Aproveitamento
+                                Geral</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <div class="icon-box bg-warning-subtle mb-3">
+                                <span class="material-icons text-warning">local_fire_department</span>
+                            </div>
+                            <h3 class="fw-bold mb-0"><?= $stats['sequencia_dias'] ?> dias</h3>
+                            <small class="text-muted text-uppercase fw-semibold" style="font-size: 11px;">Sua
+                                Sequência</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <div class="icon-box bg-info-subtle mb-3">
+                                <span class="material-icons text-info">emoji_events</span>
+                            </div>
+                            <h3 class="fw-bold mb-0"><?= number_format($stats['pontuacao_total'], 0, ',', '.') ?></h3>
+                            <small class="text-muted text-uppercase fw-semibold" style="font-size: 11px;">Pontuação
+                                Total</small>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-6 col-lg-3">
-                <div class="card shadow-sm h-100">
-                    <div class="card-body">
-                        <div class="icon-box bg-primary-soft mb-3">
-                            <span class="material-icons text-primary">insights</span>
+            <div class="row g-4 mb-4">
+                <!-- Tabela de Simulados Recentes -->
+                <div class="col-lg-8">
+                    <div class="card shadow-sm border-0 h-100">
+                        <div
+                            class="card-header bg-white border-0 py-3 d-flex justify-content-between align-items-center">
+                            <h6 class="fw-bold mb-0">Simulados Recentes</h6>
+                            <a href="estatisticas.php" class="text-primary text-decoration-none small fw-bold">Ver
+                                tudo</a>
                         </div>
-                        <h3 class="fw-bold mb-0"><?= $stats['aproveitamento_geral'] ?>%</h3>
-                        <small class="text-muted text-uppercase fw-semibold" style="font-size: 11px;">Aproveitamento Geral</small>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6 col-lg-3">
-                <div class="card shadow-sm h-100">
-                    <div class="card-body">
-                        <div class="icon-box bg-warning-subtle mb-3">
-                            <span class="material-icons text-warning">local_fire_department</span>
-                        </div>
-                        <h3 class="fw-bold mb-0"><?= $stats['sequencia_dias'] ?> dias</h3>
-                        <small class="text-muted text-uppercase fw-semibold" style="font-size: 11px;">Sua Sequência</small>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6 col-lg-3">
-                <div class="card shadow-sm h-100">
-                    <div class="card-body">
-                        <div class="icon-box bg-info-subtle mb-3">
-                            <span class="material-icons text-info">emoji_events</span>
-                        </div>
-                        <h3 class="fw-bold mb-0"><?= number_format($stats['pontuacao_total'], 0, ',', '.') ?></h3>
-                        <small class="text-muted text-uppercase fw-semibold" style="font-size: 11px;">Pontuação Total</small>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row g-4 mb-4">
-            <!-- Tabela de Simulados Recentes -->
-            <div class="col-lg-8">
-                <div class="card shadow-sm border-0 h-100">
-                    <div class="card-header bg-white border-0 py-3 d-flex justify-content-between align-items-center">
-                        <h6 class="fw-bold mb-0">Simulados Recentes</h6>
-                        <a href="estatisticas.php" class="text-primary text-decoration-none small fw-bold">Ver tudo</a>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table align-middle">
-                            <thead>
-                                <tr>
-                                    <th>Data</th>
-                                    <th>Matéria</th>
-                                    <th>Resultado</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php if (empty($recentes)): ?>
+                        <div class="table-responsive">
+                            <table class="table align-middle">
+                                <thead>
                                     <tr>
-                                        <td colspan="4" class="text-center py-5 text-muted">
-                                            Nenhum simulado realizado ainda.
-                                        </td>
+                                        <th>Data</th>
+                                        <th>Matéria</th>
+                                        <th>Resultado</th>
+                                        <th>Status</th>
                                     </tr>
-                                <?php else: ?>
-                                    <?php foreach ($recentes as $sim): ?>
-                                    <tr>
-                                        <td class="text-muted small"><?= $sim['data'] ?></td>
-                                        <td class="fw-bold"><?= htmlspecialchars($sim['categoria']) ?></td>
-                                        <td><span class="fw-bold text-dark"><?= $sim['pontuacao'] ?></span></td>
-                                        <td>
-                                            <span class="badge bg-<?= $sim['classe'] ?> rounded-pill px-3">
-                                                <?= $sim['status'] ?>
-                                            </span>
-                                        </td>
-                                    </tr>
-                                    <?php endforeach; ?>
-                                <?php endif; ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Card de Ação -->
-            <div class="col-lg-4">
-                <div class="card cta-banner text-white h-100">
-                    <div class="card-body d-flex flex-column justify-content-center text-center p-4">
-                        <div class="mb-3">
-                            <span class="material-icons" style="font-size: 48px;">psychology</span>
+                                </thead>
+                                <tbody>
+                                    <?php if (empty($recentes)): ?>
+                                        <tr>
+                                            <td colspan="4" class="text-center py-5 text-muted">
+                                                Nenhum simulado realizado ainda.
+                                            </td>
+                                        </tr>
+                                    <?php else: ?>
+                                        <?php foreach ($recentes as $sim): ?>
+                                            <tr>
+                                                <td class="text-muted small"><?= $sim['data'] ?></td>
+                                                <td class="fw-bold"><?= htmlspecialchars($sim['categoria']) ?></td>
+                                                <td><span class="fw-bold text-dark"><?= $sim['pontuacao'] ?></span></td>
+                                                <td>
+                                                    <span class="badge bg-<?= $sim['classe'] ?> rounded-pill px-3">
+                                                        <?= $sim['status'] ?>
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    <?php endif; ?>
+                                </tbody>
+                            </table>
                         </div>
-                        <h4 class="fw-bold mb-2">Pronto para o próximo nível?</h4>
-                        <p class="opacity-75 small mb-4">Teste seus conhecimentos com um novo simulado personalizado agora mesmo.</p>
-                        <a href="bancoperguntas.php" class="btn btn-light btn-lg fw-bold rounded-pill py-3 shadow-sm">
-                            Iniciar Simulado
-                        </a>
+                    </div>
+                </div>
+
+                <!-- Card de Ação -->
+                <div class="col-lg-4">
+                    <div class="card cta-banner text-white h-100">
+                        <div class="card-body d-flex flex-column justify-content-center text-center p-4">
+                            <div class="mb-3">
+                                <span class="material-icons" style="font-size: 48px;">psychology</span>
+                            </div>
+                            <h4 class="fw-bold mb-2">Pronto para o próximo nível?</h4>
+                            <p class="opacity-75 small mb-4">Teste seus conhecimentos com um novo simulado personalizado
+                                agora mesmo.</p>
+                            <a href="bancoperguntas.php"
+                                class="btn btn-light btn-lg fw-bold rounded-pill py-3 shadow-sm">
+                                Iniciar Simulado
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </main>
-</div>
-
+        </main>
+    </div>
 </body>
+
 </html>
