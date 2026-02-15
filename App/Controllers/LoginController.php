@@ -43,11 +43,12 @@ class LoginController
             $this->redirect('/banco_choices/public/login.php?error=logininvalido');
         }
 
-        // 🔐 Sessão do usuário (PADRÃO DO SISTEMA)
+        //Sessão do usuário (PADRÃO DO SISTEMA)
         $_SESSION['usuario'] = [
             'id'    => $usuario['id'],
             'nome'  => $usuario['nome'] ?? '',
-            'email' => $usuario['email'] ?? ''
+            'email' => $usuario['email'] ?? '',
+            'materias' => $usuario['materias'] ?? []
         ];
 
         // Redireciona para o dashboard

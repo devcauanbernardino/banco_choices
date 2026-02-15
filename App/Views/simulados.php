@@ -16,6 +16,18 @@ if (!isset($_SESSION['usuario']['id'])) {
     exit;
 }
 
+$materiaId = (int) ($_GET['materia'] ?? 0);
+
+$idsPermitidos = array_column(
+    $_SESSION['usuario']['materias'],
+    'id'
+);
+
+if (!in_array($materiaId, $idsPermitidos)) {
+    die('Acesso negado.');
+}
+
+
 // 3. Inicialização do Controlador
 $objConexao = new Conexao();
 $db = $objConexao->conectar();
