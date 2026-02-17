@@ -12,22 +12,25 @@ class Conexao
     public function conectar()
     {
         try {
+            $dsn = "mysql:host={$this->host};dbname={$this->dbname};charset=utf8mb4";
+
             $conexao = new PDO(
-                "mysql:host={$this->host};dbname={$this->dbname}",
+                $dsn,
                 $this->user,
-                $this->pass
+                $this->pass,
+                [
+                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                    PDO::ATTR_EMULATE_PREPARES => false,
+                ]
             );
 
             return $conexao;
+
         } catch (PDOException $e) {
-            echo '<p>' . $e->getMessage() . '</p>';
-           
+            die("Erro na conexão: " . $e->getMessage());
         }
     }
-
-
-
-
 
 }
 
