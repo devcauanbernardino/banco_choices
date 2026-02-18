@@ -12,6 +12,15 @@
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
         rel="stylesheet" />
     <link rel="stylesheet" href="../App/assets/css/index.css" />
+    <!-- Favicon Redondo -->
+    <link rel="icon" type="image/x-icon" href="caminho/para/favicon-round.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="../App/assets/img/favicon-round-32x32.png">
+
+    <!-- Ícone Apple Redondo -->
+    <link rel="apple-touch-icon" sizes="180x180" href="../App/assets/img/apple-touch-icon-round.png">
+
+    <!-- Ícone Android Redondo -->
+    <link rel="icon" type="image/png" sizes="192x192" href="../App/assets/img/favicon-round-192x192.png">
 </head>
 
 <body>

@@ -41,7 +41,3 @@ body {
 .text-navy {
     color: #6a0392 !important;
 }
-
-.text-navy:hover {
-    color: #6000df !important;
-}

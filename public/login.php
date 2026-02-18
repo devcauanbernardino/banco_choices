@@ -15,12 +15,23 @@ $mensagem = $mensagensErro[$erro] ?? null;
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Banco de Choices | Login</title>
+    <title>Login | Banco de Choices</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap"
         rel="stylesheet" />
     <link rel="stylesheet" href="../App/assets/css/login.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link rel="icon" href="../App/assets/img/favicon.ico" type="image/x-icon">
+    <!-- Favicon Redondo -->
+    <link rel="icon" type="image/x-icon" href="caminho/para/favicon-round.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="../App/assets/img/favicon-round-32x32.png">
+
+    <!-- Ícone Apple Redondo -->
+    <link rel="apple-touch-icon" sizes="180x180" href="../App/assets/img/apple-touch-icon-round.png">
+
+    <!-- Ícone Android Redondo -->
+    <link rel="icon" type="image/png" sizes="192x192" href="../App/assets/img/favicon-round-192x192.png">
+
 
 </head>
 
@@ -32,24 +43,21 @@ $mensagem = $mensagensErro[$erro] ?? null;
                 <div class="login-sidebar-overlay"></div>
                 <div class="sidebar-content mw-100" style="max-width: 600px;">
                     <div class="mb-4">
-                        <svg fill="none" height="48" viewBox="0 0 48 48" width="48" xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M24 45.8096C19.6865 45.8096 15.4698 44.5305 11.8832 42.134C8.29667 39.7376 5.50128 36.3314 3.85056 32.3462C2.19985 28.361 1.76794 23.9758 2.60947 19.7452C3.451 15.5145 5.52816 11.6284 8.57829 8.5783C11.6284 5.52817 15.5145 3.45101 19.7452 2.60948C23.9758 1.76795 28.361 2.19986 32.3462 3.85057C36.3314 5.50129 39.7376 8.29668 42.134 11.8833C44.5305 15.4698 45.8096 19.6865 45.8096 24L24 24L24 45.8096Z"
-                                fill="white"></path>
-                        </svg>
+                        <img src="../App/assets/img/logo-bd-transparente.png" alt="logo"
+                            style="width: 60px; height: 60px; filter: brightness(0) invert(1);" />
                     </div>
                     <h1 class="display-4 fw-bold mb-4">Tu futuro como especialista empieza acá.</h1>
                     <p class="lead mb-5 opacity-75">Unite a la comunidad más grande de residentes médicos en Argentina y
                         preparate para el éxito.</p>
                     <div class="d-flex align-items-center">
                         <div class="d-flex me-3">
-                            <img alt="Médico 1" class="rounded-circle border border-2 border-primary" height="40"
+                            <img alt="Médico 1" class="rounded-circle border border-2 border-white" height="40"
                                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuBxe1tbaTNqG25ZU6ZcY-9ufHepww8gfgPl-ieHIqH07iZB3YuZK8N451KZArbv127uTUpgUurDmQVTT0_Gwsm0cHMch9Fb25sT-VdWBH-2xHBxIeaOjCk2RyqvsxG3glSqIbhTrM_LcJNEfHOpYgBIZdihw9q5sBwxdj-Eg6vTjhpwIQlzn0Ocl4yaaj8SP9ut6MpDtYu5DrJ3WNf6uCWZZRExD-kw2fr26OB5tlssXQ1bISDWOAO9bqJITIItAaZbYIfkY5CpMP0F"
                                 width="40" />
-                            <img alt="Médico 2" class="rounded-circle border border-2 border-primary" height="40"
+                            <img alt="Médico 2" class="rounded-circle border border-2 border-white" height="40"
                                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuCgkPqA_zdy-qAo6UZSAQ8EOr3IEyzLX32nn8c0RGU9O0b75-UcMj1npe9KvD7UsZPdDzIFDsOx1_ax3LSKXc6wEyqr2lci9B02u5_ujCLITqp8MGix6Y_BfMerXX4zLuI3I1wF-OpsjorT__zm8cEoU9z9HBaRk_9aT6nwy8BqKfPZ4g94ocU_l4mqYfNjh0nKz0wislXhAd6TlPcML-Cmy18BY1y90HzMzQ1coutgMPgnLXqlBrG8OxFDIiy2ETMb-V9_3p93N8n_"
                                 style="margin-left: -12px;" width="40" />
-                            <img alt="Médico 3" class="rounded-circle border border-2 border-primary" height="40"
+                            <img alt="Médico 3" class="rounded-circle border border-2 border-white" height="40"
                                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuDyUl43p5wt4ZdqUPkBPODkwqpYX6zRlz8eMHICsBbbCF0q_Oi88jfQvvLCyBB7r9IZbt403sH96XQan5fCryqR1lz8a-xrRTlhnIXNUbPQGevGUpumP-JdhnaEFHGG3WeGVeZykzrGCpASks--pM8pnWTzj-CDFnK7_rBOK7zZ07LomQB2oWpOEMdLi5hBK71bNfwtlBCNJ6ycwZMhlRgYcKLXKUKtySeoB1pGJMGZOArpd6AkXgaVkJkVOjUqAI-8AhcRDs2w78Ez"
                                 style="margin-left: -12px;" width="40" />
                         </div>
@@ -89,18 +97,24 @@ $mensagem = $mensagensErro[$erro] ?? null;
                         </div>
                     <?php endif; ?>
 
-                    <form action="/banco_choices/App/Controllers/LoginController.php" method="post">
+                    <form action="/banco_choices/App/Controllers/LoginController.php" method="post" id="loginForm">
                         <div class="mb-3">
                             <label class="form-label fw-medium small" for="emailInput">Email</label>
-                            <input class="form-control form-control-lg" id="emailInput" placeholder="ejemplo@mail.com"
-                                required type="email" name="email" />
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-envelope text-muted"></i></span>
+                                <input class="form-control form-control-lg form-control-with-icon" id="emailInput"
+                                    placeholder="ejemplo@mail.com" required type="email" name="email" />
+                            </div>
                         </div>
                         <div class="mb-3">
                             <div class="d-flex justify-content-between">
                                 <label class="form-label fw-medium small" for="passwordInput">Contraseña</label>
                             </div>
-                            <input class="form-control form-control-lg" id="passwordInput" placeholder="••••••••"
-                                type="password" name="senha" />
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-lock text-muted"></i></span>
+                                <input class="form-control form-control-lg form-control-with-icon" id="passwordInput"
+                                    placeholder="••••••••" required type="password" name="senha" />
+                            </div>
                         </div>
                         <div class="d-flex justify-content-between align-items-center mb-4">
                             <div class="form-check">
@@ -109,11 +123,12 @@ $mensagem = $mensagensErro[$erro] ?? null;
                                     Recordarme
                                 </label>
                             </div>
-                            <a class="text-navy text-decoration-none small fw-bold" href="#">¿Olvidaste tu contraseña?</a>
+                            <a class="text-navy text-decoration-none small fw-bold" href="#">¿Olvidaste tu
+                                contraseña?</a>
                         </div>
                         <div class="d-grid mb-4">
-                            <button class="btn btn-lg py-3 fw-bold shadow-sm"
-                                type="submit">Ingresar</button>
+                            <button class="btn btn-lg py-3 fw-bold shadow-sm" type="submit" id="submitBtn">Ingresar <i
+                                    class="bi bi-box-arrow-in-right ms-2"></i></button>
                         </div>
                         <!-- <div class="position-relative text-center mb-4">
                             <hr class="text-muted" />
@@ -155,8 +170,7 @@ $mensagem = $mensagensErro[$erro] ?? null;
                             <a class="text-muted text-decoration-none small mx-2" href="#">Términos</a>
                             <a class="text-muted text-decoration-none small mx-2" href="#">Contacto</a>
                         </div>
-                        <p class="text-muted" style="font-size: 10px; letter-spacing: 1px;">© 2026 BANCODECHOICES
-                            ARGENTINA</p>
+                        <p class="text-muted" style="font-size: 10px; letter-spacing: 1px;">© 2026 BANCODECHOICES</p>
                     </footer>
                 </div>
             </div>
@@ -164,6 +178,17 @@ $mensagem = $mensagensErro[$erro] ?? null;
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../App/assets/js/reload.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('loginForm');
+            const btn = document.getElementById('submitBtn');
+
+            form.addEventListener('submit', function () {
+                btn.classList.add('btn-loading');
+                btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Tratamiento...';
+            });
+        });
+    </script>
 </body>
 
 </html>
