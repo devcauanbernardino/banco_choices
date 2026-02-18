@@ -23,11 +23,6 @@ $idsPermitidos = array_column(
     'id'
 );
 
-if (!in_array($materiaId, $idsPermitidos)) {
-    die('Acesso negado.');
-}
-
-
 // 3. Inicialização do Controlador
 $objConexao = new Conexao();
 $db = $objConexao->conectar();

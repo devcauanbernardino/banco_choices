@@ -11,6 +11,7 @@ require_once __DIR__ . '/auth/AuthController.php';
 require_once __DIR__ . '/../Controllers/QuestionarioController.php';
 require_once __DIR__ . '/../../config/conexao.php';
 require_once __DIR__ . '/../Controllers/DashboardController.php';
+require_once __DIR__ . '/../Models/Usuario.php';
 
 // 2. Inicializamos a conexão e o controlador
 $objConexao = new Conexao();
@@ -23,11 +24,24 @@ if (!isset($_SESSION['usuario']['id'])) {
 }
 
 $usuario = $_SESSION['usuario'];
+$objUsuario = new Usuario($db);
 $dashboard = new DashboardController($db, $usuario['id']);
 
 // 3. Buscamos os dados dinâmicos reais do banco
 $stats = $dashboard->getStats();
 $recentes = $dashboard->getRecentSimulados();
+$materias = $objUsuario->buscarMateriasDoUsuario($usuario['id']);
+
+// echo '<pre>';
+// print_r($materias);
+// echo '</pre>';
+
+// echo '<hr>';
+
+// echo '<pre>';
+// print_r($recentes );
+// echo '</pre>';
+
 ?>
 
 <!DOCTYPE html>

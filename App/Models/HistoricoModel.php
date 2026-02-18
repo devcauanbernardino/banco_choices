@@ -11,7 +11,7 @@ class HistoricoModel {
     }
 
     public function salvarResultado($usuario_id, $materia, $acertos, $total) {
-        $sql = "INSERT INTO historico_simulados (usuario_id, materia, acertos, total_questoes) VALUES (:uid, :mat, :ace, :tot)";
+        $sql = "INSERT INTO historico_simulados (usuario_id, materia_id, acertos, total_questoes) VALUES (:uid, :mat, :ace, :tot)";
 
         $stmt = $this->db->prepare($sql);
         return  $stmt->execute([

@@ -59,14 +59,22 @@ class DashboardController
         return $sequencia;
     }
 
-     /**
+    /**
      * Busca o histórico completo de simulados com filtros
      */
-    public function getHistoricoCompleto(string $filtroMateria = '', string $filtroStatus = ''): array {
-        $sql = "SELECT id, materia, acertos, total_questoes, data_realizacao 
-                FROM historico_simulados 
-                WHERE usuario_id = :uid";
-        
+    public function getHistoricoCompleto(string $filtroMateria = '', string $filtroStatus = ''): array
+    {
+        $sql = "
+            SELECT 
+            h.id,
+            m.nome as materia,
+            h.acertos,
+            h.total_questoes,
+            h.data_realizacao
+            FROM historico_simulados h
+            JOIN materias m ON m.id = h.materia_id
+            WHERE h.usuario_id = :uid ";
+
         $params = [':uid' => $this->usuario_id];
 
         if (!empty($filtroMateria)) {
@@ -75,15 +83,15 @@ class DashboardController
         }
 
         $sql .= " ORDER BY data_realizacao DESC";
-        
+
         $stmt = $this->db->prepare($sql);
         $stmt->execute($params);
         $resultados = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         $historico = [];
         foreach ($resultados as $row) {
-            $total = (int)$row['total_questoes'];
-            $acertos = (int)$row['acertos'];
+            $total = (int) $row['total_questoes'];
+            $acertos = (int) $row['acertos'];
             $porcentagem = ($total > 0) ? ($acertos / $total) : 0;
             $status = ($porcentagem >= 0.7) ? 'Aprovado' : 'Reprovado';
 
@@ -129,17 +137,22 @@ class DashboardController
             'aproveitamento_geral' => $aproveitamento,
             'total_simulados' => (int) ($dados['total_simulados'] ?? 0),
             'pontuacao_total' => (int) ($totalAcertos * 10),
-            'melhor_materia'       => $melhorMateria['materia'] ?? 'N/A',
+            'melhor_materia' => $melhorMateria['materia'] ?? 'N/A',
             'sequencia_dias' => $this->calcularSequenciaReal()
         ];
     }
 
     public function getRecentSimulados(): array
     {
-        $sql = "SELECT materia, acertos, total_questoes, data_realizacao 
-                FROM historico_simulados 
-                WHERE usuario_id = :uid 
-                ORDER BY data_realizacao DESC LIMIT 5";
+        $sql = "SELECT m.nome as materia,
+                h.acertos,
+                h.total_questoes,
+                h.data_realizacao
+                FROM historico_simulados h
+                JOIN materias m ON m.id = h.materia_id
+                WHERE h.usuario_id = :uid
+                ORDER BY h.data_realizacao DESC
+                LIMIT 5";
 
         $stmt = $this->db->prepare($sql);
         $stmt->execute([':uid' => $this->usuario_id]);
@@ -194,11 +207,15 @@ class DashboardController
      */
     public function getDesempenhoPorMateria(): array
     {
-        $sql = "SELECT materia, SUM(acertos) as acertos, SUM(total_questoes) as total 
-                FROM historico_simulados 
-                WHERE usuario_id = :uid 
-                GROUP BY materia 
-                ORDER BY (SUM(acertos)/SUM(total_questoes)) DESC";
+        $sql = "SELECT m.nome as materia,
+                SUM(h.acertos) as acertos,
+                SUM(h.total_questoes) as total
+                FROM historico_simulados h
+                JOIN materias m ON m.id = h.materia_id
+                WHERE h.usuario_id = :uid
+                GROUP BY h.materia_id
+                ORDER BY (SUM(h.acertos)/SUM(h.total_questoes)) DESC
+                ";
 
         $stmt = $this->db->prepare($sql);
         $stmt->execute([':uid' => $this->usuario_id]);
