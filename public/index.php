@@ -6,11 +6,8 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>Banco de Choices</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap"
-        rel="stylesheet" />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
-        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="../App/assets/css/index.css" />
     <!-- Favicon Redondo -->
     <link rel="icon" type="image/x-icon" href="caminho/para/favicon-round.ico">
@@ -21,13 +18,205 @@
 
     <!-- Ícone Android Redondo -->
     <link rel="icon" type="image/png" sizes="192x192" href="../App/assets/img/favicon-round-192x192.png">
+    <style>
+        :root {
+            --bs-primary: #6a0392;
+            --bs-primary-rgb: 106, 3, 146;
+            --primary-dark: #4a0072;
+            --bg-gradient: linear-gradient(-45deg, #6a0392, #4a0072, #2c003e, #1a0026);
+            --bs-font-sans-serif: "Inter", system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            font-family: var(--bs-font-sans-serif);
+            background-color: #f8fafc;
+            overflow-x: hidden;
+        }
+
+        .navbar {
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-link:hover {
+            color: var(--bs-primary) !important;
+        }
+
+        .hero-section {
+            padding: 120px 0 80px;
+            background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-image-container {
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.2);
+            border: 8px solid white;
+            transition: transform 0.5s ease;
+        }
+
+        .hero-image-container:hover {
+            transform: translateY(-10px);
+        }
+
+        /* Cards de Características */
+        .card-custom {
+            border: none;
+            border-radius: 20px;
+            padding: 2.5rem;
+            transition: all 0.3s ease;
+            background: #fff;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .card-custom:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(106, 3, 146, 0.1);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(106, 3, 146, 0.1);
+            color: var(--bs-primary);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Subject Cards */
+        .subject-card {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+            border-radius: 24px;
+            border: 2px solid #f0f0f0;
+            padding: 2.5rem 2rem;
+            transition: all 0.3s ease;
+            background: white;
+            height: 100%;
+        }
+
+        .subject-card:hover {
+            border-color: var(--bs-primary);
+            background: rgba(106, 3, 146, 0.02);
+            transform: scale(1.02);
+        }
+
+        .btn {
+            color: var(--bs-primary);
+            border-color: var(--bs-primary);
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+        }
+
+        .btn:hover {
+            background-color: var(--bs-primary);
+            color: white;
+        }
+
+        .btn-reverse {
+            background-color: var(--bs-primary);
+            color: white;
+            border-color: var(--bs-primary);
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+        }
+
+        .btn-reverse:hover {
+            background-color: white;
+            border-color: var(--bs-primary);
+            color: var(--bs-primary);
+        }
+
+        .btn-outline {
+            background-color: var(--bs-primary);
+            border-color: white;
+            color: white;
+        }
+
+        .btn-outline:hover {
+            background-color: white;
+            border-color: var(--bs-primary);
+            color: var(--bs-primary);
+        }
+
+        .hero-section {
+            padding: 100px 0;
+            background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
+        }
+
+        /* Cards */
+        .card-custom {
+            border: none;
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            background: #fff;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .card-custom:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(106, 3, 146, 0.1);
+        }
+
+        .badge-soft {
+            background-color: rgba(var(--bs-primary-rgb), 0.1);
+            color: var(--bs-primary);
+            padding: 0.5em 1em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+            font-size: 0.75rem;
+        }
+
+        .pricing-card.featured {
+            border: 2px solid var(--bs-primary);
+            transform: scale(1.05);
+            z-index: 10;
+        }
+
+        .hero-image-container {
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            border: 8px solid white;
+        }
+
+        .material-symbols-outlined {
+            vertical-align: middle;
+            font-size: 2.5rem;
+        }
+
+        .footer {
+            background-color: #320146;
+            color: #94a3b8;
+        }
+
+        .container {
+            max-width: 1320px;
+        }
+    </style>
 </head>
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-light sticky-top py-3">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center fw-bold text-primary" href="#">
-                <img src="../App/assets/img/logo-bd-transparente.png" alt="logo" style="width: 60px; height: 60px;"/>
+                <img src="../App/assets/img/logo-bd-transparente.png" alt="logo" style="width: 60px; height: 60px;" />
             </a>
             <button class="navbar-toggler" data-bs-target="#navbarNav" data-bs-toggle="collapse" type="button">
                 <span class="navbar-toggler-icon"></span>
@@ -76,143 +265,90 @@
             </div>
         </div>
     </header>
-    <section class="py-5 bg-white" id="caracteristicas">
+    <!-- Características -->
+    <section class="py-5 bg-light" id="caracteristicas">
         <div class="container py-5">
-            <div class="text-center mb-5">
+            <div class="text-center mb-5 animate__animated animate__fadeInUp">
                 <h2 class="display-5 fw-bold mb-3">Todo lo que necesitás para tu éxito</h2>
-                <p class=" mx-auto" style="max-width: 700px;">
-                    Herramientas diseñadas por expertos para optimizar tu tiempo de estudio y asegurar los mejores
-                    resultados en tus evaluaciones.
+                <p class="text-muted mx-auto" style="max-width: 700px;">
+                    Herramientas diseñadas por expertos para optimizar tu tiempo de estudio y asegurar los mejores resultados.
                 </p>
             </div>
             <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="card h-100 p-4">
-                        <div class="card-body">
-                            <div class="feature-icon">
-                                <span class="material-symbols-outlined fs-2">library_books</span>
-                            </div>
-                            <h4 class="fw-bold mb-3">+10.000 preguntas comentadas</h4>
-                            <p class=" mb-0">
-                                Accedé a una amplia base de datos con explicaciones detalladas para cada respuesta,
-                                redactadas por especialistas en cada área médica.
-                            </p>
+                <div class="col-md-4 animate__animated animate__fadeInUp" style="animation-delay: 0.1s;">
+                    <div class="card-custom h-100">
+                        <div class="feature-icon">
+                            <span class="material-symbols-outlined fs-2">library_books</span>
                         </div>
+                        <h4 class="fw-bold mb-3">Preguntas Comentadas</h4>
+                        <p class="text-muted mb-0">
+                            Accedé a explicaciones detalladas para cada respuesta, redactadas para que entiendas el "por qué" de cada opción.
+                        </p>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="card h-100 p-4">
-                        <div class="card-body">
-                            <div class="feature-icon">
-                                <span class="material-symbols-outlined fs-2">leaderboard</span>
-                            </div>
-                            <h4 class="fw-bold mb-3">Estadísticas de desempeño</h4>
-                            <p class=" mb-0">
-                                Monitoreá tu progreso en tiempo real con gráficos detallados que detectan tus áreas de
-                                oportunidad y fortalezas por especialidad médica.
-                            </p>
+                <div class="col-md-4 animate__animated animate__fadeInUp" style="animation-delay: 0.2s;">
+                    <div class="card-custom h-100">
+                        <div class="feature-icon">
+                            <span class="material-symbols-outlined fs-2">leaderboard</span>
                         </div>
+                        <h4 class="fw-bold mb-3">Progreso en Tiempo Real</h4>
+                        <p class="text-muted mb-0">
+                            Monitoreá tu desempeño con estadísticas que detectan tus fortalezas y áreas que necesitan más refuerzo.
+                        </p>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="card h-100 p-4">
-                        <div class="card-body">
-                            <div class="feature-icon">
-                                <span class="material-symbols-outlined fs-2">assignment_turned_in</span>
-                            </div>
-                            <h4 class="fw-bold mb-3">Simulacros personalizados</h4>
-                            <p class=" mb-0">
-                                Creá exámenes a tu medida según temas específicos o nivel de dificultad. Preparate para
-                                las condiciones reales de los exámenes oficiales.
-                            </p>
+                <div class="col-md-4 animate__animated animate__fadeInUp" style="animation-delay: 0.3s;">
+                    <div class="card-custom h-100">
+                        <div class="feature-icon">
+                            <span class="material-symbols-outlined fs-2">assignment_turned_in</span>
                         </div>
+                        <h4 class="fw-bold mb-3">Simulacros Reales</h4>
+                        <p class="text-muted mb-0">
+                            Preparate con exámenes que replican las condiciones reales de las evaluaciones oficiales.
+                        </p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    <section class="py-5 bg-light" id="materias">
+
+    <!-- Materias Disponibles -->
+    <section class="py-5 bg-white" id="materias">
         <div class="container py-5">
             <div class="text-center mb-5">
                 <h2 class="display-5 fw-bold mb-3">Materias Disponibles</h2>
-                <p class=" mx-auto" style="max-width: 700px;">
-                    Explorá nuestro contenido organizado por las especialidades más importantes de la carrera médica.
+                <p class="text-muted mx-auto" style="max-width: 700px;">
+                    Actualmente contamos con contenido especializado en las siguientes áreas fundamentales:
                 </p>
             </div>
-            <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4">
-                <div class="col">
-                    <div class="card h-100 border-0 shadow-sm">
-                        <div class="card-body p-4">
-                            <div class="subject-icon">
-                                <span class="material-symbols-outlined">cardiology</span>
-                            </div>
-                            <h5 class="fw-bold mb-2">Cardiología</h5>
-                            <p class="small  mb-0">Fisiopatología, EGC y patologías cardiovasculares
-                                centrales.</p>
+            <div class="row justify-content-center g-4">
+                <div class="col-md-5 col-lg-4">
+                    <div class="subject-card">
+                        <div class="feature-icon">
+                            <span class="material-symbols-outlined">biotech</span>
                         </div>
+                        <h3 class="fw-bold mb-3">Microbiología</h3>
+                        <p class="text-muted">Estudio completo de bacterias, virus, hongos y parásitos con enfoque clínico.</p>
+                        <span class="badge rounded-pill bg-success px-3 py-2">Disponible</span>
                     </div>
                 </div>
-                <div class="col">
-                    <div class="card h-100 border-0 shadow-sm">
-                        <div class="card-body p-4">
-                            <div class="subject-icon">
-                                <span class="material-symbols-outlined">child_care</span>
-                            </div>
-                            <h5 class="fw-bold mb-2">Pediatría</h5>
-                            <p class="small  mb-0">Crecimiento, desarrollo y patologías infantiles
-                                prevalentes.</p>
+                <div class="col-md-5 col-lg-4">
+                    <div class="subject-card">
+                        <div class="feature-icon">
+                            <span class="material-symbols-outlined">science</span>
                         </div>
+                        <h3 class="fw-bold mb-3">Biología Celular</h3>
+                        <p class="text-muted">Fundamentos de la vida celular, genética y mecanismos moleculares esenciales.</p>
+                        <span class="badge rounded-pill bg-success px-3 py-2">Disponible</span>
                     </div>
                 </div>
-                <div class="col">
-                    <div class="card h-100 border-0 shadow-sm">
-                        <div class="card-body p-4">
-                            <div class="subject-icon">
-                                <span class="material-symbols-outlined">female</span>
-                            </div>
-                            <h5 class="fw-bold mb-2">Ginecología</h5>
-                            <p class="small  mb-0">Salud reproductiva, obstetricia y patología ginecológica.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card h-100 border-0 shadow-sm">
-                        <div class="card-body p-4">
-                            <div class="subject-icon">
-                                <span class="material-symbols-outlined">medical_services</span>
-                            </div>
-                            <h5 class="fw-bold mb-2">Cirugía General</h5>
-                            <p class="small  mb-0">Técnicas quirúrgicas, trauma y abdomen agudo.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card h-100 border-0 shadow-sm">
-                        <div class="card-body p-4">
-                            <div class="subject-icon">
-                                <span class="material-symbols-outlined">coronavirus</span>
-                            </div>
-                            <h5 class="fw-bold mb-2">Infectología</h5>
-                            <p class="small  mb-0">Antibioticoterapia y manejo de enfermedades infecciosas.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card h-100 border-0 shadow-sm">
-                        <div class="card-body p-4">
-                            <div class="subject-icon">
-                                <span class="material-symbols-outlined">psychology</span>
-                            </div>
-                            <h5 class="fw-bold mb-2">Neurología</h5>
-                            <p class="small  mb-0">Examen neurológico y patologías del sistema nervioso.</p>
-                        </div>
-                    </div>
-                </div>
+            </div>
+            <div class="text-center mt-5">
+                <p class="text-muted italic">Estamos trabajando para agregar más materias próximamente...</p>
             </div>
         </div>
     </section>
+
     <!-- <section class="py-5 bg-white" id="planes">
         <div class="container py-5">
             <div class="text-center mb-5">
@@ -312,8 +448,7 @@
             <div class="row justify-content-around">
                 <div class="col-md-4 mb-4">
                     <a class="navbar-brand d-flex align-items-center fw-bold text-white mb-3" href="#">
-                        <span class="material-symbols-outlined me-2">school</span>
-                        BancodeChoices
+                        <img src="../App/assets/img/logo-bd-transparente.png" alt="logo" style="width: 40px; height: 40px; filter: brightness(0) invert(1);" />
                     </a>
                     <p class="pe-lg-5">
                         Formando a los especialistas del mañana con tecnología de vanguardia y contenido médico de la
