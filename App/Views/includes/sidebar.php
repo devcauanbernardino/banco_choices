@@ -103,6 +103,7 @@ $pagina_atual = basename($_SERVER['PHP_SELF']);
     <!-- Logo -->
     <div class="logo-area">
         <div class="d-flex align-items-center gap-2">
+            <img src="../../App/assets/img/logo-bd-transparente.png" alt="logo" width="45" height="45">
             <h4 class="brand-name fw-bold mb-0">Banco de Choices</h4>
         </div>
     </div>

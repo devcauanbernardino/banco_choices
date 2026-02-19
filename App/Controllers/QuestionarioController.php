@@ -35,7 +35,7 @@ class SimulationTimer
     public function getRemainingTime()
     {
         // Subtrai o tempo decorrido da duração total para saber quanto falta
-        return $this->totalDuration - (time() - $this->startTime);
+        return max(0, $this->totalDuration - (time() - $this->startTime));
     }
 
 }
@@ -59,13 +59,13 @@ class SimulationSession
     }
 
     // Verifica se existe um simulado ativo na sessão
-    public function isActive(): bool
+    public function isActive()
     {
         return isset($_SESSION[self::SESSION_KEY]);
     }
 
     // Define um valor dentro do array do simulado na sessão
-    public function set(string $key, $value): void
+    public function set(string $key, $value)
     {
         $_SESSION[self::SESSION_KEY][$key] = $value;
     }
@@ -79,7 +79,7 @@ class SimulationSession
     }
 
     // Limpa os dados do simulado da sessão
-    public function clear(): void
+    public function clear()
     {
         unset($_SESSION[self::SESSION_KEY]);
     }
@@ -117,7 +117,7 @@ class QuestionarioController
     }
 
     // Valida se o estado atual permite continuar o questionário
-    public function validateState(): void
+    public function validateState()
     {
         // Se não há sessão ativa, redireciona para o início
         if (!$this->session->isActive()) {
@@ -139,13 +139,11 @@ class QuestionarioController
     /**
      * Prepara todos os dados necessários para a View.
      */
-    public function getViewData(): array
+    public function getViewData()
     {
         // Obtém o índice da questão atual
         $indiceAtual = (int) $this->session->get('atual');
-        // Obtém a lista de questões
-        $questoes = $this->session->get('questoes');
-
+        
         // Garante que $questoes seja um array
         $questoes = (array) ($this->session->get('questoes') ?? []);
 
@@ -173,7 +171,7 @@ class QuestionarioController
     }
 
     // Método auxiliar para redirecionamento
-    private function redirect(string $url): void
+    private function redirect(string $url)
     {
         header("Location: $url");
         exit;
