@@ -12,6 +12,7 @@ $controller->validateState();
 $viewData = $controller->getViewData();
 
 // Extração de variáveis para facilitar o uso no HTML
+$nome_materia = $controller->getMateriaNome($session->get('materia') ?? 'Geral');
 $questao = $viewData['questao'];       // Objeto da classe Question
 $indiceAtual = $viewData['indiceAtual'];   // Número da questão atual (0, 1, 2...)
 $totalQuestoes = $viewData['totalQuestoes']; // Quantidade total de questões
@@ -285,7 +286,7 @@ $progresso = (($indiceAtual + 1) / $totalQuestoes) * 100;
                 <img src="../assets/img/logo-bd-transparente.png" alt="logo" style="width: 40px; height: 40px;">
                 <div>
                     <h6 class="mb-0 fw-bold text-dark">Simulado:
-                        <?= ucfirst(htmlspecialchars((string) $session->get('materia'))) ?>
+                        <?= htmlspecialchars($nome_materia)?>
                     </h6>
                     <small class="text-muted"><?= $modo === 'estudo' ? 'Modo Estudo' : 'Modo Exame' ?></small>
                 </div>

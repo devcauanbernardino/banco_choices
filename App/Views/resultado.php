@@ -19,7 +19,10 @@ if (!$session->isActive()) {
 // ==========================
 // 2. RECUPERA DADOS DA SESSÃO
 // ==========================
+$controller = new QuestionarioController($session);
+
 $materia   = $session->get('materia') ?? 'Geral';
+$nome_materia = $controller->getMateriaNome($materia);
 $questoes  = $session->get('questoes') ?? [];
 $respostas = $session->get('respostas') ?? [];
 $inicio    = $session->get('inicio') ?? 0;
@@ -176,7 +179,7 @@ if ($inicio > 0) {
                 <div class="text-white p-2">
                     <img src="../assets/img/logo-bd-transparente.png" alt="logo" style="width: 40px; height: 40px;">
                 </div>
-                <h6 class="fw-bold mb-0 text-primary"><?= ucfirst(htmlspecialchars($materia)) ?></h6>
+                <h6 class="fw-bold mb-0 text-primary"><?= htmlspecialchars($nome_materia) ?></h6>
             </div>
         </div>
     </header>
@@ -185,7 +188,7 @@ if ($inicio > 0) {
 
         <div class="text-center mb-5">
             <h2 class="fw-bold text-uppercase">Resultados do Simulado</h2>
-            <p class="text-muted">Veja como foi o seu desempenho em <?= ucfirst(htmlspecialchars($materia)) ?></p>
+            <p class="text-muted">Veja como foi o seu desempenho em <?= htmlspecialchars($nome_materia) ?></p>
         </div>
 
         <!-- SCORE PRINCIPAL -->

@@ -110,7 +110,14 @@ try {
     $modo = $_POST['modo'] ?? 'estudo';
 
     // 2. Define o caminho do JSON (ajustado para ser robusto)
-    $jsonPath = __DIR__ . '/../../data/questoes_microbiologia_refinado.json';
+    //$jsonPath = __DIR__ . '/../../data/questoes_microbiologia_refinado.json';
+    $arquivosPorMateria = [
+        '1' => 'questoes_microbiologia_refinado.json',
+        '2' => 'questoes_biologia_final_v2.json',
+    ];
+
+    $nomeArquivo = $arquivosPorMateria[$materia] ?? 'questoes_geral.json';
+    $jsonPath = __DIR__ . "/../../data/{$nomeArquivo}";
 
     // 3. Usa a Fábrica para preparar os dados
     $factory = new SimulationFactory($jsonPath);

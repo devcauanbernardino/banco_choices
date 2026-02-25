@@ -20,7 +20,7 @@ class SimulationTimer
 
     }
 
-     /**
+    /**
      * Verifica se o tempo atual já passou do limite permitido.
      */
     public function isExpired()
@@ -29,7 +29,7 @@ class SimulationTimer
         return time() - $this->startTime >= $this->totalDuration;
     }
 
-     /**
+    /**
      * Calcula quantos segundos ainda restam.
      */
     public function getRemainingTime()
@@ -94,6 +94,8 @@ class QuestionarioController
     private SimulationSession $session; // Instância da sessão
     private ?SimulationTimer $timer = null; // Instância do timer (pode ser nulo se não for modo exame)
 
+    private $bd; // Conexão com o banco de dados
+
     // Construtor recebe a sessão injetada
     public function __construct(SimulationSession $session)
     {
@@ -143,7 +145,7 @@ class QuestionarioController
     {
         // Obtém o índice da questão atual
         $indiceAtual = (int) $this->session->get('atual');
-        
+
         // Garante que $questoes seja um array
         $questoes = (array) ($this->session->get('questoes') ?? []);
 
@@ -176,11 +178,54 @@ class QuestionarioController
         header("Location: $url");
         exit;
     }
+
+    // Método auxiliar para obter o nome da matéria a partir do código
+    // Declaração do método público que aceita uma string chamada $codigo como argumento
+    public function getMateriaNome(string $codigo)
+    {
+        // Verifica se o código NÃO é um número (caso o usuário tenha selecionado "Geral", por exemplo)
+        // Se não for número, ele interrompe a função e retorna o próprio texto (ex: retorna "Geral")
+        if (!is_numeric($codigo))
+            return $codigo;
+
+        // Inicia um bloco 'try', usado para "tentar" executar códigos que podem gerar erros (como conexão com banco)
+        try {
+            // Importa o arquivo de configuração que contém a classe de conexão com o banco de dados
+            // O __DIR__ garante que o PHP encontre o caminho correto a partir da pasta atual
+            require_once __DIR__ . '/../../config/conexao.php';
+
+            // Instancia a classe Conexao (cria um novo objeto da sua classe de banco)
+            $conexao = new Conexao();
+
+            // Chama o método conectar() para obter a instância ativa do PDO (a conexão real)
+            $pdo = $conexao->conectar();
+
+            // Define a query SQL com um "placeholder" (:id) para evitar ataques de SQL Injection
+            $sql = "SELECT nome FROM materias WHERE id = :id";
+
+            // Prepara a query no banco de dados para uma execução segura
+            $stmt = $pdo->prepare($sql);
+
+            // Executa a query substituindo o placeholder ':id' pelo valor real contido em $codigo
+            $stmt->execute(['id' => $codigo]);
+
+            // Busca o resultado da consulta e transforma em um array associativo (coluna => valor)
+            $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            // Uso de operador ternário: Se houver resultado, retorna o 'nome'. Se não, retorna 'Matéria não encontrada'
+            return $resultado ? $resultado['nome'] : 'Matéria não encontrada';
+
+            // Caso ocorra qualquer erro (Throwable) dentro do bloco 'try', o 'catch' captura a falha
+        } catch (Throwable $e) {
+            // Retorna uma mensagem amigável de erro em vez de travar o sistema com um erro técnico
+            return "Erro ao carregar matéria";
+        }
+    }
 }
 
 // --- Inicialização e Uso ---
 
- // Cria a sessão
+// Cria a sessão
 // $session = new SimulationSession();
 //  // Cria o controlador passando a sessão
 // $controller = new QuestionarioController($session);
