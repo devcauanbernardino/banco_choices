@@ -19,18 +19,18 @@ $mensagem = $mensagensErro[$erro] ?? null;
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap"
         rel="stylesheet" />
-    <link rel="stylesheet" href="../App/assets/css/login.css" />
+    <link rel="stylesheet" href="assets/css/login.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-    <link rel="icon" href="../App/assets/img/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="assets/img/favicon.ico" type="image/x-icon">
     <!-- Favicon Redondo -->
     <link rel="icon" type="image/x-icon" href="caminho/para/favicon-round.ico">
-    <link rel="icon" type="image/png" sizes="32x32" href="../App/assets/img/favicon-round-32x32.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-round-32x32.png">
 
     <!-- Ícone Apple Redondo -->
-    <link rel="apple-touch-icon" sizes="180x180" href="../App/assets/img/apple-touch-icon-round.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/img/apple-touch-icon-round.png">
 
     <!-- Ícone Android Redondo -->
-    <link rel="icon" type="image/png" sizes="192x192" href="../App/assets/img/favicon-round-192x192.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="assets/img/favicon-round-192x192.png">
 
 
 </head>
@@ -43,7 +43,7 @@ $mensagem = $mensagensErro[$erro] ?? null;
                 <div class="login-sidebar-overlay"></div>
                 <div class="sidebar-content mw-100" style="max-width: 600px;">
                     <div class="mb-4">
-                        <img src="../App/assets/img/logo-bd-transparente.png" alt="logo"
+                        <img src="assets/img/logo-bd-transparente.png" alt="logo"
                             style="width: 60px; height: 60px; filter: brightness(0) invert(1);" />
                     </div>
                     <h1 class="display-4 fw-bold mb-4">Tu futuro como especialista empieza acá.</h1>
@@ -79,7 +79,7 @@ $mensagem = $mensagensErro[$erro] ?? null;
                         </div>
                     </div>
                     <div class="mb-4">
-                        <a href="/banco_choices/public/index.php"
+                        <a href="/index.php"
                             class="voltar-inicio gap-2 text-decoration-none text-muted small mb-3">
                             <i class="bi bi-arrow-left"></i>
                             Volver al inicio
@@ -97,7 +97,7 @@ $mensagem = $mensagensErro[$erro] ?? null;
                         </div>
                     <?php endif; ?>
 
-                    <form action="/banco_choices/App/Controllers/LoginController.php" method="post" id="loginForm">
+                    <form action="login-process.php" method="post" id="loginForm">
                         <div class="mb-3">
                             <label class="form-label fw-medium small" for="emailInput">Email</label>
                             <div class="input-group">
@@ -161,7 +161,7 @@ $mensagem = $mensagensErro[$erro] ?? null;
                     </form>
                     <div class="text-center mb-5">
                         <p class="text-muted small">¿No tenés una cuenta? <a
-                                class="text-navy fw-bold text-decoration-none" href="cadastro.php">Registrate
+                                class="text-navy fw-bold text-decoration-none" href="selecionar-materias.php">Registrate
                                 gratis</a></p>
                     </div>
                     <footer class="mt-auto border-top pt-4 text-center">
@@ -177,7 +177,7 @@ $mensagem = $mensagensErro[$erro] ?? null;
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../App/assets/js/reload.js"></script>
+    <script src="assets/js/reload.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const form = document.getElementById('loginForm');

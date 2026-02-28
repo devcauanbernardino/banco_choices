@@ -9,7 +9,5 @@ $_SESSION = [];
 session_destroy();
 
 // Redireciona para a tela de login
-header('Location: /banco_choices/public/login.php');
+header('Location: /login.php');
 exit;
-
-?>

@@ -161,7 +161,7 @@ $stats = $dashboard->getStats();
 </head>
 <body>
 
-    <?php require_once './includes/sidebar.php'; ?>
+    <?php require_once __DIR__ . '/includes/sidebar.php'; ?>
 
     <main class="sidebar-space p-4">
         

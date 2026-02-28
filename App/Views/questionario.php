@@ -160,7 +160,8 @@ $progresso = (($indiceAtual + 1) / $totalQuestoes) * 100;
             border-color: var(--primary-color);
             color: white;
         }
-         .btn-primary-custom:hover {
+
+        .btn-primary-custom:hover {
             background-color: white;
             border-color: 2px var(--primary-color);
             color: var(--primary-color);
@@ -236,6 +237,7 @@ $progresso = (($indiceAtual + 1) / $totalQuestoes) * 100;
             transform: scale(1.1);
             z-index: 1;
         }
+
         .timer-box {
             background: rgba(106, 3, 146, 0.1);
             padding: 0.5rem 1rem;
@@ -283,10 +285,10 @@ $progresso = (($indiceAtual + 1) / $totalQuestoes) * 100;
     <nav class="navbar navbar-custom sticky-top mb-4">
         <div class="container-fluid">
             <div class="d-flex align-items-center gap-3">
-                <img src="../assets/img/logo-bd-transparente.png" alt="logo" style="width: 40px; height: 40px;">
+                <img src="/assets/img/logo-bd-transparente.png" alt="logo" style="width: 40px; height: 40px;">
                 <div>
                     <h6 class="mb-0 fw-bold text-dark">Simulado:
-                        <?= htmlspecialchars($nome_materia)?>
+                        <?= htmlspecialchars($nome_materia) ?>
                     </h6>
                     <small class="text-muted"><?= $modo === 'estudo' ? 'Modo Estudo' : 'Modo Exame' ?></small>
                 </div>
@@ -320,7 +322,7 @@ $progresso = (($indiceAtual + 1) / $totalQuestoes) * 100;
                     </div>
 
                     <!-- FORMULÁRIO: Envia a resposta para o ProcessaController toda vez que o rádio muda -->
-                    <form id="formResposta" method="post" action="../Controllers/ProcessaController.php">
+                    <form id="formResposta" method="post" action="/processa.php">
                         <div class="card-body p-4 p-md-5">
                             <h4 class="fw-bold mb-4 lh-base">
                                 <?= htmlspecialchars($questao->getData()['pergunta'] ?? $questao->getData()['texto'] ?? 'Questão sem texto') ?>
@@ -346,10 +348,10 @@ $progresso = (($indiceAtual + 1) / $totalQuestoes) * 100;
                                         }
                                         $classe .= ' disabled';
                                     }
-                                    ?>
+                                ?>
                                     <label class="<?= $classe ?>">
                                         <input type="radio" name="resposta" value="<?= $letra ?>" class="form-check-input"
-                                            <?= $respondida ? 'checked' : '' ?>     <?= $feedback ? 'disabled' : '' ?>
+                                            <?= $respondida ? 'checked' : '' ?> <?= $feedback ? 'disabled' : '' ?>
                                             onchange="this.form.submit()">
                                         <div class="d-flex align-items-start gap-2">
                                             <strong><?= $letra ?>)</strong>
@@ -382,13 +384,13 @@ $progresso = (($indiceAtual + 1) / $totalQuestoes) * 100;
                     </form>
 
                     <div class="card-footer bg-light p-4 d-flex justify-content-between align-items-center">
-                        <form action="../Controllers/ProcessaController.php" method="post">
+                        <form action="/processa.php" method="post">
                             <button name="voltar" value="1" class="btn btn-outline-custom btn-custom" <?= $indiceAtual == 0 ? 'disabled' : '' ?>>
                                 <span class="material-icons">arrow_back</span> Anterior
                             </button>
                         </form>
 
-                        <form method="post" action="../Controllers/ProcessaController.php">
+                        <form method="post" action="/processa.php">
                             <button class="btn btn-primary-custom btn-custom" name="avancar" value="1">
                                 <span><?= ($indiceAtual + 1 === $totalQuestoes) ? 'Finalizar Simulado' : 'Próxima Questão' ?></span>
                                 <span class="material-icons">arrow_forward</span>
@@ -407,7 +409,7 @@ $progresso = (($indiceAtual + 1) / $totalQuestoes) * 100;
                     </div>
 
                     <div class="map-container">
-                        <form method="post" action="../Controllers/ProcessaController.php">
+                        <form method="post" action="/processa.php">
                             <div class="question-map-grid">
                                 <?php foreach ($todasQuestoes as $i => $q):
                                     $classeBotao = 'map-btn-pending';
@@ -418,7 +420,7 @@ $progresso = (($indiceAtual + 1) / $totalQuestoes) * 100;
                                     } elseif (isset($respostas[$i])) {
                                         $classeBotao = 'map-btn-answered';
                                     }
-                                    ?>
+                                ?>
                                     <button name="ir" value="<?= $i ?>" class="map-btn <?= $classeBotao ?>">
                                         <?= $i + 1 ?>
                                     </button>
@@ -461,7 +463,7 @@ $progresso = (($indiceAtual + 1) / $totalQuestoes) * 100;
 
             function updateTimer() {
                 if (seconds <= 0) {
-                    window.location.href = '../Controllers/ProcessaController.php?timeout=1';
+                    window.location.href = '/processa.php?timeout=1';
                     return;
                 }
                 const h = Math.floor(seconds / 3600);
@@ -476,7 +478,7 @@ $progresso = (($indiceAtual + 1) / $totalQuestoes) * 100;
 
         // Auto-submit ao selecionar opção (melhor UX)
         document.querySelectorAll('.option-card:not(.disabled)').forEach(card => {
-            card.addEventListener('click', function () {
+            card.addEventListener('click', function() {
                 const radio = this.querySelector('input[type="radio"]');
                 if (!radio.disabled) {
                     radio.checked = true;

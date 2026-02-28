@@ -17,7 +17,6 @@ class SimulationTimer
         $this->startTime = $startTime;
         // Define a duração total permitida
         $this->totalDuration = $totalDuration;
-
     }
 
     /**
@@ -37,7 +36,6 @@ class SimulationTimer
         // Subtrai o tempo decorrido da duração total para saber quanto falta
         return max(0, $this->totalDuration - (time() - $this->startTime));
     }
-
 }
 
 
@@ -132,9 +130,9 @@ class QuestionarioController
             die('Erro: nenhuma questão carregada.');
         }
 
-        // Se houver timer e o tempo acabou, redireciona para o resultado
+        // Se houver timer e o tempo acabou, redireciona para o resultado (wrapper público)
         if ($this->timer && $this->timer->isExpired()) {
-            $this->redirect('../Views/resultado.php');
+            $this->redirect('/resultado.php');
         }
     }
 

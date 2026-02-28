@@ -2,7 +2,7 @@
 session_start();
 
 if (!isset($_SESSION['usuario'])) {
-    header('Location: /banco_choices/public/login.php');
+    header('Location: /login.php');
     exit;
 }
 
@@ -20,7 +20,7 @@ $materiasCompradas = $_SESSION['usuario']['materias'] ?? [];
     <!-- Bootstrap & Google Fonts -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="../assets/css/sidebar.css">
+    <link rel="stylesheet" href="/assets/css/sidebar.css">
 
     <style>
         :root {
@@ -168,7 +168,7 @@ $materiasCompradas = $_SESSION['usuario']['materias'] ?? [];
 
 <body>
 
-    <?php require_once './includes/sidebar.php'; ?>
+    <?php require_once __DIR__ . '/includes/sidebar.php'; ?>
 
     <main class="sidebar-space p-4">
 
@@ -186,7 +186,7 @@ $materiasCompradas = $_SESSION['usuario']['materias'] ?? [];
 
                 <!-- Corpo do Formulário -->
                 <div class="setup-body">
-                    <form action="../Controllers/CriarController.php" method="post">
+                    <form action="/criar.php" method="post">
 
                         <!-- Seleção de Matéria -->
                         <select class="form-select form-select-lg" name="materia" required>

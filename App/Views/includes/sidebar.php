@@ -103,29 +103,29 @@ $pagina_atual = basename($_SERVER['PHP_SELF']);
     <!-- Logo -->
     <div class="logo-area">
         <div class="d-flex align-items-center gap-2">
-            <img src="../../App/assets/img/logo-bd-transparente.png" alt="logo" width="45" height="45">
+            <img src="/assets/img/logo-bd-transparente.png" alt="logo" width="45" height="45">
             <h4 class="brand-name fw-bold mb-0">Banco de Choices</h4>
         </div>
     </div>
 
     <!-- MENU PRINCIPAL -->
     <nav class="flex-grow-1">
-        <a class="<?= $pagina_atual === 'dashboard.php' ? 'active' : ''?>" href="./dashboard.php">
+        <a class="<?= $pagina_atual === 'dashboard.php' ? 'active' : ''?>" href="/dashboard.php">
             <span class="material-icons">dashboard</span>
             Dashboard
         </a>
 
-        <a class="<?= $pagina_atual === 'estatisticas.php' ? 'active' : ''?>" href="./estatisticas.php">
+        <a class="<?= $pagina_atual === 'estatisticas.php' ? 'active' : ''?>" href="/estatisticas.php">
             <span class="material-icons">bar_chart</span>
             Estatísticas
         </a>
 
-        <a class="<?= $pagina_atual === 'bancoperguntas.php' ? 'active' : ''?>" href="./bancoperguntas.php">
+        <a class="<?= $pagina_atual === 'bancoperguntas.php' ? 'active' : ''?>" href="/bancoperguntas.php">
             <span class="material-icons">quiz</span>
             Banco de Perguntas
         </a>
 
-        <a class="<?= $pagina_atual === 'simulados.php' ? 'active' : ''?>" href="./simulados.php">
+        <a class="<?= $pagina_atual === 'simulados.php' ? 'active' : ''?>" href="/simulados.php">
             <span class="material-icons">assignment</span>
             Meus Simulados
         </a>
@@ -135,12 +135,12 @@ $pagina_atual = basename($_SERVER['PHP_SELF']);
     <div class="footer-area">
         <span class="footer-label">Conta e Acesso</span>
         
-        <a class="<?= $pagina_atual === 'perfil.php' ? 'active' : ''?>" href="./perfil.php">
+        <a class="<?= $pagina_atual === 'perfil.php' ? 'active' : ''?>" href="/perfil.php">
             <span class="material-icons">person</span>
             Meu Perfil
         </a>
 
-        <a class="logout-link" href="/banco_choices/App/Controllers/LogoutController.php">
+        <a class="logout-link" href="/logout.php">
             <span class="material-icons">logout</span>
             Sair
         </a>

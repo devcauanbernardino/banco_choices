@@ -1,0 +1,319 @@
+[27-Feb-2026 21:30:24 Europe/Berlin] Access Token carregado: OK
+[27-Feb-2026 21:30:24 Europe/Berlin] SITE_URL from env: [http://localhost]
+[27-Feb-2026 21:30:24 Europe/Berlin] Final siteUrl: [http://localhost]
+[27-Feb-2026 21:30:24 Europe/Berlin] siteUrl length: 16
+[27-Feb-2026 21:30:24 Europe/Berlin] siteUrl after trim: [http://localhost]
+[27-Feb-2026 21:30:24 Europe/Berlin] Preference JSON: {"items":[{"title":"Acceso a Materias - monthly","quantity":1,"unit_price":59.8,"currency_id":"BRL"}],"payer":{"email":"cauanbernardino0@gmail.com","name":"Cauan Bernardino Diogo","address":{"zip_code":"23906-825","street_name":"Brasil"}},"back_urls":{"success":"http:\/\/localhost\/payment-success.php?status=approved&order_id=ORDER-1772224219-9589","failure":"http:\/\/localhost\/checkout-mercadopago.php?error=payment_failed","pending":"http:\/\/localhost\/payment-success.php?status=pending&order_id=ORDER-1772224219-9589"},"notification_url":"http:\/\/localhost\/webhook-mercadopago.php","auto_return":"approved","external_reference":"ORDER-1772224219-9589","metadata":{"email":"cauanbernardino0@gmail.com","name":"Cauan Bernardino Diogo","plan_id":"monthly","plan_duration_days":30,"materias":"2,1"}}
+[27-Feb-2026 21:30:24 Europe/Berlin] ========== API MERCADOPAGO RESPONSE ==========
+[27-Feb-2026 21:30:24 Europe/Berlin] HTTP Code: 400
+[27-Feb-2026 21:30:24 Europe/Berlin] Curl Error: Nenhum
+[27-Feb-2026 21:30:24 Europe/Berlin] Response: {"message":"auto_return invalid. back_url.success must be defined","error":"invalid_auto_return","status":400,"cause":null}
+[27-Feb-2026 21:30:24 Europe/Berlin] =============================================
+[27-Feb-2026 21:30:24 Europe/Berlin] Erro API: HTTP 400
+[27-Feb-2026 23:08:01 Europe/Berlin] Access Token carregado: OK
+[27-Feb-2026 23:08:01 Europe/Berlin] SITE_URL from env: [http://localhost]
+[27-Feb-2026 23:08:01 Europe/Berlin] Final siteUrl: [http://localhost]
+[27-Feb-2026 23:08:01 Europe/Berlin] siteUrl length: 16
+[27-Feb-2026 23:08:01 Europe/Berlin] siteUrl after trim: [http://localhost]
+[27-Feb-2026 23:08:01 Europe/Berlin] Preference JSON: {"items":[{"title":"Acceso a Materias - monthly","quantity":1,"unit_price":59.8,"currency_id":"BRL"}],"payer":{"email":"cauanbernardino0@gmail.com","name":"Cauan Bernardino Diogo","address":{"zip_code":"23906-825","street_name":"Brasil"}},"back_urls":{"success":"http:\/\/localhost\/payment-success.php?status=approved&order_id=ORDER-1772230076-4281","failure":"http:\/\/localhost\/checkout-mercadopago.php?error=payment_failed","pending":"http:\/\/localhost\/payment-success.php?status=pending&order_id=ORDER-1772230076-4281"},"notification_url":"http:\/\/localhost\/webhook-mercadopago.php","auto_return":"approved","external_reference":"ORDER-1772230076-4281","metadata":{"email":"cauanbernardino0@gmail.com","name":"Cauan Bernardino Diogo","plan_id":"monthly","plan_duration_days":30,"materias":"2,1"}}
+[27-Feb-2026 23:08:02 Europe/Berlin] ========== API MERCADOPAGO RESPONSE ==========
+[27-Feb-2026 23:08:02 Europe/Berlin] HTTP Code: 400
+[27-Feb-2026 23:08:02 Europe/Berlin] Curl Error: Nenhum
+[27-Feb-2026 23:08:02 Europe/Berlin] Response: {"message":"auto_return invalid. back_url.success must be defined","error":"invalid_auto_return","status":400,"cause":null}
+[27-Feb-2026 23:08:02 Europe/Berlin] =============================================
+[27-Feb-2026 23:08:02 Europe/Berlin] Erro API: HTTP 400
+[27-Feb-2026 23:20:26 Europe/Berlin] Access Token carregado: OK
+[27-Feb-2026 23:20:26 Europe/Berlin] SITE_URL from env: [http://localhost:8000]
+[27-Feb-2026 23:20:26 Europe/Berlin] Final siteUrl: [http://localhost:8000]
+[27-Feb-2026 23:20:26 Europe/Berlin] siteUrl length: 21
+[27-Feb-2026 23:20:26 Europe/Berlin] siteUrl after trim: [http://localhost:8000]
+[27-Feb-2026 23:20:26 Europe/Berlin] Preference JSON: {"items":[{"title":"Acceso a Materias - monthly","quantity":1,"unit_price":59.8,"currency_id":"BRL"}],"payer":{"email":"cauanbernardino0@gmail.com","name":"Cauan Bernardino Diogo","address":{"zip_code":"23906-825","street_name":"Brasil"}},"back_urls":{"success":"http:\/\/localhost:8000\/payment-success.php?status=approved&order_id=ORDER-1772230813-7752","failure":"http:\/\/localhost:8000\/checkout-mercadopago.php?error=payment_failed","pending":"http:\/\/localhost:8000\/payment-success.php?status=pending&order_id=ORDER-1772230813-7752"},"notification_url":"http:\/\/localhost:8000\/webhook-mercadopago.php","auto_return":"approved","external_reference":"ORDER-1772230813-7752","metadata":{"email":"cauanbernardino0@gmail.com","name":"Cauan Bernardino Diogo","plan_id":"monthly","plan_duration_days":30,"materias":"2,1"}}
+[27-Feb-2026 23:20:26 Europe/Berlin] ========== API MERCADOPAGO RESPONSE ==========
+[27-Feb-2026 23:20:26 Europe/Berlin] HTTP Code: 400
+[27-Feb-2026 23:20:26 Europe/Berlin] Curl Error: Nenhum
+[27-Feb-2026 23:20:26 Europe/Berlin] Response: {"message":"auto_return invalid. back_url.success must be defined","error":"invalid_auto_return","status":400,"cause":null}
+[27-Feb-2026 23:20:26 Europe/Berlin] =============================================
+[27-Feb-2026 23:20:26 Europe/Berlin] Erro API: HTTP 400
+[27-Feb-2026 23:35:52 Europe/Berlin] Access Token carregado: OK
+[27-Feb-2026 23:35:52 Europe/Berlin] SITE_URL from env: [http://localhost:8000]
+[27-Feb-2026 23:35:52 Europe/Berlin] Final siteUrl: [http://localhost:8000]
+[27-Feb-2026 23:35:52 Europe/Berlin] siteUrl length: 21
+[27-Feb-2026 23:35:52 Europe/Berlin] siteUrl after trim: [http://localhost:8000]
+[27-Feb-2026 23:35:52 Europe/Berlin] Preference JSON: {"items":[{"title":"Acceso a Materias - monthly","quantity":1,"unit_price":59.8,"currency_id":"BRL"}],"payer":{"email":"cauanbernardino0@gmail.com","name":"Cauan Bernardino Diogo","address":{"zip_code":"23906-825","street_name":"Brasil"}},"back_urls":{"success":"http:\/\/localhost:8000\/payment-success.php?status=approved&order_id=ORDER-1772231737-7502","failure":"http:\/\/localhost:8000\/checkout-mercadopago.php?error=payment_failed","pending":"http:\/\/localhost:8000\/payment-success.php?status=pending&order_id=ORDER-1772231737-7502"},"notification_url":"http:\/\/localhost:8000\/webhook-mercadopago.php","auto_return":"approved","external_reference":"ORDER-1772231737-7502","metadata":{"email":"cauanbernardino0@gmail.com","name":"Cauan Bernardino Diogo","plan_id":"monthly","plan_duration_days":30,"materias":"2,1"}}
+[27-Feb-2026 23:35:53 Europe/Berlin] ========== API MERCADOPAGO RESPONSE ==========
+[27-Feb-2026 23:35:53 Europe/Berlin] HTTP Code: 400
+[27-Feb-2026 23:35:53 Europe/Berlin] Curl Error: Nenhum
+[27-Feb-2026 23:35:53 Europe/Berlin] Response: {"message":"auto_return invalid. back_url.success must be defined","error":"invalid_auto_return","status":400,"cause":null}
+[27-Feb-2026 23:35:53 Europe/Berlin] =============================================
+[27-Feb-2026 23:35:53 Europe/Berlin] Erro API: HTTP 400
+[27-Feb-2026 23:36:56 Europe/Berlin] Access Token carregado: OK
+[27-Feb-2026 23:36:56 Europe/Berlin] SITE_URL from env: [http://localhost:8000]
+[27-Feb-2026 23:36:56 Europe/Berlin] Final siteUrl: [http://localhost:8000]
+[27-Feb-2026 23:36:56 Europe/Berlin] siteUrl length: 21
+[27-Feb-2026 23:36:56 Europe/Berlin] siteUrl after trim: [http://localhost:8000]
+[27-Feb-2026 23:36:56 Europe/Berlin] Preference JSON: {"items":[{"title":"Acceso a Materias - monthly","quantity":1,"unit_price":59.8,"currency_id":"BRL"}],"payer":{"email":"cauanbernardino0@gmail.com","name":"Cauan Bernardino Diogo","address":{"zip_code":"23906-825","street_name":"Brasil"}},"back_urls":{"success":"http:\/\/localhost:8000\/payment-success.php?status=approved&order_id=ORDER-1772231811-9764","failure":"http:\/\/localhost:8000\/checkout-mercadopago.php?error=payment_failed","pending":"http:\/\/localhost:8000\/payment-success.php?status=pending&order_id=ORDER-1772231811-9764"},"notification_url":"http:\/\/localhost:8000\/webhook-mercadopago.php","auto_return":"approved","external_reference":"ORDER-1772231811-9764","metadata":{"email":"cauanbernardino0@gmail.com","name":"Cauan Bernardino Diogo","plan_id":"monthly","plan_duration_days":30,"materias":"2,1"}}
+[27-Feb-2026 23:36:56 Europe/Berlin] ========== API MERCADOPAGO RESPONSE ==========
+[27-Feb-2026 23:36:56 Europe/Berlin] HTTP Code: 400
+[27-Feb-2026 23:36:56 Europe/Berlin] Curl Error: Nenhum
+[27-Feb-2026 23:36:56 Europe/Berlin] Response: {"message":"auto_return invalid. back_url.success must be defined","error":"invalid_auto_return","status":400,"cause":null}
+[27-Feb-2026 23:36:56 Europe/Berlin] =============================================
+[27-Feb-2026 23:36:56 Europe/Berlin] Erro API: HTTP 400
+[27-Feb-2026 23:37:29 Europe/Berlin] Access Token carregado: OK
+[27-Feb-2026 23:37:29 Europe/Berlin] SITE_URL from env: [http://localhost:8000]
+[27-Feb-2026 23:37:29 Europe/Berlin] Final siteUrl: [http://localhost:8000]
+[27-Feb-2026 23:37:29 Europe/Berlin] siteUrl length: 21
+[27-Feb-2026 23:37:29 Europe/Berlin] siteUrl after trim: [http://localhost:8000]
+[27-Feb-2026 23:37:29 Europe/Berlin] Preference JSON: {"items":[{"title":"Acceso a Materias - monthly","quantity":1,"unit_price":59.8,"currency_id":"BRL"}],"payer":{"email":"cauanbernardino0@gmail.com","name":"Cauan Bernardino Diogo","address":{"zip_code":"23906-825","street_name":"Brasil"}},"back_urls":{"success":"http:\/\/localhost:8000\/payment-success.php?status=approved&order_id=ORDER-1772231816-5859","failure":"http:\/\/localhost:8000\/checkout-mercadopago.php?error=payment_failed","pending":"http:\/\/localhost:8000\/payment-success.php?status=pending&order_id=ORDER-1772231816-5859"},"notification_url":"http:\/\/localhost:8000\/webhook-mercadopago.php","auto_return":"approved","external_reference":"ORDER-1772231816-5859","metadata":{"email":"cauanbernardino0@gmail.com","name":"Cauan Bernardino Diogo","plan_id":"monthly","plan_duration_days":30,"materias":"2,1"}}
+[27-Feb-2026 23:37:30 Europe/Berlin] ========== API MERCADOPAGO RESPONSE ==========
+[27-Feb-2026 23:37:30 Europe/Berlin] HTTP Code: 400
+[27-Feb-2026 23:37:30 Europe/Berlin] Curl Error: Nenhum
+[27-Feb-2026 23:37:30 Europe/Berlin] Response: {"message":"auto_return invalid. back_url.success must be defined","error":"invalid_auto_return","status":400,"cause":null}
+[27-Feb-2026 23:37:30 Europe/Berlin] =============================================
+[27-Feb-2026 23:37:30 Europe/Berlin] Erro API: HTTP 400
+[27-Feb-2026 23:39:11 Europe/Berlin] Access Token carregado: OK
+[27-Feb-2026 23:39:11 Europe/Berlin] SITE_URL from env: [http://localhost:8000]
+[27-Feb-2026 23:39:11 Europe/Berlin] Final siteUrl: [http://localhost:8000]
+[27-Feb-2026 23:39:11 Europe/Berlin] siteUrl length: 21
+[27-Feb-2026 23:39:11 Europe/Berlin] siteUrl after trim: [http://localhost:8000]
+[27-Feb-2026 23:39:11 Europe/Berlin] Preference JSON: {"items":[{"title":"Acceso a Materias - monthly","quantity":1,"unit_price":59.8,"currency_id":"BRL"}],"payer":{"email":"cauanbernardino0@gmail.com","name":"Cauan Bernardino Diogo","address":{"zip_code":"23906-825","street_name":"Brasil"}},"back_urls":{"success":"http:\/\/localhost:8000\/payment-success.php?status=approved&order_id=ORDER-1772231947-7834","failure":"http:\/\/localhost:8000\/checkout-mercadopago.php?error=payment_failed","pending":"http:\/\/localhost:8000\/payment-success.php?status=pending&order_id=ORDER-1772231947-7834"},"notification_url":"http:\/\/localhost:8000\/webhook-mercadopago.php","external_reference":"ORDER-1772231947-7834","metadata":{"email":"cauanbernardino0@gmail.com","name":"Cauan Bernardino Diogo","plan_id":"monthly","plan_duration_days":30,"materias":"2,1"}}
+[27-Feb-2026 23:39:12 Europe/Berlin] ========== API MERCADOPAGO RESPONSE ==========
+[27-Feb-2026 23:39:12 Europe/Berlin] HTTP Code: 201
+[27-Feb-2026 23:39:12 Europe/Berlin] Curl Error: Nenhum
+[27-Feb-2026 23:39:12 Europe/Berlin] Response: {"additional_info":"","auto_return":"","back_urls":{"failure":"","pending":"","success":""},"binary_mode":false,"client_id":"776352740846213","collector_id":3232686376,"coupon_code":null,"coupon_labels":null,"date_created":"2026-02-27T18:39:12.772-04:00","date_of_expiration":null,"expiration_date_from":null,"expiration_date_to":null,"expires":false,"external_reference":"ORDER-1772231947-7834","id":"3232686376-98912a6f-7d12-49bf-8889-56993b8a536d","init_point":"https://www.mercadopago.com.br/chec
+[27-Feb-2026 23:39:12 Europe/Berlin] =============================================
+[27-Feb-2026 23:39:12 Europe/Berlin] Sucesso: Preference criada - 3232686376-98912a6f-7d12-49bf-8889-56993b8a536d
+[27-Feb-2026 23:39:12 Europe/Berlin] Redirecionando para: https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=3232686376-98912a6f-7d12-49bf-8889-56993b8a536d
+[27-Feb-2026 23:44:57 Europe/Berlin] Access Token carregado: OK
+[27-Feb-2026 23:44:57 Europe/Berlin] SITE_URL from env: [http://localhost:8000]
+[27-Feb-2026 23:44:57 Europe/Berlin] Final siteUrl: [http://localhost:8000]
+[27-Feb-2026 23:44:57 Europe/Berlin] siteUrl length: 21
+[27-Feb-2026 23:44:57 Europe/Berlin] siteUrl after trim: [http://localhost:8000]
+[27-Feb-2026 23:44:57 Europe/Berlin] Preference JSON: {"items":[{"title":"Acceso a Materias - monthly","quantity":1,"unit_price":59.8,"currency_id":"BRL"}],"payer":{"email":"calebe@gmail.com","name":"Cauan Bernardino Diogo","address":{"zip_code":"23906-825","street_name":"Brasil"}},"back_urls":{"success":"http:\/\/localhost:8000\/payment-success.php?status=approved&order_id=ORDER-1772232276-7714","failure":"http:\/\/localhost:8000\/checkout-mercadopago.php?error=payment_failed","pending":"http:\/\/localhost:8000\/payment-success.php?status=pending&order_id=ORDER-1772232276-7714"},"notification_url":"http:\/\/localhost:8000\/webhook-mercadopago.php","external_reference":"ORDER-1772232276-7714","metadata":{"email":"calebe@gmail.com","name":"Cauan Bernardino Diogo","plan_id":"monthly","plan_duration_days":30,"materias":"2,1"}}
+[27-Feb-2026 23:44:58 Europe/Berlin] ========== API MERCADOPAGO RESPONSE ==========
+[27-Feb-2026 23:44:58 Europe/Berlin] HTTP Code: 201
+[27-Feb-2026 23:44:58 Europe/Berlin] Curl Error: Nenhum
+[27-Feb-2026 23:44:58 Europe/Berlin] Response: {"additional_info":"","auto_return":"","back_urls":{"failure":"","pending":"","success":""},"binary_mode":false,"client_id":"776352740846213","collector_id":3232686376,"coupon_code":null,"coupon_labels":null,"date_created":"2026-02-27T18:44:58.760-04:00","date_of_expiration":null,"expiration_date_from":null,"expiration_date_to":null,"expires":false,"external_reference":"ORDER-1772232276-7714","id":"3232686376-6311207d-083c-4174-82af-6bca039f3994","init_point":"https://www.mercadopago.com.br/chec
+[27-Feb-2026 23:44:58 Europe/Berlin] =============================================
+[27-Feb-2026 23:44:58 Europe/Berlin] Sucesso: Preference criada - 3232686376-6311207d-083c-4174-82af-6bca039f3994
+[27-Feb-2026 23:44:58 Europe/Berlin] Redirecionando para: https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=3232686376-6311207d-083c-4174-82af-6bca039f3994
+[28-Feb-2026 00:08:51 Europe/Berlin] Access Token carregado: OK
+[28-Feb-2026 00:08:51 Europe/Berlin] SITE_URL from env: [http://localhost:8000]
+[28-Feb-2026 00:08:51 Europe/Berlin] Final siteUrl: [http://localhost:8000]
+[28-Feb-2026 00:08:51 Europe/Berlin] siteUrl length: 21
+[28-Feb-2026 00:08:51 Europe/Berlin] siteUrl after trim: [http://localhost:8000]
+[28-Feb-2026 00:08:51 Europe/Berlin] Preference JSON: {"items":[{"title":"Acceso a Materias - monthly","quantity":1,"unit_price":59.8,"currency_id":"BRL"}],"payer":{"email":"cauanbernardino0@gmail.com","name":"Cauan Bernardino Diogo","address":{"zip_code":"23906-825","street_name":"Brasil"}},"back_urls":{"success":"http:\/\/localhost:8000\/payment-success.php?status=approved&order_id=ORDER-1772233722-1044","failure":"http:\/\/localhost:8000\/checkout-mercadopago.php?error=payment_failed","pending":"http:\/\/localhost:8000\/payment-success.php?status=pending&order_id=ORDER-1772233722-1044"},"notification_url":"http:\/\/localhost:8000\/webhook-mercadopago.php","external_reference":"ORDER-1772233722-1044","metadata":{"email":"cauanbernardino0@gmail.com","name":"Cauan Bernardino Diogo","plan_id":"monthly","plan_duration_days":30,"materias":"2,1"}}
+[28-Feb-2026 00:08:52 Europe/Berlin] ========== API MERCADOPAGO RESPONSE ==========
+[28-Feb-2026 00:08:52 Europe/Berlin] HTTP Code: 201
+[28-Feb-2026 00:08:52 Europe/Berlin] Curl Error: Nenhum
+[28-Feb-2026 00:08:52 Europe/Berlin] Response: {"additional_info":"","auto_return":"","back_urls":{"failure":"","pending":"","success":""},"binary_mode":false,"client_id":"776352740846213","collector_id":3232686376,"coupon_code":null,"coupon_labels":null,"date_created":"2026-02-27T19:08:53.244-04:00","date_of_expiration":null,"expiration_date_from":null,"expiration_date_to":null,"expires":false,"external_reference":"ORDER-1772233722-1044","id":"3232686376-06b97734-9666-4246-9e5f-1156dc2f58ad","init_point":"https://www.mercadopago.com.br/chec
+[28-Feb-2026 00:08:52 Europe/Berlin] =============================================
+[28-Feb-2026 00:08:52 Europe/Berlin] Sucesso: Preference criada - 3232686376-06b97734-9666-4246-9e5f-1156dc2f58ad
+[28-Feb-2026 00:08:52 Europe/Berlin] Redirecionando para: https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=3232686376-06b97734-9666-4246-9e5f-1156dc2f58ad
+[28-Feb-2026 00:16:30 Europe/Berlin] Access Token carregado: OK
+[28-Feb-2026 00:16:30 Europe/Berlin] SITE_URL from env: [https://tychistic-spellingly-aria.ngrok-free.dev]
+[28-Feb-2026 00:16:30 Europe/Berlin] Final siteUrl: [https://tychistic-spellingly-aria.ngrok-free.dev]
+[28-Feb-2026 00:16:30 Europe/Berlin] siteUrl length: 48
+[28-Feb-2026 00:16:30 Europe/Berlin] siteUrl after trim: [https://tychistic-spellingly-aria.ngrok-free.dev]
+[28-Feb-2026 00:16:30 Europe/Berlin] Preference JSON: {"items":[{"title":"Acceso a Materias - monthly","quantity":1,"unit_price":59.8,"currency_id":"BRL"}],"payer":{"email":"cauanbernardino0@gmail.com","name":"Cauan Bernardino Diogo","address":{"zip_code":"23906-825","street_name":"Brasil"}},"back_urls":{"success":"https:\/\/tychistic-spellingly-aria.ngrok-free.dev\/payment-success.php?status=approved&order_id=ORDER-1772234187-5021","failure":"https:\/\/tychistic-spellingly-aria.ngrok-free.dev\/checkout-mercadopago.php?error=payment_failed","pending":"https:\/\/tychistic-spellingly-aria.ngrok-free.dev\/payment-success.php?status=pending&order_id=ORDER-1772234187-5021"},"notification_url":"https:\/\/tychistic-spellingly-aria.ngrok-free.dev\/webhook-mercadopago.php","external_reference":"ORDER-1772234187-5021","metadata":{"email":"cauanbernardino0@gmail.com","name":"Cauan Bernardino Diogo","plan_id":"monthly","plan_duration_days":30,"materias":"2,1"}}
+[28-Feb-2026 00:16:31 Europe/Berlin] ========== API MERCADOPAGO RESPONSE ==========
+[28-Feb-2026 00:16:31 Europe/Berlin] HTTP Code: 201
+[28-Feb-2026 00:16:31 Europe/Berlin] Curl Error: Nenhum
+[28-Feb-2026 00:16:31 Europe/Berlin] Response: {"additional_info":"","auto_return":"","back_urls":{"failure":"https://tychistic-spellingly-aria.ngrok-free.dev/checkout-mercadopago.php?error=payment_failed","pending":"https://tychistic-spellingly-aria.ngrok-free.dev/payment-success.php?status=pending\u0026order_id=ORDER-1772234187-5021","success":"https://tychistic-spellingly-aria.ngrok-free.dev/payment-success.php?status=approved\u0026order_id=ORDER-1772234187-5021"},"binary_mode":false,"client_id":"776352740846213","collector_id":3232686376
+[28-Feb-2026 00:16:31 Europe/Berlin] =============================================
+[28-Feb-2026 00:16:31 Europe/Berlin] Sucesso: Preference criada - 3232686376-0a0c2330-5be5-4225-8713-37f86e08b5e4
+[28-Feb-2026 00:16:31 Europe/Berlin] Redirecionando para: https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=3232686376-0a0c2330-5be5-4225-8713-37f86e08b5e4
+[28-Feb-2026 00:50:42 Europe/Berlin] Access Token carregado: OK
+[28-Feb-2026 00:50:42 Europe/Berlin] SITE_URL from env: [https://tychistic-spellingly-aria.ngrok-free.dev]
+[28-Feb-2026 00:50:42 Europe/Berlin] Final siteUrl: [https://tychistic-spellingly-aria.ngrok-free.dev]
+[28-Feb-2026 00:50:42 Europe/Berlin] siteUrl length: 48
+[28-Feb-2026 00:50:42 Europe/Berlin] siteUrl after trim: [https://tychistic-spellingly-aria.ngrok-free.dev]
+[28-Feb-2026 00:50:42 Europe/Berlin] Preference JSON: {"items":[{"title":"Acceso a Materias - monthly","quantity":1,"unit_price":59.8,"currency_id":"BRL"}],"payer":{"email":"cauanbernardino0@gmail.com","name":"Cauan Bernardino Diogo","address":{"zip_code":"23906-825","street_name":"Brasil"}},"back_urls":{"success":"https:\/\/tychistic-spellingly-aria.ngrok-free.dev\/payment-success.php?status=approved&order_id=ORDER-1772236223-7964","failure":"https:\/\/tychistic-spellingly-aria.ngrok-free.dev\/checkout-mercadopago.php?error=payment_failed","pending":"https:\/\/tychistic-spellingly-aria.ngrok-free.dev\/payment-success.php?status=pending&order_id=ORDER-1772236223-7964"},"notification_url":"https:\/\/tychistic-spellingly-aria.ngrok-free.dev\/webhook-mercadopago.php","external_reference":"ORDER-1772236223-7964","metadata":{"email":"cauanbernardino0@gmail.com","name":"Cauan Bernardino Diogo","plan_id":"monthly","plan_duration_days":30,"materias":"2,1"}}
+[28-Feb-2026 00:50:43 Europe/Berlin] ========== API MERCADOPAGO RESPONSE ==========
+[28-Feb-2026 00:50:43 Europe/Berlin] HTTP Code: 201
+[28-Feb-2026 00:50:43 Europe/Berlin] Curl Error: Nenhum
+[28-Feb-2026 00:50:43 Europe/Berlin] Response: {"additional_info":"","auto_return":"","back_urls":{"failure":"https://tychistic-spellingly-aria.ngrok-free.dev/checkout-mercadopago.php?error=payment_failed","pending":"https://tychistic-spellingly-aria.ngrok-free.dev/payment-success.php?status=pending\u0026order_id=ORDER-1772236223-7964","success":"https://tychistic-spellingly-aria.ngrok-free.dev/payment-success.php?status=approved\u0026order_id=ORDER-1772236223-7964"},"binary_mode":false,"client_id":"776352740846213","collector_id":3232686376
+[28-Feb-2026 00:50:43 Europe/Berlin] =============================================
+[28-Feb-2026 00:50:43 Europe/Berlin] Sucesso: Preference criada - 3232686376-6776127c-66bb-4aa9-a2ee-1f3af571320d
+[28-Feb-2026 00:50:43 Europe/Berlin] Redirecionando para: https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=3232686376-6776127c-66bb-4aa9-a2ee-1f3af571320d
+[28-Feb-2026 00:57:56 Europe/Berlin] Access Token carregado: OK
+[28-Feb-2026 00:57:56 Europe/Berlin] SITE_URL from env: [https://tychistic-spellingly-aria.ngrok-free.dev]
+[28-Feb-2026 00:57:56 Europe/Berlin] Final siteUrl: [https://tychistic-spellingly-aria.ngrok-free.dev]
+[28-Feb-2026 00:57:56 Europe/Berlin] siteUrl length: 48
+[28-Feb-2026 00:57:56 Europe/Berlin] siteUrl after trim: [https://tychistic-spellingly-aria.ngrok-free.dev]
+[28-Feb-2026 00:57:56 Europe/Berlin] Preference JSON: {"items":[{"title":"Acceso a Materias - monthly","quantity":1,"unit_price":59.8,"currency_id":"BRL"}],"payer":{"email":"cauanbernardino0@gmail.com","name":"Cauan Bernardino Diogo","address":{"zip_code":"23906-825","street_name":"Brasil"}},"back_urls":{"success":"https:\/\/tychistic-spellingly-aria.ngrok-free.dev\/payment-success.php?status=approved&order_id=ORDER-1772236674-4993","failure":"https:\/\/tychistic-spellingly-aria.ngrok-free.dev\/checkout-mercadopago.php?error=payment_failed","pending":"https:\/\/tychistic-spellingly-aria.ngrok-free.dev\/payment-success.php?status=pending&order_id=ORDER-1772236674-4993"},"notification_url":"https:\/\/tychistic-spellingly-aria.ngrok-free.dev\/webhook-mercadopago.php","external_reference":"ORDER-1772236674-4993","metadata":{"email":"cauanbernardino0@gmail.com","name":"Cauan Bernardino Diogo","plan_id":"monthly","plan_duration_days":30,"materias":"2,1"}}
+[28-Feb-2026 00:57:57 Europe/Berlin] ========== API MERCADOPAGO RESPONSE ==========
+[28-Feb-2026 00:57:57 Europe/Berlin] HTTP Code: 201
+[28-Feb-2026 00:57:57 Europe/Berlin] Curl Error: Nenhum
+[28-Feb-2026 00:57:57 Europe/Berlin] Response: {"additional_info":"","auto_return":"","back_urls":{"failure":"https://tychistic-spellingly-aria.ngrok-free.dev/checkout-mercadopago.php?error=payment_failed","pending":"https://tychistic-spellingly-aria.ngrok-free.dev/payment-success.php?status=pending\u0026order_id=ORDER-1772236674-4993","success":"https://tychistic-spellingly-aria.ngrok-free.dev/payment-success.php?status=approved\u0026order_id=ORDER-1772236674-4993"},"binary_mode":false,"client_id":"776352740846213","collector_id":3232686376
+[28-Feb-2026 00:57:57 Europe/Berlin] =============================================
+[28-Feb-2026 00:57:57 Europe/Berlin] Sucesso: Preference criada - 3232686376-35c0b53d-c1b7-4173-b180-9dbe91407d80
+[28-Feb-2026 00:57:57 Europe/Berlin] Redirecionando para: https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=3232686376-35c0b53d-c1b7-4173-b180-9dbe91407d80
+[28-Feb-2026 00:59:24 Europe/Berlin] Access Token carregado: OK
+[28-Feb-2026 00:59:24 Europe/Berlin] SITE_URL from env: [https://tychistic-spellingly-aria.ngrok-free.dev]
+[28-Feb-2026 00:59:24 Europe/Berlin] Final siteUrl: [https://tychistic-spellingly-aria.ngrok-free.dev]
+[28-Feb-2026 00:59:24 Europe/Berlin] siteUrl length: 48
+[28-Feb-2026 00:59:24 Europe/Berlin] siteUrl after trim: [https://tychistic-spellingly-aria.ngrok-free.dev]
+[28-Feb-2026 00:59:24 Europe/Berlin] Preference JSON: {"items":[{"title":"Acceso a Materias - monthly","quantity":1,"unit_price":59.8,"currency_id":"BRL"}],"payer":{"email":"cauanbernardino0@gmail.com","name":"Cauan Bernardino Diogo","address":{"zip_code":"23906-825","street_name":"Brasil"}},"back_urls":{"success":"https:\/\/tychistic-spellingly-aria.ngrok-free.dev\/payment-success.php?status=approved&order_id=ORDER-1772236759-1154","failure":"https:\/\/tychistic-spellingly-aria.ngrok-free.dev\/checkout-mercadopago.php?error=payment_failed","pending":"https:\/\/tychistic-spellingly-aria.ngrok-free.dev\/payment-success.php?status=pending&order_id=ORDER-1772236759-1154"},"notification_url":"https:\/\/tychistic-spellingly-aria.ngrok-free.dev\/webhook-mercadopago.php","external_reference":"ORDER-1772236759-1154","metadata":{"email":"cauanbernardino0@gmail.com","name":"Cauan Bernardino Diogo","plan_id":"monthly","plan_duration_days":30,"materias":"2,1"}}
+[28-Feb-2026 00:59:24 Europe/Berlin] ========== API MERCADOPAGO RESPONSE ==========
+[28-Feb-2026 00:59:24 Europe/Berlin] HTTP Code: 201
+[28-Feb-2026 00:59:24 Europe/Berlin] Curl Error: Nenhum
+[28-Feb-2026 00:59:24 Europe/Berlin] Response: {"additional_info":"","auto_return":"","back_urls":{"failure":"https://tychistic-spellingly-aria.ngrok-free.dev/checkout-mercadopago.php?error=payment_failed","pending":"https://tychistic-spellingly-aria.ngrok-free.dev/payment-success.php?status=pending\u0026order_id=ORDER-1772236759-1154","success":"https://tychistic-spellingly-aria.ngrok-free.dev/payment-success.php?status=approved\u0026order_id=ORDER-1772236759-1154"},"binary_mode":false,"client_id":"776352740846213","collector_id":3232686376
+[28-Feb-2026 00:59:24 Europe/Berlin] =============================================
+[28-Feb-2026 00:59:24 Europe/Berlin] Sucesso: Preference criada - 3232686376-84ede47d-bb32-404b-86ac-8ea387908110
+[28-Feb-2026 00:59:24 Europe/Berlin] Redirecionando para: https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=3232686376-84ede47d-bb32-404b-86ac-8ea387908110
+[28-Feb-2026 01:05:47 Europe/Berlin] Access Token carregado: OK
+[28-Feb-2026 01:05:47 Europe/Berlin] SITE_URL from env: [https://tychistic-spellingly-aria.ngrok-free.dev]
+[28-Feb-2026 01:05:47 Europe/Berlin] Final siteUrl: [https://tychistic-spellingly-aria.ngrok-free.dev]
+[28-Feb-2026 01:05:47 Europe/Berlin] siteUrl length: 48
+[28-Feb-2026 01:05:47 Europe/Berlin] siteUrl after trim: [https://tychistic-spellingly-aria.ngrok-free.dev]
+[28-Feb-2026 01:05:47 Europe/Berlin] Preference JSON: {"items":[{"title":"Acceso a Materias - monthly","quantity":1,"unit_price":59.8,"currency_id":"BRL"}],"payer":{"email":"cauanbernardino0@gmail.com","name":"Cauan Bernardino Diogo","address":{"zip_code":"23906-825","street_name":"Brasil"}},"back_urls":{"success":"https:\/\/tychistic-spellingly-aria.ngrok-free.dev\/payment-success.php?status=approved&order_id=ORDER-1772237142-8474","failure":"https:\/\/tychistic-spellingly-aria.ngrok-free.dev\/checkout-mercadopago.php?error=payment_failed","pending":"https:\/\/tychistic-spellingly-aria.ngrok-free.dev\/payment-success.php?status=pending&order_id=ORDER-1772237142-8474"},"notification_url":"https:\/\/tychistic-spellingly-aria.ngrok-free.dev\/webhook-mercadopago.php","external_reference":"ORDER-1772237142-8474","metadata":{"email":"cauanbernardino0@gmail.com","name":"Cauan Bernardino Diogo","plan_id":"monthly","plan_duration_days":30,"materias":"2,1"}}
+[28-Feb-2026 01:05:48 Europe/Berlin] ========== API MERCADOPAGO RESPONSE ==========
+[28-Feb-2026 01:05:48 Europe/Berlin] HTTP Code: 201
+[28-Feb-2026 01:05:48 Europe/Berlin] Curl Error: Nenhum
+[28-Feb-2026 01:05:48 Europe/Berlin] Response: {"additional_info":"","auto_return":"","back_urls":{"failure":"https://tychistic-spellingly-aria.ngrok-free.dev/checkout-mercadopago.php?error=payment_failed","pending":"https://tychistic-spellingly-aria.ngrok-free.dev/payment-success.php?status=pending\u0026order_id=ORDER-1772237142-8474","success":"https://tychistic-spellingly-aria.ngrok-free.dev/payment-success.php?status=approved\u0026order_id=ORDER-1772237142-8474"},"binary_mode":false,"client_id":"776352740846213","collector_id":3232686376
+[28-Feb-2026 01:05:48 Europe/Berlin] =============================================
+[28-Feb-2026 01:05:48 Europe/Berlin] Sucesso: Preference criada - 3232686376-f6b2d8bf-26c4-41f6-b184-47d08ea227b9
+[28-Feb-2026 01:05:48 Europe/Berlin] Redirecionando para: https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=3232686376-f6b2d8bf-26c4-41f6-b184-47d08ea227b9
+[28-Feb-2026 01:14:50 Europe/Berlin] Access Token carregado: OK
+[28-Feb-2026 01:14:50 Europe/Berlin] SITE_URL from env: [https://tychistic-spellingly-aria.ngrok-free.dev]
+[28-Feb-2026 01:14:50 Europe/Berlin] Final siteUrl: [https://tychistic-spellingly-aria.ngrok-free.dev]
+[28-Feb-2026 01:14:50 Europe/Berlin] siteUrl length: 48
+[28-Feb-2026 01:14:50 Europe/Berlin] siteUrl after trim: [https://tychistic-spellingly-aria.ngrok-free.dev]
+[28-Feb-2026 01:14:50 Europe/Berlin] Preference JSON: {"items":[{"title":"Acceso a Materias - monthly","quantity":1,"unit_price":59.8,"currency_id":"BRL"}],"payer":{"email":"cauanbernardino0@gmail.com","name":"Cauan Bernardino Diogo","address":{"zip_code":"23906-825","street_name":"Brasil"}},"back_urls":{"success":"https:\/\/tychistic-spellingly-aria.ngrok-free.dev\/payment-success.php?status=approved&order_id=ORDER-1772237685-3037","failure":"https:\/\/tychistic-spellingly-aria.ngrok-free.dev\/checkout-mercadopago.php?error=payment_failed","pending":"https:\/\/tychistic-spellingly-aria.ngrok-free.dev\/payment-success.php?status=pending&order_id=ORDER-1772237685-3037"},"notification_url":"https:\/\/tychistic-spellingly-aria.ngrok-free.dev\/webhook-mercadopago.php","external_reference":"ORDER-1772237685-3037","metadata":{"email":"cauanbernardino0@gmail.com","name":"Cauan Bernardino Diogo","plan_id":"monthly","plan_duration_days":30,"materias":"2,1"}}
+[28-Feb-2026 01:14:51 Europe/Berlin] ========== API MERCADOPAGO RESPONSE ==========
+[28-Feb-2026 01:14:51 Europe/Berlin] HTTP Code: 201
+[28-Feb-2026 01:14:51 Europe/Berlin] Curl Error: Nenhum
+[28-Feb-2026 01:14:51 Europe/Berlin] Response: {"additional_info":"","auto_return":"","back_urls":{"failure":"https://tychistic-spellingly-aria.ngrok-free.dev/checkout-mercadopago.php?error=payment_failed","pending":"https://tychistic-spellingly-aria.ngrok-free.dev/payment-success.php?status=pending\u0026order_id=ORDER-1772237685-3037","success":"https://tychistic-spellingly-aria.ngrok-free.dev/payment-success.php?status=approved\u0026order_id=ORDER-1772237685-3037"},"binary_mode":false,"client_id":"776352740846213","collector_id":3232686376
+[28-Feb-2026 01:14:51 Europe/Berlin] =============================================
+[28-Feb-2026 01:14:51 Europe/Berlin] Sucesso: Preference criada - 3232686376-dc3b87ef-45d2-4a8a-8bdb-ff45525b623f
+[28-Feb-2026 01:14:51 Europe/Berlin] Redirecionando para: https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=3232686376-dc3b87ef-45d2-4a8a-8bdb-ff45525b623f
+[28-Feb-2026 01:15:15 Europe/Berlin] Access Token carregado: OK
+[28-Feb-2026 01:15:15 Europe/Berlin] SITE_URL from env: [https://tychistic-spellingly-aria.ngrok-free.dev]
+[28-Feb-2026 01:15:15 Europe/Berlin] Final siteUrl: [https://tychistic-spellingly-aria.ngrok-free.dev]
+[28-Feb-2026 01:15:15 Europe/Berlin] siteUrl length: 48
+[28-Feb-2026 01:15:15 Europe/Berlin] siteUrl after trim: [https://tychistic-spellingly-aria.ngrok-free.dev]
+[28-Feb-2026 01:15:15 Europe/Berlin] Preference JSON: {"items":[{"title":"Acceso a Materias - monthly","quantity":1,"unit_price":59.8,"currency_id":"BRL"}],"payer":{"email":"cauanbernardino0@gmail.com","name":"Teste","address":{"zip_code":"23906-825","street_name":"Brasil"}},"back_urls":{"success":"https:\/\/tychistic-spellingly-aria.ngrok-free.dev\/payment-success.php?status=approved&order_id=ORDER-1772237705-4643","failure":"https:\/\/tychistic-spellingly-aria.ngrok-free.dev\/checkout-mercadopago.php?error=payment_failed","pending":"https:\/\/tychistic-spellingly-aria.ngrok-free.dev\/payment-success.php?status=pending&order_id=ORDER-1772237705-4643"},"notification_url":"https:\/\/tychistic-spellingly-aria.ngrok-free.dev\/webhook-mercadopago.php","external_reference":"ORDER-1772237705-4643","metadata":{"email":"cauanbernardino0@gmail.com","name":"Teste","plan_id":"monthly","plan_duration_days":30,"materias":"2,1"}}
+[28-Feb-2026 01:15:16 Europe/Berlin] ========== API MERCADOPAGO RESPONSE ==========
+[28-Feb-2026 01:15:16 Europe/Berlin] HTTP Code: 201
+[28-Feb-2026 01:15:16 Europe/Berlin] Curl Error: Nenhum
+[28-Feb-2026 01:15:16 Europe/Berlin] Response: {"additional_info":"","auto_return":"","back_urls":{"failure":"https://tychistic-spellingly-aria.ngrok-free.dev/checkout-mercadopago.php?error=payment_failed","pending":"https://tychistic-spellingly-aria.ngrok-free.dev/payment-success.php?status=pending\u0026order_id=ORDER-1772237705-4643","success":"https://tychistic-spellingly-aria.ngrok-free.dev/payment-success.php?status=approved\u0026order_id=ORDER-1772237705-4643"},"binary_mode":false,"client_id":"776352740846213","collector_id":3232686376
+[28-Feb-2026 01:15:16 Europe/Berlin] =============================================
+[28-Feb-2026 01:15:16 Europe/Berlin] Sucesso: Preference criada - 3232686376-18964589-3586-458a-ae42-59b193a64b7a
+[28-Feb-2026 01:15:16 Europe/Berlin] Redirecionando para: https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=3232686376-18964589-3586-458a-ae42-59b193a64b7a
+[28-Feb-2026 01:21:41 Europe/Berlin] Access Token carregado: OK
+[28-Feb-2026 01:21:41 Europe/Berlin] SITE_URL from env: [https://tychistic-spellingly-aria.ngrok-free.dev]
+[28-Feb-2026 01:21:41 Europe/Berlin] Final siteUrl: [https://tychistic-spellingly-aria.ngrok-free.dev]
+[28-Feb-2026 01:21:41 Europe/Berlin] siteUrl length: 48
+[28-Feb-2026 01:21:41 Europe/Berlin] siteUrl after trim: [https://tychistic-spellingly-aria.ngrok-free.dev]
+[28-Feb-2026 01:21:41 Europe/Berlin] Preference JSON: {"items":[{"title":"Acceso a Materias - monthly","quantity":1,"unit_price":59.8,"currency_id":"BRL"}],"payer":{"email":"cauanbernardino0@gmail.com","name":"Teste222","address":{"zip_code":"23906-825","street_name":"Brasil"}},"back_urls":{"success":"https:\/\/tychistic-spellingly-aria.ngrok-free.dev\/payment-success.php?status=approved&order_id=ORDER-1772238087-2395","failure":"https:\/\/tychistic-spellingly-aria.ngrok-free.dev\/checkout-mercadopago.php?error=payment_failed","pending":"https:\/\/tychistic-spellingly-aria.ngrok-free.dev\/payment-success.php?status=pending&order_id=ORDER-1772238087-2395"},"notification_url":"https:\/\/tychistic-spellingly-aria.ngrok-free.dev\/webhook-mercadopago.php","external_reference":"ORDER-1772238087-2395","metadata":{"email":"cauanbernardino0@gmail.com","name":"Teste222","plan_id":"monthly","plan_duration_days":30,"materias":"2,1"}}
+[28-Feb-2026 01:21:41 Europe/Berlin] ========== API MERCADOPAGO RESPONSE ==========
+[28-Feb-2026 01:21:41 Europe/Berlin] HTTP Code: 201
+[28-Feb-2026 01:21:41 Europe/Berlin] Curl Error: Nenhum
+[28-Feb-2026 01:21:41 Europe/Berlin] Response: {"additional_info":"","auto_return":"","back_urls":{"failure":"https://tychistic-spellingly-aria.ngrok-free.dev/checkout-mercadopago.php?error=payment_failed","pending":"https://tychistic-spellingly-aria.ngrok-free.dev/payment-success.php?status=pending\u0026order_id=ORDER-1772238087-2395","success":"https://tychistic-spellingly-aria.ngrok-free.dev/payment-success.php?status=approved\u0026order_id=ORDER-1772238087-2395"},"binary_mode":false,"client_id":"776352740846213","collector_id":3232686376
+[28-Feb-2026 01:21:41 Europe/Berlin] =============================================
+[28-Feb-2026 01:21:41 Europe/Berlin] Sucesso: Preference criada - 3232686376-d7bc2a02-4004-4d91-bc48-4acf3c4e1486
+[28-Feb-2026 01:21:41 Europe/Berlin] Redirecionando para: https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=3232686376-d7bc2a02-4004-4d91-bc48-4acf3c4e1486
+[28-Feb-2026 01:25:12 Europe/Berlin] Access Token carregado: OK
+[28-Feb-2026 01:25:12 Europe/Berlin] SITE_URL from env: [https://tychistic-spellingly-aria.ngrok-free.dev]
+[28-Feb-2026 01:25:12 Europe/Berlin] Final siteUrl: [https://tychistic-spellingly-aria.ngrok-free.dev]
+[28-Feb-2026 01:25:12 Europe/Berlin] siteUrl length: 48
+[28-Feb-2026 01:25:12 Europe/Berlin] siteUrl after trim: [https://tychistic-spellingly-aria.ngrok-free.dev]
+[28-Feb-2026 01:25:12 Europe/Berlin] Preference JSON: {"items":[{"title":"Acceso a Materias - monthly","quantity":1,"unit_price":59.8,"currency_id":"BRL"}],"payer":{"email":"devcauanbernardino@gmail.com","name":"TESTE","address":{"zip_code":"23906-825","street_name":"Brasil"}},"back_urls":{"success":"https:\/\/tychistic-spellingly-aria.ngrok-free.dev\/payment-success.php?status=approved&order_id=ORDER-1772238292-7632","failure":"https:\/\/tychistic-spellingly-aria.ngrok-free.dev\/checkout-mercadopago.php?error=payment_failed","pending":"https:\/\/tychistic-spellingly-aria.ngrok-free.dev\/payment-success.php?status=pending&order_id=ORDER-1772238292-7632"},"notification_url":"https:\/\/tychistic-spellingly-aria.ngrok-free.dev\/webhook-mercadopago.php","external_reference":"ORDER-1772238292-7632","metadata":{"email":"devcauanbernardino@gmail.com","name":"TESTE","plan_id":"monthly","plan_duration_days":30,"materias":"2,1"}}
+[28-Feb-2026 01:25:12 Europe/Berlin] ========== API MERCADOPAGO RESPONSE ==========
+[28-Feb-2026 01:25:12 Europe/Berlin] HTTP Code: 201
+[28-Feb-2026 01:25:12 Europe/Berlin] Curl Error: Nenhum
+[28-Feb-2026 01:25:12 Europe/Berlin] Response: {"additional_info":"","auto_return":"","back_urls":{"failure":"https://tychistic-spellingly-aria.ngrok-free.dev/checkout-mercadopago.php?error=payment_failed","pending":"https://tychistic-spellingly-aria.ngrok-free.dev/payment-success.php?status=pending\u0026order_id=ORDER-1772238292-7632","success":"https://tychistic-spellingly-aria.ngrok-free.dev/payment-success.php?status=approved\u0026order_id=ORDER-1772238292-7632"},"binary_mode":false,"client_id":"776352740846213","collector_id":3232686376
+[28-Feb-2026 01:25:12 Europe/Berlin] =============================================
+[28-Feb-2026 01:25:12 Europe/Berlin] Sucesso: Preference criada - 3232686376-2acc245e-3e85-4efb-9ac4-30e1f0d1f9f9
+[28-Feb-2026 01:25:12 Europe/Berlin] Redirecionando para: https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=3232686376-2acc245e-3e85-4efb-9ac4-30e1f0d1f9f9
+[28-Feb-2026 01:28:41 Europe/Berlin] Access Token carregado: OK
+[28-Feb-2026 01:28:41 Europe/Berlin] SITE_URL from env: [https://tychistic-spellingly-aria.ngrok-free.dev]
+[28-Feb-2026 01:28:41 Europe/Berlin] Final siteUrl: [https://tychistic-spellingly-aria.ngrok-free.dev]
+[28-Feb-2026 01:28:41 Europe/Berlin] siteUrl length: 48
+[28-Feb-2026 01:28:41 Europe/Berlin] siteUrl after trim: [https://tychistic-spellingly-aria.ngrok-free.dev]
+[28-Feb-2026 01:28:41 Europe/Berlin] Preference JSON: {"items":[{"title":"Acceso a Materias - monthly","quantity":1,"unit_price":59.8,"currency_id":"BRL"}],"payer":{"email":"joana@gmail.com","name":"TESTE4333","address":{"zip_code":"23906-825","street_name":"Brasil"}},"back_urls":{"success":"https:\/\/tychistic-spellingly-aria.ngrok-free.dev\/payment-success.php?status=approved&order_id=ORDER-1772238505-9982","failure":"https:\/\/tychistic-spellingly-aria.ngrok-free.dev\/checkout-mercadopago.php?error=payment_failed","pending":"https:\/\/tychistic-spellingly-aria.ngrok-free.dev\/payment-success.php?status=pending&order_id=ORDER-1772238505-9982"},"notification_url":"https:\/\/tychistic-spellingly-aria.ngrok-free.dev\/webhook-mercadopago.php","external_reference":"ORDER-1772238505-9982","metadata":{"email":"joana@gmail.com","name":"TESTE4333","plan_id":"monthly","plan_duration_days":30,"materias":"2,1"}}
+[28-Feb-2026 01:28:41 Europe/Berlin] ========== API MERCADOPAGO RESPONSE ==========
+[28-Feb-2026 01:28:41 Europe/Berlin] HTTP Code: 201
+[28-Feb-2026 01:28:41 Europe/Berlin] Curl Error: Nenhum
+[28-Feb-2026 01:28:41 Europe/Berlin] Response: {"additional_info":"","auto_return":"","back_urls":{"failure":"https://tychistic-spellingly-aria.ngrok-free.dev/checkout-mercadopago.php?error=payment_failed","pending":"https://tychistic-spellingly-aria.ngrok-free.dev/payment-success.php?status=pending\u0026order_id=ORDER-1772238505-9982","success":"https://tychistic-spellingly-aria.ngrok-free.dev/payment-success.php?status=approved\u0026order_id=ORDER-1772238505-9982"},"binary_mode":false,"client_id":"776352740846213","collector_id":3232686376
+[28-Feb-2026 01:28:41 Europe/Berlin] =============================================
+[28-Feb-2026 01:28:41 Europe/Berlin] Sucesso: Preference criada - 3232686376-8ccb21b8-b9cf-4649-8157-8ea57debcffd
+[28-Feb-2026 01:28:41 Europe/Berlin] Redirecionando para: https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=3232686376-8ccb21b8-b9cf-4649-8157-8ea57debcffd
+[28-Feb-2026 01:29:35 Europe/Berlin] Access Token carregado: OK
+[28-Feb-2026 01:29:35 Europe/Berlin] SITE_URL from env: [https://tychistic-spellingly-aria.ngrok-free.dev]
+[28-Feb-2026 01:29:35 Europe/Berlin] Final siteUrl: [https://tychistic-spellingly-aria.ngrok-free.dev]
+[28-Feb-2026 01:29:35 Europe/Berlin] siteUrl length: 48
+[28-Feb-2026 01:29:35 Europe/Berlin] siteUrl after trim: [https://tychistic-spellingly-aria.ngrok-free.dev]
+[28-Feb-2026 01:29:35 Europe/Berlin] Preference JSON: {"items":[{"title":"Acceso a Materias - semester","quantity":1,"unit_price":239.8,"currency_id":"BRL"}],"payer":{"email":"joana@gmail.com","name":"JOAAAO","address":{"zip_code":"23906-825","street_name":"Brasil"}},"back_urls":{"success":"https:\/\/tychistic-spellingly-aria.ngrok-free.dev\/payment-success.php?status=approved&order_id=ORDER-1772238562-7124","failure":"https:\/\/tychistic-spellingly-aria.ngrok-free.dev\/checkout-mercadopago.php?error=payment_failed","pending":"https:\/\/tychistic-spellingly-aria.ngrok-free.dev\/payment-success.php?status=pending&order_id=ORDER-1772238562-7124"},"notification_url":"https:\/\/tychistic-spellingly-aria.ngrok-free.dev\/webhook-mercadopago.php","external_reference":"ORDER-1772238562-7124","metadata":{"email":"joana@gmail.com","name":"JOAAAO","plan_id":"semester","plan_duration_days":180,"materias":"2,1"}}
+[28-Feb-2026 01:29:35 Europe/Berlin] ========== API MERCADOPAGO RESPONSE ==========
+[28-Feb-2026 01:29:35 Europe/Berlin] HTTP Code: 201
+[28-Feb-2026 01:29:35 Europe/Berlin] Curl Error: Nenhum
+[28-Feb-2026 01:29:35 Europe/Berlin] Response: {"additional_info":"","auto_return":"","back_urls":{"failure":"https://tychistic-spellingly-aria.ngrok-free.dev/checkout-mercadopago.php?error=payment_failed","pending":"https://tychistic-spellingly-aria.ngrok-free.dev/payment-success.php?status=pending\u0026order_id=ORDER-1772238562-7124","success":"https://tychistic-spellingly-aria.ngrok-free.dev/payment-success.php?status=approved\u0026order_id=ORDER-1772238562-7124"},"binary_mode":false,"client_id":"776352740846213","collector_id":3232686376
+[28-Feb-2026 01:29:35 Europe/Berlin] =============================================
+[28-Feb-2026 01:29:35 Europe/Berlin] Sucesso: Preference criada - 3232686376-64c93283-4d00-4f2d-8dc6-b3f6985a3b33
+[28-Feb-2026 01:29:35 Europe/Berlin] Redirecionando para: https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=3232686376-64c93283-4d00-4f2d-8dc6-b3f6985a3b33
+[28-Feb-2026 01:35:11 Europe/Berlin] Access Token carregado: OK
+[28-Feb-2026 01:35:11 Europe/Berlin] SITE_URL from env: [https://tychistic-spellingly-aria.ngrok-free.dev]
+[28-Feb-2026 01:35:11 Europe/Berlin] Final siteUrl: [https://tychistic-spellingly-aria.ngrok-free.dev]
+[28-Feb-2026 01:35:11 Europe/Berlin] siteUrl length: 48
+[28-Feb-2026 01:35:11 Europe/Berlin] siteUrl after trim: [https://tychistic-spellingly-aria.ngrok-free.dev]
+[28-Feb-2026 01:35:11 Europe/Berlin] Preference JSON: {"items":[{"title":"Acceso a Materias - semester","quantity":1,"unit_price":239.8,"currency_id":"BRL"}],"payer":{"email":"adm@teste.com.br","name":"Cauan Bernardino Diogo","address":{"zip_code":"23906-825","street_name":"Brasil"}},"back_urls":{"success":"https:\/\/tychistic-spellingly-aria.ngrok-free.dev\/payment-success.php?status=approved&order_id=ORDER-1772238905-1866","failure":"https:\/\/tychistic-spellingly-aria.ngrok-free.dev\/checkout-mercadopago.php?error=payment_failed","pending":"https:\/\/tychistic-spellingly-aria.ngrok-free.dev\/payment-success.php?status=pending&order_id=ORDER-1772238905-1866"},"notification_url":"https:\/\/tychistic-spellingly-aria.ngrok-free.dev\/webhook-mercadopago.php","external_reference":"ORDER-1772238905-1866","metadata":{"email":"adm@teste.com.br","name":"Cauan Bernardino Diogo","plan_id":"semester","plan_duration_days":180,"materias":"2,1"}}
+[28-Feb-2026 01:35:12 Europe/Berlin] ========== API MERCADOPAGO RESPONSE ==========
+[28-Feb-2026 01:35:12 Europe/Berlin] HTTP Code: 201
+[28-Feb-2026 01:35:12 Europe/Berlin] Curl Error: Nenhum
+[28-Feb-2026 01:35:12 Europe/Berlin] Response: {"additional_info":"","auto_return":"","back_urls":{"failure":"https://tychistic-spellingly-aria.ngrok-free.dev/checkout-mercadopago.php?error=payment_failed","pending":"https://tychistic-spellingly-aria.ngrok-free.dev/payment-success.php?status=pending\u0026order_id=ORDER-1772238905-1866","success":"https://tychistic-spellingly-aria.ngrok-free.dev/payment-success.php?status=approved\u0026order_id=ORDER-1772238905-1866"},"binary_mode":false,"client_id":"776352740846213","collector_id":3232686376
+[28-Feb-2026 01:35:12 Europe/Berlin] =============================================
+[28-Feb-2026 01:35:12 Europe/Berlin] Sucesso: Preference criada - 3232686376-b4245dc0-eab2-4a29-b4ac-479b56d8e674
+[28-Feb-2026 01:35:12 Europe/Berlin] Redirecionando para: https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=3232686376-b4245dc0-eab2-4a29-b4ac-479b56d8e674
+[28-Feb-2026 01:36:37 Europe/Berlin] Access Token carregado: OK
+[28-Feb-2026 01:36:37 Europe/Berlin] SITE_URL from env: [https://tychistic-spellingly-aria.ngrok-free.dev]
+[28-Feb-2026 01:36:37 Europe/Berlin] Final siteUrl: [https://tychistic-spellingly-aria.ngrok-free.dev]
+[28-Feb-2026 01:36:37 Europe/Berlin] siteUrl length: 48
+[28-Feb-2026 01:36:37 Europe/Berlin] siteUrl after trim: [https://tychistic-spellingly-aria.ngrok-free.dev]
+[28-Feb-2026 01:36:37 Europe/Berlin] Preference JSON: {"items":[{"title":"Acceso a Materias - semester","quantity":1,"unit_price":239.8,"currency_id":"BRL"}],"payer":{"email":"cauan@gmail.com","name":"Cauan Bernardino Diogo","address":{"zip_code":"23906-825","street_name":"Brasil"}},"back_urls":{"success":"https:\/\/tychistic-spellingly-aria.ngrok-free.dev\/payment-success.php?status=approved&order_id=ORDER-1772238926-2502","failure":"https:\/\/tychistic-spellingly-aria.ngrok-free.dev\/checkout-mercadopago.php?error=payment_failed","pending":"https:\/\/tychistic-spellingly-aria.ngrok-free.dev\/payment-success.php?status=pending&order_id=ORDER-1772238926-2502"},"notification_url":"https:\/\/tychistic-spellingly-aria.ngrok-free.dev\/webhook-mercadopago.php","external_reference":"ORDER-1772238926-2502","metadata":{"email":"cauan@gmail.com","name":"Cauan Bernardino Diogo","plan_id":"semester","plan_duration_days":180,"materias":"2,1"}}
+[28-Feb-2026 01:36:38 Europe/Berlin] ========== API MERCADOPAGO RESPONSE ==========
+[28-Feb-2026 01:36:38 Europe/Berlin] HTTP Code: 201
+[28-Feb-2026 01:36:38 Europe/Berlin] Curl Error: Nenhum
+[28-Feb-2026 01:36:38 Europe/Berlin] Response: {"additional_info":"","auto_return":"","back_urls":{"failure":"https://tychistic-spellingly-aria.ngrok-free.dev/checkout-mercadopago.php?error=payment_failed","pending":"https://tychistic-spellingly-aria.ngrok-free.dev/payment-success.php?status=pending\u0026order_id=ORDER-1772238926-2502","success":"https://tychistic-spellingly-aria.ngrok-free.dev/payment-success.php?status=approved\u0026order_id=ORDER-1772238926-2502"},"binary_mode":false,"client_id":"776352740846213","collector_id":3232686376
+[28-Feb-2026 01:36:38 Europe/Berlin] =============================================
+[28-Feb-2026 01:36:38 Europe/Berlin] Sucesso: Preference criada - 3232686376-7c440746-e627-46f8-a931-c8ae843e9084
+[28-Feb-2026 01:36:38 Europe/Berlin] Redirecionando para: https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=3232686376-7c440746-e627-46f8-a931-c8ae843e9084
+[28-Feb-2026 01:39:52 Europe/Berlin] Access Token carregado: OK
+[28-Feb-2026 01:39:52 Europe/Berlin] SITE_URL from env: [https://tychistic-spellingly-aria.ngrok-free.dev]
+[28-Feb-2026 01:39:52 Europe/Berlin] Final siteUrl: [https://tychistic-spellingly-aria.ngrok-free.dev]
+[28-Feb-2026 01:39:52 Europe/Berlin] siteUrl length: 48
+[28-Feb-2026 01:39:52 Europe/Berlin] siteUrl after trim: [https://tychistic-spellingly-aria.ngrok-free.dev]
+[28-Feb-2026 01:39:52 Europe/Berlin] Preference JSON: {"items":[{"title":"Acceso a Materias - annual","quantity":1,"unit_price":399.8,"currency_id":"BRL"}],"payer":{"email":"gabrielle@gmail.com","name":"Gabrielle","address":{"zip_code":"23906-825","street_name":"Brasil"}},"back_urls":{"success":"https:\/\/tychistic-spellingly-aria.ngrok-free.dev\/payment-success.php?status=approved&order_id=ORDER-1772239173-6118","failure":"https:\/\/tychistic-spellingly-aria.ngrok-free.dev\/checkout-mercadopago.php?error=payment_failed","pending":"https:\/\/tychistic-spellingly-aria.ngrok-free.dev\/payment-success.php?status=pending&order_id=ORDER-1772239173-6118"},"notification_url":"https:\/\/tychistic-spellingly-aria.ngrok-free.dev\/webhook-mercadopago.php","external_reference":"ORDER-1772239173-6118","metadata":{"email":"gabrielle@gmail.com","name":"Gabrielle","plan_id":"annual","plan_duration_days":365,"materias":"2,1"}}
+[28-Feb-2026 01:39:53 Europe/Berlin] ========== API MERCADOPAGO RESPONSE ==========
+[28-Feb-2026 01:39:53 Europe/Berlin] HTTP Code: 201
+[28-Feb-2026 01:39:53 Europe/Berlin] Curl Error: Nenhum
+[28-Feb-2026 01:39:53 Europe/Berlin] Response: {"additional_info":"","auto_return":"","back_urls":{"failure":"https://tychistic-spellingly-aria.ngrok-free.dev/checkout-mercadopago.php?error=payment_failed","pending":"https://tychistic-spellingly-aria.ngrok-free.dev/payment-success.php?status=pending\u0026order_id=ORDER-1772239173-6118","success":"https://tychistic-spellingly-aria.ngrok-free.dev/payment-success.php?status=approved\u0026order_id=ORDER-1772239173-6118"},"binary_mode":false,"client_id":"776352740846213","collector_id":3232686376
+[28-Feb-2026 01:39:53 Europe/Berlin] =============================================
+[28-Feb-2026 01:39:53 Europe/Berlin] Sucesso: Preference criada - 3232686376-98f9b5a2-323d-4add-8e46-748ea31f9f7b
+[28-Feb-2026 01:39:53 Europe/Berlin] Redirecionando para: https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=3232686376-98f9b5a2-323d-4add-8e46-748ea31f9f7b
+[28-Feb-2026 01:45:47 Europe/Berlin] Access Token carregado: OK
+[28-Feb-2026 01:45:47 Europe/Berlin] SITE_URL from env: [https://tychistic-spellingly-aria.ngrok-free.dev]
+[28-Feb-2026 01:45:47 Europe/Berlin] Final siteUrl: [https://tychistic-spellingly-aria.ngrok-free.dev]
+[28-Feb-2026 01:45:47 Europe/Berlin] siteUrl length: 48
+[28-Feb-2026 01:45:47 Europe/Berlin] siteUrl after trim: [https://tychistic-spellingly-aria.ngrok-free.dev]
+[28-Feb-2026 01:45:47 Europe/Berlin] Preference JSON: {"items":[{"title":"Acceso a Materias - semester","quantity":1,"unit_price":239.8,"currency_id":"BRL"}],"payer":{"email":"joma@gmail.com","name":"Joma","address":{"zip_code":"23906-825","street_name":"Brasil"}},"back_urls":{"success":"https:\/\/tychistic-spellingly-aria.ngrok-free.dev\/payment-success.php?status=approved&order_id=ORDER-1772239527-3371","failure":"https:\/\/tychistic-spellingly-aria.ngrok-free.dev\/checkout-mercadopago.php?error=payment_failed","pending":"https:\/\/tychistic-spellingly-aria.ngrok-free.dev\/payment-success.php?status=pending&order_id=ORDER-1772239527-3371"},"notification_url":"https:\/\/tychistic-spellingly-aria.ngrok-free.dev\/webhook-mercadopago.php","external_reference":"ORDER-1772239527-3371","metadata":{"email":"joma@gmail.com","name":"Joma","plan_id":"semester","plan_duration_days":180,"materias":"2,1"}}
+[28-Feb-2026 01:45:48 Europe/Berlin] ========== API MERCADOPAGO RESPONSE ==========
+[28-Feb-2026 01:45:48 Europe/Berlin] HTTP Code: 201
+[28-Feb-2026 01:45:48 Europe/Berlin] Curl Error: Nenhum
+[28-Feb-2026 01:45:48 Europe/Berlin] Response: {"additional_info":"","auto_return":"","back_urls":{"failure":"https://tychistic-spellingly-aria.ngrok-free.dev/checkout-mercadopago.php?error=payment_failed","pending":"https://tychistic-spellingly-aria.ngrok-free.dev/payment-success.php?status=pending\u0026order_id=ORDER-1772239527-3371","success":"https://tychistic-spellingly-aria.ngrok-free.dev/payment-success.php?status=approved\u0026order_id=ORDER-1772239527-3371"},"binary_mode":false,"client_id":"776352740846213","collector_id":3232686376
+[28-Feb-2026 01:45:48 Europe/Berlin] =============================================
+[28-Feb-2026 01:45:48 Europe/Berlin] Sucesso: Preference criada - 3232686376-cd757c2a-9994-4142-949e-244bacde49e6
+[28-Feb-2026 01:45:48 Europe/Berlin] Redirecionando para: https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=3232686376-cd757c2a-9994-4142-949e-244bacde49e6
+[28-Feb-2026 01:46:28 Europe/Berlin] Access Token carregado: OK
+[28-Feb-2026 01:46:28 Europe/Berlin] SITE_URL from env: [https://tychistic-spellingly-aria.ngrok-free.dev]
+[28-Feb-2026 01:46:28 Europe/Berlin] Final siteUrl: [https://tychistic-spellingly-aria.ngrok-free.dev]
+[28-Feb-2026 01:46:28 Europe/Berlin] siteUrl length: 48
+[28-Feb-2026 01:46:28 Europe/Berlin] siteUrl after trim: [https://tychistic-spellingly-aria.ngrok-free.dev]
+[28-Feb-2026 01:46:28 Europe/Berlin] Preference JSON: {"items":[{"title":"Acceso a Materias - monthly","quantity":1,"unit_price":59.8,"currency_id":"BRL"}],"payer":{"email":"joma@gmail.com","name":"Joma","address":{"zip_code":"23906-825","street_name":"Brasil"}},"back_urls":{"success":"https:\/\/tychistic-spellingly-aria.ngrok-free.dev\/payment-success.php?status=approved&order_id=ORDER-1772239575-4769","failure":"https:\/\/tychistic-spellingly-aria.ngrok-free.dev\/checkout-mercadopago.php?error=payment_failed","pending":"https:\/\/tychistic-spellingly-aria.ngrok-free.dev\/payment-success.php?status=pending&order_id=ORDER-1772239575-4769"},"notification_url":"https:\/\/tychistic-spellingly-aria.ngrok-free.dev\/webhook-mercadopago.php","external_reference":"ORDER-1772239575-4769","metadata":{"email":"joma@gmail.com","name":"Joma","plan_id":"monthly","plan_duration_days":30,"materias":"2,1"}}
+[28-Feb-2026 01:46:28 Europe/Berlin] ========== API MERCADOPAGO RESPONSE ==========
+[28-Feb-2026 01:46:28 Europe/Berlin] HTTP Code: 201
+[28-Feb-2026 01:46:28 Europe/Berlin] Curl Error: Nenhum
+[28-Feb-2026 01:46:28 Europe/Berlin] Response: {"additional_info":"","auto_return":"","back_urls":{"failure":"https://tychistic-spellingly-aria.ngrok-free.dev/checkout-mercadopago.php?error=payment_failed","pending":"https://tychistic-spellingly-aria.ngrok-free.dev/payment-success.php?status=pending\u0026order_id=ORDER-1772239575-4769","success":"https://tychistic-spellingly-aria.ngrok-free.dev/payment-success.php?status=approved\u0026order_id=ORDER-1772239575-4769"},"binary_mode":false,"client_id":"776352740846213","collector_id":3232686376
+[28-Feb-2026 01:46:28 Europe/Berlin] =============================================
+[28-Feb-2026 01:46:28 Europe/Berlin] Sucesso: Preference criada - 3232686376-86fa8987-575b-4e99-b41b-36703300e94a
+[28-Feb-2026 01:46:28 Europe/Berlin] Redirecionando para: https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=3232686376-86fa8987-575b-4e99-b41b-36703300e94a

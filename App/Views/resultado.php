@@ -177,7 +177,7 @@ if ($inicio > 0) {
         <div class="container py-3 d-flex justify-content-between align-items-center">
             <div class="d-flex align-items-center gap-3">
                 <div class="text-white p-2">
-                    <img src="../assets/img/logo-bd-transparente.png" alt="logo" style="width: 40px; height: 40px;">
+                    <img src="/assets/img/logo-bd-transparente.png" alt="logo" style="width: 40px; height: 40px;">
                 </div>
                 <h6 class="fw-bold mb-0 text-primary"><?= htmlspecialchars($nome_materia) ?></h6>
             </div>

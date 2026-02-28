@@ -8,16 +8,16 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="../App/assets/css/index.css" />
+    <link rel="stylesheet" href="assets/css/index.css" />
     <!-- Favicon Redondo -->
     <link rel="icon" type="image/x-icon" href="caminho/para/favicon-round.ico">
-    <link rel="icon" type="image/png" sizes="32x32" href="../App/assets/img/favicon-round-32x32.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-round-32x32.png">
 
     <!-- Ícone Apple Redondo -->
-    <link rel="apple-touch-icon" sizes="180x180" href="../App/assets/img/apple-touch-icon-round.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/img/apple-touch-icon-round.png">
 
     <!-- Ícone Android Redondo -->
-    <link rel="icon" type="image/png" sizes="192x192" href="../App/assets/img/favicon-round-192x192.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="assets/img/favicon-round-192x192.png">
     <style>
         :root {
             --bs-primary: #6a0392;
@@ -216,7 +216,7 @@
     <nav class="navbar navbar-expand-lg navbar-light sticky-top py-3">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center fw-bold text-primary" href="#">
-                <img src="../App/assets/img/logo-bd-transparente.png" alt="logo" style="width: 60px; height: 60px;" />
+                <img src="assets/img/logo-bd-transparente.png" alt="logo" style="width: 60px; height: 60px;" />
             </a>
             <button class="navbar-toggler" data-bs-target="#navbarNav" data-bs-toggle="collapse" type="button">
                 <span class="navbar-toggler-icon"></span>
@@ -448,7 +448,7 @@
             <div class="row justify-content-around">
                 <div class="col-md-4 mb-4">
                     <a class="navbar-brand d-flex align-items-center fw-bold text-white mb-3" href="#">
-                        <img src="../App/assets/img/logo-bd-transparente.png" alt="logo" style="width: 40px; height: 40px; filter: brightness(0) invert(1);" />
+                        <img src="assets/img/logo-bd-transparente.png" alt="logo" style="width: 40px; height: 40px; filter: brightness(0) invert(1);" />
                     </a>
                     <p class="pe-lg-5">
                         Formando a los especialistas del mañana con tecnología de vanguardia y contenido médico de la

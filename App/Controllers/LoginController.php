@@ -24,7 +24,7 @@ class LoginController
     {
         // Permite apenas POST
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            $this->redirect('/banco_choices/public/login.php?error=acessoinvalido');
+            $this->redirect('/login.php?error=acessoinvalido');
         }
 
         // Captura e valida dados
@@ -32,7 +32,7 @@ class LoginController
         $senha = $_POST['senha'] ?? '';
 
         if ($email === '' || $senha === '') {
-            $this->redirect('/banco_choices/public/login.php?error=camposobrigatorios');
+            $this->redirect('/login.php?error=camposobrigatorios');
         }
 
         // Autenticação
@@ -40,7 +40,7 @@ class LoginController
         $usuario = $usuarioModel->autenticar($email, $senha);
 
         if (!$usuario) {
-            $this->redirect('/banco_choices/public/login.php?error=logininvalido');
+            $this->redirect('/login.php?error=logininvalido');
         }
 
         //Sessão do usuário (PADRÃO DO SISTEMA)
@@ -52,7 +52,7 @@ class LoginController
         ];
 
         // Redireciona para o dashboard
-        $this->redirect('/banco_choices/App/Views/dashboard.php');
+        $this->redirect('/dashboard.php');
     }
 
     private function redirect(string $url): void
