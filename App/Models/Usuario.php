@@ -57,7 +57,7 @@ class Usuario
         }
     }
 
-    private function vincularMateria(int $usuarioId, int $materiaId): void
+    public function vincularMateria(int $usuarioId, int $materiaId): void
     {
         $sql = "INSERT INTO usuarios_materias (usuario_id, materia_id)
                 VALUES (:usuario, :materia)";
@@ -67,6 +67,24 @@ class Usuario
             ':usuario' => $usuarioId,
             ':materia' => $materiaId
         ]);
+    }
+
+    /**
+     * Verifica se o usuário tem a matéria liberada (compra/cadastro).
+     */
+    public function usuarioPossuiMateria(int $usuarioId, int $materiaId): bool
+    {
+        $sql = "SELECT 1 FROM usuarios_materias
+                WHERE usuario_id = :usuario AND materia_id = :materia
+                LIMIT 1";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([
+            ':usuario' => $usuarioId,
+            ':materia' => $materiaId
+        ]);
+
+        return (bool) $stmt->fetchColumn();
     }
 
     /* ======================

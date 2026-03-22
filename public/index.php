@@ -9,15 +9,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="assets/css/index.css" />
-    <!-- Favicon Redondo -->
-    <link rel="icon" type="image/x-icon" href="caminho/para/favicon-round.ico">
-    <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-round-32x32.png">
-
-    <!-- Ícone Apple Redondo -->
-    <link rel="apple-touch-icon" sizes="180x180" href="assets/img/apple-touch-icon-round.png">
-
-    <!-- Ícone Android Redondo -->
-    <link rel="icon" type="image/png" sizes="192x192" href="assets/img/favicon-round-192x192.png">
+    <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+    <link rel="apple-touch-icon" href="assets/img/favicon.svg">
     <style>
         :root {
             --bs-primary: #6a0392;
@@ -215,8 +208,8 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-light sticky-top py-3">
         <div class="container">
-            <a class="navbar-brand d-flex align-items-center fw-bold text-primary" href="#">
-                <img src="assets/img/logo-bd-transparente.png" alt="logo" style="width: 60px; height: 60px;" />
+            <a class="navbar-brand d-flex align-items-center fw-bold text-primary" href="index.php">
+                <img src="assets/img/logo-bd-transparente.svg" alt="Banco de Choices" style="width: 180px; height: auto; max-height: 48px;" />
             </a>
             <button class="navbar-toggler" data-bs-target="#navbarNav" data-bs-toggle="collapse" type="button">
                 <span class="navbar-toggler-icon"></span>
@@ -235,7 +228,7 @@
                 </ul>
                 <div class="d-flex gap-2">
                     <a class="btn btn-link text-decoration-none rounded-pill fw-bold" href="login.php">Iniciá Sesión</a>
-                    <a class="btn btn-reverse text-decoration-none rounded-pill px-4" href="cadastro.php">Inscribite gratis</a>
+                    <a class="btn btn-reverse text-decoration-none rounded-pill px-4" href="selecionar-materias.php">Inscribite gratis</a>
                 </div>
             </div>
         </div>
@@ -252,8 +245,8 @@
                         banco de preguntas más completo, actualizado y comentado por especialistas.
                     </p>
                     <div class="d-flex flex-column flex-md-row gap-3">
-                        <a class="btn btn-reverse btn-lg rounded-pill px-5" href="#">Empezá hoy gratis</a>
-                        <a class="btn btn-outline-primary btn-lg rounded-pill px-5" href="#">Mirá la demo</a>
+                        <a class="btn btn-reverse btn-lg rounded-pill px-5" href="selecionar-materias.php">Empezá hoy gratis</a>
+                        <a class="btn btn-outline-primary btn-lg rounded-pill px-5" href="#caracteristicas">Mirá la demo</a>
                     </div>
                 </div>
                 <div class="col-lg-6">
@@ -372,7 +365,7 @@
                                         class="material-symbols-outlined text-success me-2">check_circle</span> 1
                                     simulacro al mes</li>
                             </ul>
-                            <a class="btn btn-outline-primary w-100 py-3 fw-bold" href="#">Elegí Básico</a>
+                            <a class="btn btn-outline-primary w-100 py-3 fw-bold" href="selecionar-materias.php">Elegí Básico</a>
                         </div>
                     </div>
                 </div>
@@ -402,7 +395,7 @@
                                         class="material-symbols-outlined text-primary me-2">check_circle</span> Ranking
                                     nacional</li>
                             </ul>
-                            <a class="btn btn-reverse w-100 py-3 fw-bold shadow" href="#">Elegí Plan Pro</a>
+                            <a class="btn btn-reverse w-100 py-3 fw-bold shadow" href="selecionar-materias.php">Elegí Plan Pro</a>
                         </div>
                     </div>
                 </div>
@@ -422,7 +415,7 @@
                                         class="material-symbols-outlined text-success me-2">check_circle</span> Soporte
                                     prioritario 24/7</li>
                             </ul>
-                            <a class="btn btn-outline-primary w-100 py-3 fw-bold" href="#">Contactá ventas</a>
+                            <a class="btn btn-outline-primary w-100 py-3 fw-bold" href="selecionar-materias.php">Contactá ventas</a>
                         </div>
                     </div>
                 </div>
@@ -437,7 +430,7 @@
                 médica más avanzada de la región.
             </p>
             <div class="d-flex flex-column flex-sm-row justify-content-center gap-3">
-                <a class="btn btn-outline btn-lg rounded-pill px-5 py-3 fw-bold" href="cadastro.php">Inscribite ahora</a>
+                <a class="btn btn-outline btn-lg rounded-pill px-5 py-3 fw-bold" href="selecionar-materias.php">Inscribite ahora</a>
                 <!-- <a class="btn btn-outline btn-lg rounded-pill px-5 py-3 fw-bold" href="#">Mirá planes anuales</a> -->
             </div>
         </div>
@@ -447,8 +440,8 @@
         <div class="container pt-5">
             <div class="row justify-content-around">
                 <div class="col-md-4 mb-4">
-                    <a class="navbar-brand d-flex align-items-center fw-bold text-white mb-3" href="#">
-                        <img src="assets/img/logo-bd-transparente.png" alt="logo" style="width: 40px; height: 40px; filter: brightness(0) invert(1);" />
+                    <a class="navbar-brand d-flex align-items-center fw-bold text-white mb-3" href="index.php">
+                        <img src="assets/img/logo-bd-transparente.svg" alt="Banco de Choices" style="width: 160px; height: auto; max-height: 40px; filter: brightness(0) invert(1);" />
                     </a>
                     <p class="pe-lg-5">
                         Formando a los especialistas del mañana con tecnología de vanguardia y contenido médico de la
@@ -459,18 +452,18 @@
                 <div class="col-md-2 col-6">
                     <h6 class="text-white fw-bold mb-4">Plataforma</h6>
                     <ul class="list-unstyled">
-                        <li class="mb-2"><a class="text-decoration-none nav-link" href="#">Banco de Preguntas</a></li>
-                        <li class="mb-2"><a class="text-decoration-none nav-link" href="#">Simulacros Examen</a></li>
-                        <li class="mb-2"><a class="text-decoration-none nav-link" href="#">Especialidades</a></li>
+                        <li class="mb-2"><a class="text-decoration-none nav-link" href="login.php">Banco de Preguntas</a></li>
+                        <li class="mb-2"><a class="text-decoration-none nav-link" href="login.php">Simulacros Examen</a></li>
+                        <li class="mb-2"><a class="text-decoration-none nav-link" href="#materias">Especialidades</a></li>
                     </ul>
                 </div>
 
                 <div class="col-md-2 col-6">
                     <h6 class="text-white fw-bold mb-4">Soporte</h6>
                     <ul class="list-unstyled">
-                        <li class="mb-2"><a class="text-decoration-none nav-link" href="#">Centro de ayuda</a></li>
-                        <li class="mb-2"><a class="text-decoration-none nav-link" href="#">Contacto</a></li>
-                        <li class="mb-2"><a class="text-decoration-none nav-link" href="#">Blog médico</a></li>
+                        <li class="mb-2"><a class="text-decoration-none nav-link" href="login.php">Centro de ayuda</a></li>
+                        <li class="mb-2"><a class="text-decoration-none nav-link" href="#contacto">Contacto</a></li>
+                        <li class="mb-2"><a class="text-decoration-none nav-link" href="#caracteristicas">Recursos</a></li>
                     </ul>
                 </div>
 
@@ -478,18 +471,28 @@
                     <h6 class="text-white fw-bold mb-4">Legal</h6>
                     <ul class="list-unstyled">
                         <li class="mb-2">
-                            <a class="text-decoration-none nav-link" href="#">Términos y condiciones</a>
+                            <a class="text-decoration-none nav-link" href="#terminos">Términos y condiciones</a>
                         </li>
                         <li class="mb-2">
-                            <a class="text-decoration-none nav-link" href="#">Política de Privacidad</a>
+                            <a class="text-decoration-none nav-link" href="#privacidad">Política de Privacidad</a>
                         </li>
                         <li class="mb-2">
-                            <a class="text-decoration-none nav-link" href="#">Protección de Datos (LGPD)</a>
+                            <a class="text-decoration-none nav-link" href="#lgpd">Protección de Datos (LGPD)</a>
                         </li>
                         <li class="mb-2">
-                            <a class="text-decoration-none nav-link" href="#">Cookies</a>
+                            <a class="text-decoration-none nav-link" href="#cookies">Cookies</a>
                         </li>
                     </ul>
+                </div>
+            </div>
+
+            <div class="row pt-2">
+                <div class="col-12">
+                    <p id="terminos" class="small mb-2" style="scroll-margin-top: 5rem;">Los servicios de BancodeChoices se ofrecen bajo los términos generales de uso del sitio. El acceso implica la aceptación de estas condiciones.</p>
+                    <p id="privacidad" class="small mb-2" style="scroll-margin-top: 5rem;">Tratamos los datos personales conforme a nuestra política de privacidad y la normativa aplicable.</p>
+                    <p id="lgpd" class="small mb-2" style="scroll-margin-top: 5rem;">Cumplimos con la protección de datos personales (LGPD Brasil y principios equivalentes en la región).</p>
+                    <p id="cookies" class="small mb-2" style="scroll-margin-top: 5rem;">Utilizamos cookies necesarias para el funcionamiento del sitio; podés ajustar preferencias en tu navegador.</p>
+                    <p id="contacto" class="small mb-0" style="scroll-margin-top: 5rem;">Consultas y soporte: utilizá el acceso desde la plataforma una vez iniciada la sesión o el centro de ayuda.</p>
                 </div>
             </div>
 

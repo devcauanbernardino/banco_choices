@@ -43,6 +43,10 @@ class LoginController
             $this->redirect('/login.php?error=logininvalido');
         }
 
+        if (session_status() === PHP_SESSION_ACTIVE) {
+            session_regenerate_id(true);
+        }
+
         //Sessão do usuário (PADRÃO DO SISTEMA)
         $_SESSION['usuario'] = [
             'id'    => $usuario['id'],

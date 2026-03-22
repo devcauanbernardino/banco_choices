@@ -10,7 +10,7 @@ session_start();
 require_once __DIR__ . '/../../config/conexao.php';
 require_once __DIR__ . '/../Models/Usuario.php';
 require_once __DIR__ . '/../Controllers/PerfilController.php';
-require_once __DIR__ . '/../Controllers/QuestionarioController.php'; // Para a SimulationSession
+require_once __DIR__ . '/../Session/SimulationSession.php';
 
 // 2. Inicializamos os objetos
 $objConexao = new Conexao();

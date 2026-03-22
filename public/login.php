@@ -1,12 +1,19 @@
 <?php
 $mensagensErro = [
-    'naologado' => 'Você precisa estar logado para acessar o sistema.',
-    'logininvalido' => 'E-mail ou senha incorretos.',
-    'acessoinvalido' => 'Acesso inválido.',
+    'naologado' => 'Debés iniciar sesión para acceder al sistema.',
+    'logininvalido' => 'Correo o contraseña incorrectos.',
+    'acessoinvalido' => 'Acceso inválido.',
+    'camposobrigatorios' => 'Completá todos los campos obligatorios y elegí al menos una materia.',
+    'emailinvalido' => 'Ingresá un correo electrónico válido.',
+    'naocoincidem' => 'Las contraseñas no coinciden.',
+    'senhafraca' => 'La contraseña debe tener al menos 8 caracteres, mayúscula, minúscula, número y un símbolo.',
+    'emailcadastrado' => 'Ese correo ya está registrado.',
+    'error' => 'No se pudo completar el registro. Intentá de nuevo.',
 ];
 
 $erro = $_GET['error'] ?? null;
 $mensagem = $mensagensErro[$erro] ?? null;
+$registroOk = isset($_GET['registered']) && $_GET['registered'] === '1';
 ?>
 
 <!DOCTYPE html>
@@ -21,16 +28,8 @@ $mensagem = $mensagensErro[$erro] ?? null;
         rel="stylesheet" />
     <link rel="stylesheet" href="assets/css/login.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-    <link rel="icon" href="assets/img/favicon.ico" type="image/x-icon">
-    <!-- Favicon Redondo -->
-    <link rel="icon" type="image/x-icon" href="caminho/para/favicon-round.ico">
-    <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-round-32x32.png">
-
-    <!-- Ícone Apple Redondo -->
-    <link rel="apple-touch-icon" sizes="180x180" href="assets/img/apple-touch-icon-round.png">
-
-    <!-- Ícone Android Redondo -->
-    <link rel="icon" type="image/png" sizes="192x192" href="assets/img/favicon-round-192x192.png">
+    <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+    <link rel="apple-touch-icon" href="assets/img/favicon.svg">
 
 
 </head>
@@ -43,8 +42,8 @@ $mensagem = $mensagensErro[$erro] ?? null;
                 <div class="login-sidebar-overlay"></div>
                 <div class="sidebar-content mw-100" style="max-width: 600px;">
                     <div class="mb-4">
-                        <img src="assets/img/logo-bd-transparente.png" alt="logo"
-                            style="width: 60px; height: 60px; filter: brightness(0) invert(1);" />
+                        <img src="assets/img/logo-bd-transparente.svg" alt="Banco de Choices"
+                            style="width: 180px; height: auto; max-height: 48px; filter: brightness(0) invert(1);" />
                     </div>
                     <h1 class="display-4 fw-bold mb-4">Tu futuro como especialista empieza acá.</h1>
                     <p class="lead mb-5 opacity-75">Unite a la comunidad más grande de residentes médicos en Argentina y
@@ -79,7 +78,7 @@ $mensagem = $mensagensErro[$erro] ?? null;
                         </div>
                     </div>
                     <div class="mb-4">
-                        <a href="/index.php"
+                        <a href="index.php"
                             class="voltar-inicio gap-2 text-decoration-none text-muted small mb-3">
                             <i class="bi bi-arrow-left"></i>
                             Volver al inicio
@@ -90,14 +89,19 @@ $mensagem = $mensagensErro[$erro] ?? null;
                     </div>
 
 
-                    <?php if ($mensagem): ?>
+                    <?php if ($registroOk): ?>
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            Registro exitoso. Ya podés iniciar sesión con tu correo y contraseña.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    <?php elseif ($mensagem): ?>
                         <div class="alert alert-warning alert-dismissible fade show" role="alert">
                             <?= htmlspecialchars($mensagem) ?>
                             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                         </div>
                     <?php endif; ?>
 
-                    <form action="login-process.php" method="post" id="loginForm">
+                    <form action="controllers/login-process.php" method="post" id="loginForm">
                         <div class="mb-3">
                             <label class="form-label fw-medium small" for="emailInput">Email</label>
                             <div class="input-group">
@@ -123,7 +127,7 @@ $mensagem = $mensagensErro[$erro] ?? null;
                                     Recordarme
                                 </label>
                             </div>
-                            <a class="text-navy text-decoration-none small fw-bold" href="#">¿Olvidaste tu
+                            <a class="text-navy text-decoration-none small fw-bold" href="index.php#contacto">¿Olvidaste tu
                                 contraseña?</a>
                         </div>
                         <div class="d-grid mb-4">
@@ -166,9 +170,9 @@ $mensagem = $mensagensErro[$erro] ?? null;
                     </div>
                     <footer class="mt-auto border-top pt-4 text-center">
                         <div class="mb-2">
-                            <a class="text-muted text-decoration-none small mx-2" href="#">Privacidad</a>
-                            <a class="text-muted text-decoration-none small mx-2" href="#">Términos</a>
-                            <a class="text-muted text-decoration-none small mx-2" href="#">Contacto</a>
+                            <a class="text-muted text-decoration-none small mx-2" href="index.php#privacidad">Privacidad</a>
+                            <a class="text-muted text-decoration-none small mx-2" href="index.php#terminos">Términos</a>
+                            <a class="text-muted text-decoration-none small mx-2" href="index.php#contacto">Contacto</a>
                         </div>
                         <p class="text-muted" style="font-size: 10px; letter-spacing: 1px;">© 2026 BANCODECHOICES</p>
                     </footer>

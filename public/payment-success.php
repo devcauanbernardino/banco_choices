@@ -1,310 +1,39 @@
 <?php
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// ============================================
-// CARREGAR CONFIGURAÇÕES
-// ============================================
-if (file_exists(__DIR__ . '/.env')) {
-    $env = parse_ini_file(__DIR__ . '/.env');
-    foreach ($env as $key => $value) {
-        putenv("$key=$value");
-    }
-}
+require_once __DIR__ . '/../config/bootstrap_env.php';
+loadProjectEnv();
 
-require_once __DIR__ . '/../config/conexao.php';
-
-// Verificar status do pagamento
 $status = $_GET['status'] ?? null;
 $orderId = $_GET['order_id'] ?? null;
 
-// registrar execução para diagnosticar problemas posteriores
-error_log("payment-success invoked; status=" . var_export($status, true) . " order_id=" . var_export($orderId, true) . " session_pending=" . (empty($_SESSION['pending_order']) ? 'no' : 'yes'));
+error_log('payment-success invoked; status=' . var_export($status, true) . ' order_id=' . var_export($orderId, true));
 
-// ============================================
-// PROCESSAR PAGAMENTO APROVADO
-// ============================================
+$pending = $_SESSION['pending_order'] ?? null;
+$userEmail = is_array($pending) ? (string) ($pending['email'] ?? '') : '';
+$userName = is_array($pending) ? (string) ($pending['name'] ?? '') : '';
 
-if ($status === 'approved' && !empty($_SESSION['pending_order'])) {
-    $order = $_SESSION['pending_order'];
+$paymentSuccess = false;
+$errorMessage = null;
+$processingReturn = false;
 
-    $conexao = new Conexao();
-    $pdo = $conexao->conectar();
-
-    try {
-        // ============================================
-        // 1. GERAR SENHA ALEATÓRIA
-        // ============================================
-
-        $password = generateRandomPassword();
-        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-
-        // ============================================
-        // 2. CRIAR USUÁRIO NO BANCO DE DADOS
-        // ============================================
-
-        $stmt = $pdo->prepare("
-            INSERT INTO users (nome, email, senha, created_at)
-            VALUES (:nome, :email, :senha, NOW())
-        ");
-
-        $stmt->execute([
-            ':nome' => $order['name'],
-            ':email' => $order['email'],
-            ':senha' => $hashedPassword
-        ]);
-
-        $userId = $pdo->lastInsertId();
-
-        // ============================================
-        // 3. CRIAR REGISTRO DE PEDIDO
-        // ============================================
-
-        $stmt = $pdo->prepare("
-            INSERT INTO pedidos (email, nome, valor_total, status, stripe_payment_id, data_criacao)
-            VALUES (:email, :nome, :valor_total, :status, :payment_id, NOW())
-        ");
-
-        $stmt->execute([
-            ':email' => $order['email'],
-            ':nome' => $order['name'],
-            ':valor_total' => $order['total_price'],
-            ':status' => 'completed',
-            ':payment_id' => $orderId
-        ]);
-
-        $pedidoId = $pdo->lastInsertId();
-
-        // ============================================
-        // 4. CRIAR ITENS DO PEDIDO (MATERIAS)
-        // ============================================
-
-        $stmt = $pdo->prepare("
-            INSERT INTO pedidos_itens (pedido_id, materia_id, plano_id, preco, data_expiracao)
-            VALUES (:pedido_id, :materia_id, :plano_id, :preco, DATE_ADD(NOW(), INTERVAL :dias DAY))
-        ");
-
-        foreach ($order['materias'] as $materiaId) {
-            error_log("Tentando inserir materia ID: " . $materiaId);
-            $stmt->execute([
-                ':pedido_id' => $pedidoId,
-                ':materia_id' => intval($materiaId),
-                ':plano_id' => $order['plan_id'],
-                ':preco' => $order['total_price'] / count($order['materias']),
-                ':dias' => $order['plan_duration_days']
-            ]);
-        }
-
-        // ============================================
-        // 5. ENVIAR EMAIL COM CREDENCIAIS (não interrompe o fluxo)
-        // ============================================
-
-        // apenas dispara se as credenciais realmente existem (evita exceções em dev)
-        $mailUser = getenv('MAIL_USERNAME');
-        $mailPass = getenv('MAIL_PASSWORD');
-        if (!empty($mailUser) && !empty($mailPass) && strpos($mailUser, 'seu_email') === false) {
-            sendConfirmationEmail(
-                $order['email'],
-                $order['name'],
-                $password,
-                $order['total_price'],
-                $order['plan_id']
-            );
-        } else {
-            error_log("payment-success: credenciais de e-mail ausentes ou padrões, ignorando envio.");
-        }
-
-        // ============================================
-        // 6. LIMPAR SESSÃO
-        // ============================================
-
-        unset($_SESSION['pending_order']);
-        unset($_SESSION['selected_materias']);
-        unset($_SESSION['selected_plan']);
-
-        $paymentSuccess = true;
-        $userEmail = $order['email'];
-        $userName = $order['name'];
-        $userPassword = $password;
-    } catch (Exception $e) {
-        // incluir detalhes completos no log para facilitar debug
-        $msg = "Erro ao processar pagamento: " . $e->getMessage();
-        $msg .= " em " . $e->getFile() . "(" . $e->getLine() . ")";
-        $msg .= "\n" . $e->getTraceAsString();
-        error_log($msg);
-
-        $paymentSuccess = false;
-        $errorMessage = "Erro ao processar seu pedido. Entraremos em contato em breve.";
-    }
+if (isset($_GET['error']) && $_GET['error'] === 'payment_failed') {
+    $errorMessage = 'El pago no pudo completarse. Podés intentar de nuevo.';
+} elseif ($status === 'approved' || $status === 'pending') {
+    $paymentSuccess = true;
+    $processingReturn = true;
+    unset($_SESSION['pending_order'], $_SESSION['selected_materias'], $_SESSION['selected_plan']);
 } else {
     $paymentSuccess = false;
-    $errorMessage = "Pagamento não confirmado ou dados não encontrados.";
+    $errorMessage = 'No pudimos identificar el resultado del pago. Si ya pagaste, esperá la confirmación por correo.';
 }
 
-// ============================================
-// FUNÇÃO PARA GERAR SENHA ALEATÓRIA
-// ============================================
-
-function generateRandomPassword($length = 12)
-{
-    $uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    $lowercase = 'abcdefghijklmnopqrstuvwxyz';
-    $numbers = '0123456789';
-    $special = '!@#$%^&*';
-
-    $allChars = $uppercase . $lowercase . $numbers . $special;
-    $password = '';
-
-    // Garantir que tenha pelo menos um de cada tipo
-    $password .= $uppercase[rand(0, strlen($uppercase) - 1)];
-    $password .= $lowercase[rand(0, strlen($lowercase) - 1)];
-    $password .= $numbers[rand(0, strlen($numbers) - 1)];
-    $password .= $special[rand(0, strlen($special) - 1)];
-
-    // Completar com caracteres aleatórios
-    for ($i = 4; $i < $length; $i++) {
-        $password .= $allChars[rand(0, strlen($allChars) - 1)];
-    }
-
-    // Embaralhar
-    $password = str_shuffle($password);
-
-    return $password;
-}
-
-// ============================================
-// FUNÇÃO PARA ENVIAR EMAIL
-// ============================================
-
-function sendConfirmationEmail($email, $name, $password, $totalPrice, $planId)
-{
-    // Carregar PHPMailer
-    require_once __DIR__ . '/../vendor/autoload.php';
-
-    $mail = new PHPMailer\PHPMailer\PHPMailer();
-
-    try {
-        // ============================================
-        // CONFIGURAÇÃO DO SMTP
-        // ============================================
-        // ALTERE ESTES VALORES COM SUAS CREDENCIAIS
-
-        $mail->isSMTP();
-        $mail->Host = getenv('MAIL_HOST') ?: 'smtp.gmail.com';
-        $mail->Port = getenv('MAIL_PORT') ?: 587;
-        $mail->SMTPAuth = true;
-        $mail->SMTPSecure = getenv('MAIL_ENCRYPTION') ?: 'tls';
-        $mail->Username = getenv('MAIL_USERNAME');
-        $mail->Password = getenv('MAIL_PASSWORD');
-
-        // ============================================
-        // CONFIGURAÇÃO DO EMAIL
-        // ============================================
-
-        $mail->setFrom(getenv('MAIL_FROM'), getenv('MAIL_FROM_NAME'));
-        $mail->addAddress($email, $name);
-        $mail->isHTML(true);
-        $mail->CharSet = 'UTF-8';
-
-        // ============================================
-        // ASSUNTO E CORPO DO EMAIL
-        // ============================================
-
-        $mail->Subject = '¡Bienvenido a Banco de Choices! Tus credenciales de acceso';
-
-        $siteUrl = getenv('SITE_URL') ?: 'http://localhost:8000';
-        $planName = getPlanName($planId);
-
-        $mail->Body = "
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <meta charset='UTF-8'>
-            <style>
-                body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-                .container { max-width: 600px; margin: 0 auto; background: #f9fafb; padding: 20px; border-radius: 8px; }
-                .header { background: linear-gradient(135deg, #002147, #6a0392); color: white; padding: 20px; border-radius: 8px; text-align: center; margin-bottom: 20px; }
-                .content { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
-                .credentials { background: #f3f4f6; padding: 15px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #6a0392; }
-                .credentials p { margin: 10px 0; }
-                .credentials strong { color: #6a0392; }
-                .button { display: inline-block; background: linear-gradient(135deg, #002147, #6a0392); color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; margin: 20px 0; }
-                .footer { text-align: center; color: #9ca3af; font-size: 12px; margin-top: 20px; }
-            </style>
-        </head>
-        <body>
-            <div class='container'>
-                <div class='header'>
-                    <h1>¡Bienvenido a Banco de Choices!</h1>
-                    <p>Tu compra ha sido procesada exitosamente</p>
-                </div>
-                
-                <div class='content'>
-                    <p>Hola <strong>$name</strong>,</p>
-                    
-                    <p>¡Gracias por tu compra! Aquí están tus credenciales de acceso:</p>
-                    
-                    <div class='credentials'>
-                        <p><strong>Email:</strong> $email</p>
-                        <p><strong>Contraseña:</strong> $password</p>
-                        <p><strong>Plan:</strong> $planName</p>
-                        <p><strong>Total Pagado:</strong> R\$ " . number_format($totalPrice, 2, ',', '.') . "</p>
-                    </div>
-                    
-                    <p>Para acceder al sistema, haz clic en el botón de abajo:</p>
-                    
-                    <center>
-                        <a href='$siteUrl/login.php' class='button'>Ir al Login</a>
-                    </center>
-                    
-                    <p><strong>Instrucciones:</strong></p>
-                    <ol>
-                        <li>Accede a $siteUrl/login.php</li>
-                        <li>Ingresa tu email: <strong>$email</strong></li>
-                        <li>Ingresa tu contraseña: <strong>$password</strong></li>
-                        <li>¡Listo! Podrás acceder a todas tus materias</li>
-                    </ol>
-                    
-                    <p><strong>Recomendaciones:</strong></p>
-                    <ul>
-                        <li>Guarda esta contraseña en un lugar seguro</li>
-                        <li>Puedes cambiar tu contraseña en tu perfil después de acceder</li>
-                        <li>Si tienes problemas, contacta a nuestro soporte</li>
-                    </ul>
-                </div>
-                
-                <div class='footer'>
-                    <p>© " . date('Y') . " Banco de Choices. Todos los derechos reservados.</p>
-                    <p>Este es un email automático, por favor no responder.</p>
-                </div>
-            </div>
-        </body>
-        </html>
-        ";
-
-        $mail->send();
-        return true;
-    } catch (Exception $e) {
-        error_log("Error al enviar email: " . $mail->ErrorInfo);
-        return false;
-    }
-}
-
-// ============================================
-// FUNCIÓN PARA OBTENER NOMBRE DEL PLAN
-// ============================================
-
-function getPlanName($planId)
-{
-    $plans = [
-        'monthly' => 'Acceso 1 Mes',
-        'semester' => 'Acceso 6 Meses',
-        'annual' => 'Acceso 1 Año'
-    ];
-
-    return $plans[$planId] ?? 'Plan Desconocido';
-}
+$pageTitle = $paymentSuccess
+    ? 'Pago recibido'
+    : 'Error en el Pago';
 ?>
 
 <!DOCTYPE html>
@@ -313,11 +42,13 @@ function getPlanName($planId)
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title><?= $paymentSuccess ? 'Pago Confirmado' : 'Error en el Pago' ?> | Banco de Choices</title>
+    <title><?= htmlspecialchars($pageTitle) ?> | Banco de Choices</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+    <link rel="apple-touch-icon" href="assets/img/favicon.svg">
 
     <style>
         :root {
@@ -572,31 +303,32 @@ function getPlanName($planId)
                         <i class="bi bi-check-circle-fill"></i>
                     </div>
 
-                    <h1>¡Pago Confirmado!</h1>
-                    <p class="subtitle">Tu compra ha sido procesada exitosamente</p>
+                    <h1><?= !empty($processingReturn) ? '¡Recibimos tu pago!' : '¡Pago Confirmado!' ?></h1>
+                    <p class="subtitle">
+                        <?php if (!empty($processingReturn)): ?>
+                            Estamos confirmando el pago con Mercado Pago. <strong>No mostramos contraseñas en esta pantalla</strong> por seguridad: el acceso se libera cuando el pago queda <strong>aprobado</strong> en nuestro sistema (notificación oficial).
+                        <?php else: ?>
+                            Tu compra ha sido procesada exitosamente
+                        <?php endif; ?>
+                    </p>
 
-                    <div class="credentials-box">
-                        <div class="credential-item">
-                            <span class="credential-label">Email:</span>
-                            <span class="credential-value"><?= htmlspecialchars($userEmail) ?></span>
+                    <?php if ($userEmail !== ''): ?>
+                        <div class="credentials-box">
+                            <div class="credential-item">
+                                <span class="credential-label">Correo del pedido:</span>
+                                <span class="credential-value"><?= htmlspecialchars($userEmail) ?></span>
+                            </div>
                         </div>
-                        <div class="credential-item">
-                            <span class="credential-label">Contraseña:</span>
-                            <span class="credential-value" id="passwordValue"><?= htmlspecialchars($userPassword) ?></span>
-                            <button class="copy-btn" onclick="copyToClipboard('<?= htmlspecialchars($userPassword) ?>')">
-                                <i class="bi bi-clipboard"></i>
-                            </button>
-                        </div>
-                    </div>
+                    <?php endif; ?>
 
                     <div class="info-box">
                         <p><i class="bi bi-info-circle me-2"></i> <strong>Próximos pasos:</strong></p>
-                        <p>1. Revisa tu email (incluido spam) para confirmar tu compra</p>
-                        <p>2. Accede a tu cuenta con los datos arriba</p>
-                        <p>3. Comienza a estudiar tus materias</p>
+                        <p>1. Si el pago fue aprobado, recibirás tus credenciales por <strong>email</strong> (revisá spam).</p>
+                        <p>2. Si el pago quedó pendiente (ej. efectivo), te avisaremos cuando se acredite.</p>
+                        <p>3. Podés iniciar sesión cuando recibas el correo con tu contraseña.</p>
                     </div>
 
-                    <a href="<?= getenv('SITE_URL') ?: 'http://localhost:8000' ?>/login.php" class="btn-primary-custom">
+                    <a href="<?= htmlspecialchars(getenv('SITE_URL') ?: 'http://localhost:8000') ?>/login.php" class="btn-primary-custom">
                         <i class="bi bi-box-arrow-in-right me-2"></i>
                         Ir al Login
                     </a>

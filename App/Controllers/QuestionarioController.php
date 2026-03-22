@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../Models/Question.php';
+require_once __DIR__ . '/../Session/SimulationSession.php';
 
 /**
  * CLASSE: SimulationTimer
@@ -35,51 +36,6 @@ class SimulationTimer
     {
         // Subtrai o tempo decorrido da duração total para saber quanto falta
         return max(0, $this->totalDuration - (time() - $this->startTime));
-    }
-}
-
-
-/**
- * CLASSE: SimulationSession
- * OBJETIVO: Gerenciar o acesso à sessão do PHP de forma encapsulada.
- */
-class SimulationSession
-{
-    // Chave usada para armazenar os dados do simulado na sessão
-    private const SESSION_KEY = 'simulado';
-
-    public function __construct()
-    {
-        // Verifica se a sessão já foi iniciada, se não, inicia a sessão
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
-    }
-
-    // Verifica se existe um simulado ativo na sessão
-    public function isActive()
-    {
-        return isset($_SESSION[self::SESSION_KEY]);
-    }
-
-    // Define um valor dentro do array do simulado na sessão
-    public function set(string $key, $value)
-    {
-        $_SESSION[self::SESSION_KEY][$key] = $value;
-    }
-
-    // Obtém um valor do array do simulado na sessão
-    public function get(string $key)
-    {
-        if (isset($_SESSION[self::SESSION_KEY]) && array_key_exists($key, $_SESSION[self::SESSION_KEY])) {
-            return $_SESSION[self::SESSION_KEY][$key];
-        }
-    }
-
-    // Limpa os dados do simulado da sessão
-    public function clear()
-    {
-        unset($_SESSION[self::SESSION_KEY]);
     }
 }
 
@@ -124,6 +80,8 @@ class QuestionarioController
             $this->redirect('dashboard.php');
         }
 
+        $this->ensureUsuarioAutorizadoNoSimulado();
+
         // Verifica se as questões estão carregadas
         $questoes = $this->session->get('questoes');
         if (empty($questoes)) {
@@ -133,6 +91,33 @@ class QuestionarioController
         // Se houver timer e o tempo acabou, redireciona para o resultado (wrapper público)
         if ($this->timer && $this->timer->isExpired()) {
             $this->redirect('/resultado.php');
+        }
+    }
+
+    /**
+     * Garante login e permissão na matéria do simulado (revalidação a cada requisição).
+     */
+    private function ensureUsuarioAutorizadoNoSimulado(): void
+    {
+        if (!isset($_SESSION['usuario']['id'])) {
+            $this->session->clear();
+            $this->redirect('/login.php');
+        }
+
+        $materiaCodigo = $this->session->get('materia');
+        if ($materiaCodigo === null || $materiaCodigo === '' || !is_numeric($materiaCodigo)) {
+            return;
+        }
+
+        require_once __DIR__ . '/../../config/conexao.php';
+        require_once __DIR__ . '/../Models/Usuario.php';
+
+        $pdo = (new Conexao())->conectar();
+        $usuarioModel = new Usuario($pdo);
+
+        if (!$usuarioModel->usuarioPossuiMateria((int) $_SESSION['usuario']['id'], (int) $materiaCodigo)) {
+            $this->session->clear();
+            $this->redirect('/bancoperguntas.php');
         }
     }
 

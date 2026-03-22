@@ -1,0 +1,129 @@
+[2026-03-22T03:40:36+01:00] [preference] preference_ok id=3232686376-4c4c02de-0b53-4d39-b72b-b40bf59dcb44 order=ORDER-1774147200-8828
+[2026-03-22T03:48:08+01:00] [preference] preference_ok id=3232686376-37e575f3-d246-48ef-9d3f-7d4584a760d6 order=ORDER-1774147663-5460
+[2026-03-22T04:48:09+01:00] [preference] preference_ok id=3232686376-7296d5a1-0011-4349-9c4b-2f9fa30ef0a0 order=ORDER-1774151250-5960
+[2026-03-22T05:00:49+01:00] [webhook] recebido method=GET get=[] body=
+[2026-03-22T05:00:49+01:00] [webhook] payment_id_ausente body=
+[2026-03-22T05:03:19+01:00] [preference] preference_ok id=3232686376-e678c8af-b70a-4b8e-8639-8635ca0943cf order=ORDER-1774152169-2262
+[2026-03-22T05:06:12+01:00] [preference] insert_pedido SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'ORDER-1774152169-2262' for key 'stripe_payment_id'
+[2026-03-22T05:08:14+01:00] [preference] preference_ok id=3232686376-2ac25bb0-01cc-4dd8-b37b-325864b81749 order=ORDER-1774152476-6737
+[2026-03-22T05:09:25+01:00] [preference] preference_ok id=3232686376-f3e83986-ce35-4c5e-97af-b6d5fb98da76 order=ORDER-1774152542-5022
+[2026-03-22T05:19:29+01:00] [preference] preference_ok id=3232686376-3e01270f-9017-4877-a121-65518b32f930 order=ORDER-1774153142-4143
+[2026-03-22T05:22:08+01:00] [webhook] recebido method=GET get=[] body=
+[2026-03-22T05:22:08+01:00] [webhook] payment_id_ausente body=
+[2026-03-22T05:23:22+01:00] [preference] preference_ok id=3232686376-2651452a-5155-4043-af8c-3ca845d5e233 order=ORDER-1774153381-5395
+[2026-03-22T05:24:26+01:00] [preference] preference_ok id=3232686376-bc56824f-cc76-420f-8593-8182492a004a order=ORDER-1774153444-7532
+[2026-03-22T05:24:36+01:00] [webhook] recebido method=POST get={"id":"39284380820","topic":"merchant_order"} body={"resource":"https://api.mercadolibre.com/merchant_orders/39284380820","topic":"merchant_order"}
+[2026-03-22T05:24:36+01:00] [webhook] notificacao payment_id=39284380820
+[2026-03-22T05:24:36+01:00] [webhook] recebido method=POST get={"data_id":"151435419060","type":"payment"} body={"action":"payment.created","api_version":"v1","data":{"id":"151435419060"},"date_created":"2026-03-22T04:24:37Z","id":130162290534,"live_mode":true,"type":"payment","user_id":"3232686376"}
+[2026-03-22T05:24:36+01:00] [webhook] notificacao payment_id=151435419060
+[2026-03-22T05:24:36+01:00] [webhook] recebido method=POST get={"id":"151435419060","topic":"payment"} body={"resource":"151435419060","topic":"payment"}
+[2026-03-22T05:24:36+01:00] [webhook] notificacao payment_id=151435419060
+[2026-03-22T05:24:37+01:00] [webhook] get_payment_erro id=39284380820 Api error. Check response for details
+[2026-03-22T05:24:37+01:00] [webhook] payment_status=approved ext_ref=ORDER-1774153444-7532 metadata={"name":"TESTEJUAN3","materias":"2,1","plan_duration_days":"365","email":"cauanbernardino0@gmail.com","plan_id":"annual"}
+[2026-03-22T05:24:37+01:00] [webhook] payment_status=approved ext_ref=ORDER-1774153444-7532 metadata={"name":"TESTEJUAN3","materias":"2,1","plan_duration_days":"365","email":"cauanbernardino0@gmail.com","plan_id":"annual"}
+[2026-03-22T05:24:37+01:00] process_payment id=151435419060 status=approved ext_ref=ORDER-1774153444-7532
+[2026-03-22T05:24:37+01:00] process_payment id=151435419060 status=approved ext_ref=ORDER-1774153444-7532
+[2026-03-22T05:24:37+01:00] [webhook] recebido method=POST get={"id":"39284380820","topic":"merchant_order"} body={"resource":"https://api.mercadolibre.com/merchant_orders/39284380820","topic":"merchant_order"}
+[2026-03-22T05:24:37+01:00] [webhook] notificacao payment_id=39284380820
+[2026-03-22T05:24:37+01:00] [webhook] get_payment_erro id=39284380820 Api error. Check response for details
+[2026-03-22T05:24:38+01:00] [webhook] recebido method=GET get={"status":"approved","order_id":"ORDER-1774153444-7532","collection_id":"151435419060","collection_status":"approved","payment_id":"151435419060","external_reference":"ORDER-1774153444-7532","payment_type":"credit_card","merchant_order_id":"39284380820","preference_id":"3232686376-bc56824f-cc76-420f-8593-8182492a004a","site_id":"MLB","processing_mode":"aggregator","merchant_account_id":"null"} body=
+[2026-03-22T05:24:38+01:00] [webhook] payment_id_ausente body=
+[2026-03-22T05:24:39+01:00] approved_fulfilled mp_id=151435419060 pedido_id=15
+[2026-03-22T05:24:39+01:00] [webhook] resultado {"handled":true,"detail":"fulfilled"}
+[2026-03-22T05:24:42+01:00] approved_error SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '151435419060' for key 'stripe_payment_id'
+[2026-03-22T05:24:42+01:00] [webhook] resultado {"handled":false,"detail":"exception"}
+[2026-03-22T05:25:19+01:00] [webhook] recebido method=POST get={"id":"39284380820","topic":"merchant_order"} body={"resource":"https://api.mercadolibre.com/merchant_orders/39284380820","topic":"merchant_order"}
+[2026-03-22T05:25:19+01:00] [webhook] notificacao payment_id=39284380820
+[2026-03-22T05:25:20+01:00] [webhook] get_payment_erro id=39284380820 Api error. Check response for details
+[2026-03-22T05:25:20+01:00] [webhook] recebido method=POST get={"id":"39284380820","topic":"merchant_order"} body={"resource":"https://api.mercadolibre.com/merchant_orders/39284380820","topic":"merchant_order"}
+[2026-03-22T05:25:20+01:00] [webhook] notificacao payment_id=39284380820
+[2026-03-22T05:25:21+01:00] [webhook] get_payment_erro id=39284380820 Api error. Check response for details
+[2026-03-22T05:38:00+01:00] [webhook] recebido method=GET get={"status":"approved","order_id":"ORDER-1774153444-7532","collection_id":"151435419060","collection_status":"approved","payment_id":"151435419060","external_reference":"ORDER-1774153444-7532","payment_type":"credit_card","merchant_order_id":"39284380820","preference_id":"3232686376-bc56824f-cc76-420f-8593-8182492a004a","site_id":"MLB","processing_mode":"aggregator","merchant_account_id":"null"} body=
+[2026-03-22T05:38:00+01:00] [webhook] payment_id_ausente body=
+[2026-03-22T05:38:02+01:00] [webhook] recebido method=GET get={"status":"approved","order_id":"ORDER-1774153444-7532","collection_id":"151435419060","collection_status":"approved","payment_id":"151435419060","external_reference":"ORDER-1774153444-7532","payment_type":"credit_card","merchant_order_id":"39284380820","preference_id":"3232686376-bc56824f-cc76-420f-8593-8182492a004a","site_id":"MLB","processing_mode":"aggregator","merchant_account_id":"null"} body=
+[2026-03-22T05:38:02+01:00] [webhook] payment_id_ausente body=
+[2026-03-22T05:38:59+01:00] [preference] preference_ok id=3232686376-4fd4becb-bb5c-413f-a5d6-4391906f1089 order=ORDER-1774154299-6321
+[2026-03-22T05:39:09+01:00] [webhook] recebido method=POST get={"id":"150707768179","topic":"payment"} body={"resource":"150707768179","topic":"payment"}
+[2026-03-22T05:39:09+01:00] [webhook] notificacao payment_id=150707768179
+[2026-03-22T05:39:09+01:00] [webhook] recebido method=POST get={"id":"39256741113","topic":"merchant_order"} body={"resource":"https://api.mercadolibre.com/merchant_orders/39256741113","topic":"merchant_order"}
+[2026-03-22T05:39:09+01:00] [webhook] notificacao payment_id=39256741113
+[2026-03-22T05:39:09+01:00] [webhook] recebido method=POST get={"data_id":"150707768179","type":"payment"} body={"action":"payment.created","api_version":"v1","data":{"id":"150707768179"},"date_created":"2026-03-22T04:39:09Z","id":130162475478,"live_mode":true,"type":"payment","user_id":"3232686376"}
+[2026-03-22T05:39:09+01:00] [webhook] notificacao payment_id=150707768179
+[2026-03-22T05:39:09+01:00] [webhook] payment_status=approved ext_ref=ORDER-1774154299-6321 metadata={"name":"TESTE9@","materias":"2","plan_duration_days":"180","email":"cauanzin4@gmail.com","plan_id":"semester"}
+[2026-03-22T05:39:09+01:00] process_payment id=150707768179 status=approved ext_ref=ORDER-1774154299-6321
+[2026-03-22T05:39:09+01:00] [webhook] get_payment_erro id=39256741113 Api error. Check response for details
+[2026-03-22T05:39:09+01:00] [webhook] payment_status=approved ext_ref=ORDER-1774154299-6321 metadata={"name":"TESTE9@","materias":"2","plan_duration_days":"180","email":"cauanzin4@gmail.com","plan_id":"semester"}
+[2026-03-22T05:39:09+01:00] process_payment id=150707768179 status=approved ext_ref=ORDER-1774154299-6321
+[2026-03-22T05:39:10+01:00] [webhook] recebido method=POST get={"id":"39256741113","topic":"merchant_order"} body={"resource":"https://api.mercadolibre.com/merchant_orders/39256741113","topic":"merchant_order"}
+[2026-03-22T05:39:10+01:00] [webhook] notificacao payment_id=39256741113
+[2026-03-22T05:39:10+01:00] [webhook] get_payment_erro id=39256741113 Api error. Check response for details
+[2026-03-22T05:39:15+01:00] approved_fulfilled mp_id=150707768179 pedido_id=17
+[2026-03-22T05:39:15+01:00] [webhook] resultado {"handled":true,"detail":"fulfilled"}
+[2026-03-22T05:39:18+01:00] approved_error SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '150707768179' for key 'stripe_payment_id'
+[2026-03-22T05:39:18+01:00] [webhook] resultado {"handled":false,"detail":"exception"}
+[2026-03-22T05:39:54+01:00] [webhook] recebido method=POST get={"id":"39256741113","topic":"merchant_order"} body={"resource":"https://api.mercadolibre.com/merchant_orders/39256741113","topic":"merchant_order"}
+[2026-03-22T05:39:54+01:00] [webhook] notificacao payment_id=39256741113
+[2026-03-22T05:39:55+01:00] [webhook] get_payment_erro id=39256741113 Api error. Check response for details
+[2026-03-22T05:39:55+01:00] [webhook] recebido method=POST get={"id":"39256741113","topic":"merchant_order"} body={"resource":"https://api.mercadolibre.com/merchant_orders/39256741113","topic":"merchant_order"}
+[2026-03-22T05:39:55+01:00] [webhook] notificacao payment_id=39256741113
+[2026-03-22T05:39:56+01:00] [webhook] get_payment_erro id=39256741113 Api error. Check response for details
+[2026-03-22T05:39:57+01:00] [webhook] recebido method=POST get={"id":"39256741113","topic":"merchant_order"} body={"resource":"https://api.mercadolibre.com/merchant_orders/39256741113","topic":"merchant_order"}
+[2026-03-22T05:39:57+01:00] [webhook] notificacao payment_id=39256741113
+[2026-03-22T05:39:58+01:00] [webhook] get_payment_erro id=39256741113 Api error. Check response for details
+[2026-03-22T05:39:58+01:00] [webhook] recebido method=POST get={"id":"39256741113","topic":"merchant_order"} body={"resource":"https://api.mercadolibre.com/merchant_orders/39256741113","topic":"merchant_order"}
+[2026-03-22T05:39:58+01:00] [webhook] notificacao payment_id=39256741113
+[2026-03-22T05:39:59+01:00] [webhook] get_payment_erro id=39256741113 Api error. Check response for details
+[2026-03-22T05:42:46+01:00] [preference] preference_ok id=3232686376-752cee93-47cd-42ff-ab9c-dd6a2e9c2a8e order=ORDER-1774154495-7844
+[2026-03-22T05:43:33+01:00] [webhook] recebido method=POST get={"id":"39256788319","topic":"merchant_order"} body={"resource":"https://api.mercadolibre.com/merchant_orders/39256788319","topic":"merchant_order"}
+[2026-03-22T05:43:33+01:00] [webhook] notificacao payment_id=39256788319
+[2026-03-22T05:43:33+01:00] [webhook] recebido method=POST get={"data_id":"150708010145","type":"payment"} body={"action":"payment.created","api_version":"v1","data":{"id":"150708010145"},"date_created":"2026-03-22T04:43:33Z","id":130039521189,"live_mode":true,"type":"payment","user_id":"3232686376"}
+[2026-03-22T05:43:33+01:00] [webhook] notificacao payment_id=150708010145
+[2026-03-22T05:43:33+01:00] [webhook] recebido method=POST get={"id":"150708010145","topic":"payment"} body={"resource":"150708010145","topic":"payment"}
+[2026-03-22T05:43:33+01:00] [webhook] notificacao payment_id=150708010145
+[2026-03-22T05:43:33+01:00] [webhook] get_payment_erro id=39256788319 Api error. Check response for details
+[2026-03-22T05:43:33+01:00] [webhook] payment_status=approved ext_ref=ORDER-1774154495-7844 metadata={"name":"TESTESUCCESS","materias":"2,1","plan_duration_days":"365","email":"cauanangra04@gmail.com","plan_id":"annual"}
+[2026-03-22T05:43:33+01:00] process_payment id=150708010145 status=approved ext_ref=ORDER-1774154495-7844
+[2026-03-22T05:43:33+01:00] [webhook] payment_status=approved ext_ref=ORDER-1774154495-7844 metadata={"name":"TESTESUCCESS","materias":"2,1","plan_duration_days":"365","email":"cauanangra04@gmail.com","plan_id":"annual"}
+[2026-03-22T05:43:33+01:00] process_payment id=150708010145 status=approved ext_ref=ORDER-1774154495-7844
+[2026-03-22T05:43:34+01:00] email_skip_config mp_id=150708010145
+[2026-03-22T05:43:34+01:00] approved_fulfilled mp_id=150708010145 pedido_id=19
+[2026-03-22T05:43:34+01:00] [webhook] resultado {"handled":true,"detail":"fulfilled"}
+[2026-03-22T05:43:34+01:00] [webhook] recebido method=POST get={"id":"39256788319","topic":"merchant_order"} body={"resource":"https://api.mercadolibre.com/merchant_orders/39256788319","topic":"merchant_order"}
+[2026-03-22T05:43:34+01:00] [webhook] notificacao payment_id=39256788319
+[2026-03-22T05:43:34+01:00] [webhook] get_payment_erro id=39256788319 Api error. Check response for details
+[2026-03-22T05:43:37+01:00] approved_error SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '150708010145' for key 'stripe_payment_id'
+[2026-03-22T05:43:37+01:00] [webhook] resultado {"handled":false,"detail":"exception"}
+[2026-03-22T05:44:21+01:00] [webhook] recebido method=POST get={"id":"39256788319","topic":"merchant_order"} body={"resource":"https://api.mercadolibre.com/merchant_orders/39256788319","topic":"merchant_order"}
+[2026-03-22T05:44:21+01:00] [webhook] notificacao payment_id=39256788319
+[2026-03-22T05:44:21+01:00] [webhook] get_payment_erro id=39256788319 Api error. Check response for details
+[2026-03-22T05:44:22+01:00] [webhook] recebido method=POST get={"id":"39256788319","topic":"merchant_order"} body={"resource":"https://api.mercadolibre.com/merchant_orders/39256788319","topic":"merchant_order"}
+[2026-03-22T05:44:22+01:00] [webhook] notificacao payment_id=39256788319
+[2026-03-22T05:44:22+01:00] [webhook] get_payment_erro id=39256788319 Api error. Check response for details
+[2026-03-22T05:45:33+01:00] [webhook] recebido method=POST get={"id":"39284380820","topic":"merchant_order"} body={"resource":"https://api.mercadolibre.com/merchant_orders/39284380820","topic":"merchant_order"}
+[2026-03-22T05:45:33+01:00] [webhook] notificacao payment_id=39284380820
+[2026-03-22T05:45:33+01:00] [webhook] get_payment_erro id=39284380820 Api error. Check response for details
+[2026-03-22T05:50:59+01:00] [preference] preference_ok id=3232686376-dcbf8299-9363-4bd1-81ba-16e127d2d218 order=ORDER-1774155029-5971
+[2026-03-22T05:51:20+01:00] [webhook] recebido method=POST get={"id":"39284688350","topic":"merchant_order"} body={"resource":"https://api.mercadolibre.com/merchant_orders/39284688350","topic":"merchant_order"}
+[2026-03-22T05:51:20+01:00] [webhook] notificacao payment_id=39284688350
+[2026-03-22T05:51:20+01:00] [webhook] get_payment_erro id=39284688350 Api error. Check response for details
+[2026-03-22T05:51:20+01:00] [webhook] recebido method=POST get={"data_id":"151436876550","type":"payment"} body={"action":"payment.created","api_version":"v1","data":{"id":"151436876550"},"date_created":"2026-03-22T04:51:21Z","id":130039637485,"live_mode":true,"type":"payment","user_id":"3232686376"}
+[2026-03-22T05:51:20+01:00] [webhook] notificacao payment_id=151436876550
+[2026-03-22T05:51:21+01:00] [webhook] recebido method=POST get={"id":"39284688350","topic":"merchant_order"} body={"resource":"https://api.mercadolibre.com/merchant_orders/39284688350","topic":"merchant_order"}
+[2026-03-22T05:51:21+01:00] [webhook] notificacao payment_id=39284688350
+[2026-03-22T05:51:21+01:00] [webhook] recebido method=POST get={"id":"151436876550","topic":"payment"} body={"resource":"151436876550","topic":"payment"}
+[2026-03-22T05:51:21+01:00] [webhook] notificacao payment_id=151436876550
+[2026-03-22T05:51:21+01:00] [webhook] payment_status=approved ext_ref=ORDER-1774155029-5971 metadata={"name":"TESTEFINAL","materias":"2,1","plan_duration_days":"365","email":"cauanbernardino0@gmail.com","plan_id":"annual"}
+[2026-03-22T05:51:21+01:00] process_payment id=151436876550 status=approved ext_ref=ORDER-1774155029-5971
+[2026-03-22T05:51:22+01:00] [webhook] get_payment_erro id=39284688350 Api error. Check response for details
+[2026-03-22T05:51:22+01:00] [webhook] payment_status=approved ext_ref=ORDER-1774155029-5971 metadata={"name":"TESTEFINAL","materias":"2,1","plan_duration_days":"365","email":"cauanbernardino0@gmail.com","plan_id":"annual"}
+[2026-03-22T05:51:22+01:00] process_payment id=151436876550 status=approved ext_ref=ORDER-1774155029-5971
+[2026-03-22T05:51:28+01:00] approved_error SQLSTATE[40001]: Serialization failure: 1213 Deadlock found when trying to get lock; try restarting transaction
+[2026-03-22T05:51:28+01:00] [webhook] resultado {"handled":false,"detail":"exception"}
+[2026-03-22T05:51:28+01:00] approved_fulfilled mp_id=151436876550 pedido_id=21
+[2026-03-22T05:51:28+01:00] [webhook] resultado {"handled":true,"detail":"fulfilled"}
+[2026-03-22T05:51:59+01:00] [webhook] recebido method=POST get={"id":"39284688350","topic":"merchant_order"} body={"resource":"https://api.mercadolibre.com/merchant_orders/39284688350","topic":"merchant_order"}
+[2026-03-22T05:51:59+01:00] [webhook] notificacao payment_id=39284688350
+[2026-03-22T05:52:00+01:00] [webhook] get_payment_erro id=39284688350 Api error. Check response for details
+[2026-03-22T05:52:00+01:00] [webhook] recebido method=POST get={"id":"39284688350","topic":"merchant_order"} body={"resource":"https://api.mercadolibre.com/merchant_orders/39284688350","topic":"merchant_order"}
+[2026-03-22T05:52:00+01:00] [webhook] notificacao payment_id=39284688350
+[2026-03-22T05:52:01+01:00] [webhook] get_payment_erro id=39284688350 Api error. Check response for details

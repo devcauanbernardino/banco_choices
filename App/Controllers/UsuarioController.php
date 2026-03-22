@@ -47,7 +47,7 @@ class UsuarioController
 
         // Se deu certo, limpamos a sessão antes de ir para o sucesso
         unset($_SESSION['old_input']);
-        header('Location: /banco_choices/public/cadastro.php?success=success');
+        header('Location: ../login.php?registered=1');
         exit;
     }
 
@@ -106,7 +106,7 @@ class UsuarioController
             // Garante que a sessão seja gravada antes do redirecionamento
             session_write_close();
         }
-        header("Location: /banco_choices/public/cadastro.php?error={$error}");
+        header('Location: ../login.php?error=' . rawurlencode((string) $error));
         exit;
     }
 }

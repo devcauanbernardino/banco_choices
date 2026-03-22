@@ -285,7 +285,7 @@ $progresso = (($indiceAtual + 1) / $totalQuestoes) * 100;
     <nav class="navbar navbar-custom sticky-top mb-4">
         <div class="container-fluid">
             <div class="d-flex align-items-center gap-3">
-                <img src="/assets/img/logo-bd-transparente.png" alt="logo" style="width: 40px; height: 40px;">
+                <img src="/assets/img/logo-bd-transparente.svg" alt="logo" style="width: 40px; height: 40px;">
                 <div>
                     <h6 class="mb-0 fw-bold text-dark">Simulado:
                         <?= htmlspecialchars($nome_materia) ?>

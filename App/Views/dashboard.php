@@ -8,7 +8,6 @@ session_start();
 
 // 1. Carregamos as dependências
 require_once __DIR__ . '/auth/AuthController.php';
-require_once __DIR__ . '/../Controllers/QuestionarioController.php';
 require_once __DIR__ . '/../../config/conexao.php';
 require_once __DIR__ . '/../Controllers/DashboardController.php';
 require_once __DIR__ . '/../Models/Usuario.php';
@@ -174,7 +173,7 @@ $materias = $objUsuario->buscarMateriasDoUsuario($usuario['id']);
             </button>
 
             <div class="d-flex align-items-center gap-2">
-                <img src="/assets/img/logo-bd-transparente.png" alt="logo" style="width: 35px;">
+                <img src="/assets/img/logo-bd-transparente.svg" alt="logo" style="width: 35px;">
             </div>
             <div class="d-flex gap-3 align-items-center">
                 <div class="position-relative">

@@ -107,7 +107,7 @@ $historicoSemanal = $dashboard->getHistoricoSemanal();
         <!-- HEADER -->
         <header class="bg-white shadow-sm rounded-3 px-4 py-3 d-flex justify-content-between align-items-center mb-4">
             <div class="d-flex align-items-center gap-3">
-                <img src="/assets/img/logo-bd-transparente.png" alt="logo" style="width: 40px; height: 40px;">
+                <img src="/assets/img/logo-bd-transparente.svg" alt="logo" style="width: 40px; height: 40px;">
                 <div>
                     <h5 class="mb-0 fw-bold">Estatísticas de Evolução</h5>
                     <small class="text-muted">Acompanhe seu progresso detalhado</small>

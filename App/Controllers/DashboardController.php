@@ -78,7 +78,7 @@ class DashboardController
         $params = [':uid' => $this->usuario_id];
 
         if (!empty($filtroMateria)) {
-            $sql .= " AND materia = :materia";
+            $sql .= " AND m.nome = :materia";
             $params[':materia'] = $filtroMateria;
         }
 
@@ -132,12 +132,15 @@ class DashboardController
         $totalAcertos = $dados['total_acertos'] ?? 0;
         $aproveitamento = ($totalRespondidas > 0) ? round(($totalAcertos / $totalRespondidas) * 100, 1) : 0;
 
+        $porMateria = $this->getDesempenhoPorMateria();
+        $melhorNome = !empty($porMateria) ? ($porMateria[0]['nome'] ?? 'N/A') : 'N/A';
+
         return [
             'questoes_respondidas' => (int) $totalRespondidas,
             'aproveitamento_geral' => $aproveitamento,
             'total_simulados' => (int) ($dados['total_simulados'] ?? 0),
             'pontuacao_total' => (int) ($totalAcertos * 10),
-            'melhor_materia' => $melhorMateria['materia'] ?? 'N/A',
+            'melhor_materia' => $melhorNome,
             'sequencia_dias' => $this->calcularSequenciaReal()
         ];
     }
