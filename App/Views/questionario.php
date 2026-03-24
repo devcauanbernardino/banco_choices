@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../../config/public_url.php';
 require_once __DIR__ . '/../Controllers/QuestionarioController.php';
 
 // Inicialização do controlador e preparação dos dados
@@ -35,6 +36,7 @@ $progresso = (($indiceAtual + 1) / $totalQuestoes) * 100;
     <meta charset="UTF-8">
     <title>Simulador | BancoChoices</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <?php require_once __DIR__ . '/../../config/favicon_links.php'; ?>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -285,7 +287,7 @@ $progresso = (($indiceAtual + 1) / $totalQuestoes) * 100;
     <nav class="navbar navbar-custom sticky-top mb-4">
         <div class="container-fluid">
             <div class="d-flex align-items-center gap-3">
-                <img src="/assets/img/logo-bd-transparente.svg" alt="logo" style="width: 40px; height: 40px;">
+                <img src="<?= htmlspecialchars(public_asset_url('img/logo-bd-transparente.png')) ?>" alt="Banco de Choices" style="width: 40px; height: 40px;">
                 <div>
                     <h6 class="mb-0 fw-bold text-dark">Simulado:
                         <?= htmlspecialchars($nome_materia) ?>

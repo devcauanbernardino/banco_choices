@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Webhook (IPN) Mercado Pago — liberação de acesso somente após consulta à API.
+ */
+
 ini_set('display_errors', '0');
 ini_set('log_errors', '1');
 ini_set('error_log', __DIR__ . '/../logs/payment_errors.log');
@@ -22,19 +26,14 @@ function mp_webhook_log(string $line): void
 $rawBody = file_get_contents('php://input') ?: '';
 $get = $_GET;
 
-mp_webhook_log('recebido method=' . $_SERVER['REQUEST_METHOD'] . ' get=' . json_encode($get) . ' body=' . substr($rawBody, 0, 300));
-
 $cfg = mercadopago_config();
 $secret = $cfg['webhook_secret'];
 
-// Só valida assinatura se o secret estiver configurado
-if ($secret !== '') {
-    if (!MercadoPagoWebhookSignature::validate($rawBody, $_SERVER, $get, $secret)) {
-        mp_webhook_log('assinatura_invalida');
-        http_response_code(401);
-        echo json_encode(['ok' => false, 'error' => 'invalid_signature']);
-        exit;
-    }
+if (!MercadoPagoWebhookSignature::validate($rawBody, $_SERVER, $get, $secret)) {
+    mp_webhook_log('assinatura_invalida');
+    http_response_code(401);
+    echo json_encode(['ok' => false, 'error' => 'invalid_signature']);
+    exit;
 }
 
 $paymentId = resolveMercadoPagoPaymentId($get, $rawBody);
@@ -67,8 +66,6 @@ try {
     exit;
 }
 
-mp_webhook_log('payment_status=' . ($payment->status ?? 'null') . ' ext_ref=' . ($payment->external_reference ?? 'null') . ' metadata=' . json_encode($payment->metadata));
-
 $conexao = new Conexao();
 $pdo = $conexao->conectar();
 
@@ -79,6 +76,9 @@ mp_webhook_log('resultado ' . json_encode($result, JSON_UNESCAPED_UNICODE));
 http_response_code(200);
 echo json_encode(['ok' => true, 'result' => $result]);
 
+/**
+ * @param array<string, mixed> $get
+ */
 function resolveMercadoPagoPaymentId(array $get, string $rawBody): ?int
 {
     if (isset($get['topic']) && (string) $get['topic'] === 'payment' && isset($get['id'])) {
@@ -92,7 +92,7 @@ function resolveMercadoPagoPaymentId(array $get, string $rawBody): ?int
             if ($type === 'payment' && isset($json['data']['id'])) {
                 return (int) $json['data']['id'];
             }
-            if (isset($json['data']['id'])) {
+            if (isset($json['data']['id']) && (isset($json['action']) && str_contains((string) $json['action'], 'payment'))) {
                 return (int) $json['data']['id'];
             }
         }
@@ -100,10 +100,6 @@ function resolveMercadoPagoPaymentId(array $get, string $rawBody): ?int
 
     if (isset($get['data.id'])) {
         return (int) $get['data.id'];
-    }
-
-    if (isset($get['id'])) {
-        return (int) $get['id'];
     }
 
     return null;

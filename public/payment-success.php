@@ -47,8 +47,7 @@ $pageTitle = $paymentSuccess
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-    <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
-    <link rel="apple-touch-icon" href="assets/img/favicon.svg">
+    <?php require_once __DIR__ . '/../config/favicon_links.php'; ?>
 
     <style>
         :root {
@@ -328,7 +327,7 @@ $pageTitle = $paymentSuccess
                         <p>3. Podés iniciar sesión cuando recibas el correo con tu contraseña.</p>
                     </div>
 
-                    <a href="<?= htmlspecialchars(getenv('SITE_URL') ?: 'http://localhost:8000') ?>/login.php" class="btn-primary-custom">
+                    <a href="<?= htmlspecialchars(getenv('SITE_URL') ?: 'https://bancodechoices.com') ?>/login.php" class="btn-primary-custom">
                         <i class="bi bi-box-arrow-in-right me-2"></i>
                         Ir al Login
                     </a>

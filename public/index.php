@@ -1,3 +1,6 @@
+<?php
+require_once __DIR__ . '/../config/public_url.php';
+?>
 <!DOCTYPE html>
 <html lang="es-AR">
 
@@ -9,8 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="assets/css/index.css" />
-    <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
-    <link rel="apple-touch-icon" href="assets/img/favicon.svg">
+    <?php require_once __DIR__ . '/../config/favicon_links.php'; ?>
     <style>
         :root {
             --bs-primary: #6a0392;
@@ -194,9 +196,187 @@
             font-size: 2.5rem;
         }
 
-        .footer {
-            background-color: #320146;
+        .site-footer {
+            position: relative;
+            background: linear-gradient(165deg, #150520 0%, #2d0a42 38%, #1e0b2e 100%);
+            color: #cbd5e1;
+            overflow: hidden;
+        }
+
+        .site-footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #6a0392, #c084fc, #002147);
+            z-index: 2;
+        }
+
+        .site-footer .footer-glow {
+            position: absolute;
+            width: 480px;
+            height: 480px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(106, 3, 146, 0.35) 0%, transparent 70%);
+            top: -120px;
+            right: -100px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .site-footer .footer-glow-2 {
+            position: absolute;
+            width: 360px;
+            height: 360px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0, 33, 71, 0.25) 0%, transparent 70%);
+            bottom: -80px;
+            left: -80px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .site-footer .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-heading {
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 1.1rem;
+        }
+
+        .footer-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            color: #e2e8f0;
+            text-decoration: none;
+            font-size: 0.9375rem;
+            font-weight: 500;
+            padding: 0.2rem 0;
+            transition: color 0.2s ease, transform 0.2s ease;
+        }
+
+        .footer-link:hover {
+            color: #fff;
+            transform: translateX(4px);
+        }
+
+        .footer-brand-lead {
+            font-size: 0.95rem;
+            line-height: 1.65;
             color: #94a3b8;
+            max-width: 22rem;
+        }
+
+        .footer-contact-panel {
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+            padding: 1.5rem 1.75rem;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .footer-contact-panel .footer-contact-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 0.35rem;
+        }
+
+        .footer-contact-panel .footer-contact-sub {
+            font-size: 0.875rem;
+            color: #94a3b8;
+            margin-bottom: 1rem;
+        }
+
+        .footer-btn-outline {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.55rem 1.15rem;
+            border-radius: 999px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            color: #fff;
+            text-decoration: none;
+            transition: background 0.2s ease, border-color 0.2s ease;
+        }
+
+        .footer-btn-outline:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.55);
+            color: #fff;
+        }
+
+        .footer-btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.55rem 1.15rem;
+            border-radius: 999px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #6a0392, #8b2ec7);
+            color: #fff;
+            text-decoration: none;
+            border: none;
+            box-shadow: 0 4px 16px rgba(106, 3, 146, 0.45);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .footer-btn-primary:hover {
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(106, 3, 146, 0.5);
+        }
+
+        .footer-legal-box {
+            background: rgba(0, 0, 0, 0.22);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 0.875rem;
+            padding: 1.35rem 1.5rem;
+            font-size: 0.8125rem;
+            line-height: 1.65;
+            color: #94a3b8;
+        }
+
+        .footer-legal-box p {
+            margin-bottom: 0.85rem;
+        }
+
+        .footer-legal-box p:last-child {
+            margin-bottom: 0;
+        }
+
+        .footer-legal-box strong {
+            color: #cbd5e1;
+            font-weight: 600;
+        }
+
+        .footer-bottom-bar {
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding-top: 1.75rem;
+            margin-top: 2.5rem;
+        }
+
+        .footer-copyright {
+            font-size: 0.8125rem;
+            color: #94a3b8;
+        }
+
+        .footer-trust {
+            font-size: 0.78rem;
+            color: rgba(255, 255, 255, 0.35);
+            max-width: 36rem;
         }
 
         .container {
@@ -209,7 +389,7 @@
     <nav class="navbar navbar-expand-lg navbar-light sticky-top py-3">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center fw-bold text-primary" href="index.php">
-                <img src="assets/img/logo-bd-transparente.svg" alt="Banco de Choices" style="width: 180px; height: auto; max-height: 48px;" />
+                <img src="<?= htmlspecialchars(public_asset_url('img/logo-bd-transparente.png')) ?>" alt="Banco de Choices" style="width: 200px; height: auto; max-height: 56px; object-fit: contain;" />
             </a>
             <button class="navbar-toggler" data-bs-target="#navbarNav" data-bs-toggle="collapse" type="button">
                 <span class="navbar-toggler-icon"></span>
@@ -436,77 +616,85 @@
         </div>
     </section>
 
-    <footer class="footer pt-5 pb-4">
-        <div class="container pt-5">
-            <div class="row justify-content-around">
-                <div class="col-md-4 mb-4">
-                    <a class="navbar-brand d-flex align-items-center fw-bold text-white mb-3" href="index.php">
-                        <img src="assets/img/logo-bd-transparente.svg" alt="Banco de Choices" style="width: 160px; height: auto; max-height: 40px; filter: brightness(0) invert(1);" />
+    <footer class="site-footer pt-5 pb-4">
+        <div class="footer-glow" aria-hidden="true"></div>
+        <div class="footer-glow-2" aria-hidden="true"></div>
+        <div class="container pt-4 pb-2">
+            <div class="row g-4 g-lg-5 justify-content-between">
+                <div class="col-lg-4 col-md-6">
+                    <a class="d-inline-flex align-items-center mb-3 text-decoration-none" href="index.php">
+                        <img src="<?= htmlspecialchars(public_asset_url('img/logo-bd-transparente.png')) ?>" alt="Banco de Choices" style="width: 168px; height: auto; max-height: 56px; object-fit: contain;" />
                     </a>
-                    <p class="pe-lg-5">
-                        Formando a los especialistas del mañana con tecnología de vanguardia y contenido médico de la
-                        más alta calidad científica en Argentina.
+                    <p class="footer-brand-lead mb-4">
+                        Formando especialistas con tecnología de vanguardia y contenido médico de alta calidad científica en Argentina.
                     </p>
                 </div>
 
-                <div class="col-md-2 col-6">
-                    <h6 class="text-white fw-bold mb-4">Plataforma</h6>
-                    <ul class="list-unstyled">
-                        <li class="mb-2"><a class="text-decoration-none nav-link" href="login.php">Banco de Preguntas</a></li>
-                        <li class="mb-2"><a class="text-decoration-none nav-link" href="login.php">Simulacros Examen</a></li>
-                        <li class="mb-2"><a class="text-decoration-none nav-link" href="#materias">Especialidades</a></li>
+                <div class="col-6 col-md-3 col-lg-2">
+                    <p class="footer-heading mb-0">Plataforma</p>
+                    <ul class="list-unstyled mt-3 mb-0">
+                        <li class="mb-2"><a class="footer-link" href="login.php">Banco de preguntas</a></li>
+                        <li class="mb-2"><a class="footer-link" href="login.php">Simulacros</a></li>
+                        <li class="mb-2"><a class="footer-link" href="#materias">Especialidades</a></li>
                     </ul>
                 </div>
 
-                <div class="col-md-2 col-6">
-                    <h6 class="text-white fw-bold mb-4">Soporte</h6>
-                    <ul class="list-unstyled">
-                        <li class="mb-2"><a class="text-decoration-none nav-link" href="login.php">Centro de ayuda</a></li>
-                        <li class="mb-2"><a class="text-decoration-none nav-link" href="#contacto">Contacto</a></li>
-                        <li class="mb-2"><a class="text-decoration-none nav-link" href="#caracteristicas">Recursos</a></li>
+                <div class="col-6 col-md-3 col-lg-2">
+                    <p class="footer-heading mb-0">Soporte</p>
+                    <ul class="list-unstyled mt-3 mb-0">
+                        <li class="mb-2"><a class="footer-link" href="login.php">Centro de ayuda</a></li>
+                        <li class="mb-2"><a class="footer-link" href="#contacto">Contacto</a></li>
+                        <li class="mb-2"><a class="footer-link" href="#caracteristicas">Recursos</a></li>
                     </ul>
                 </div>
 
-                <div class="col-md-2">
-                    <h6 class="text-white fw-bold mb-4">Legal</h6>
-                    <ul class="list-unstyled">
-                        <li class="mb-2">
-                            <a class="text-decoration-none nav-link" href="#terminos">Términos y condiciones</a>
-                        </li>
-                        <li class="mb-2">
-                            <a class="text-decoration-none nav-link" href="#privacidad">Política de Privacidad</a>
-                        </li>
-                        <li class="mb-2">
-                            <a class="text-decoration-none nav-link" href="#lgpd">Protección de Datos (LGPD)</a>
-                        </li>
-                        <li class="mb-2">
-                            <a class="text-decoration-none nav-link" href="#cookies">Cookies</a>
-                        </li>
+                <div class="col-md-6 col-lg-3">
+                    <p class="footer-heading mb-0">Legal</p>
+                    <ul class="list-unstyled mt-3 mb-0">
+                        <li class="mb-2"><a class="footer-link" href="#terminos">Términos y condiciones</a></li>
+                        <li class="mb-2"><a class="footer-link" href="#privacidad">Privacidad</a></li>
+                        <li class="mb-2"><a class="footer-link" href="#lgpd">Protección de datos (LGPD)</a></li>
+                        <li class="mb-2"><a class="footer-link" href="#cookies">Cookies</a></li>
                     </ul>
                 </div>
             </div>
 
-            <div class="row pt-2">
-                <div class="col-12">
-                    <p id="terminos" class="small mb-2" style="scroll-margin-top: 5rem;">Los servicios de BancodeChoices se ofrecen bajo los términos generales de uso del sitio. El acceso implica la aceptación de estas condiciones.</p>
-                    <p id="privacidad" class="small mb-2" style="scroll-margin-top: 5rem;">Tratamos los datos personales conforme a nuestra política de privacidad y la normativa aplicable.</p>
-                    <p id="lgpd" class="small mb-2" style="scroll-margin-top: 5rem;">Cumplimos con la protección de datos personales (LGPD Brasil y principios equivalentes en la región).</p>
-                    <p id="cookies" class="small mb-2" style="scroll-margin-top: 5rem;">Utilizamos cookies necesarias para el funcionamiento del sitio; podés ajustar preferencias en tu navegador.</p>
-                    <p id="contacto" class="small mb-0" style="scroll-margin-top: 5rem;">Consultas y soporte: utilizá el acceso desde la plataforma una vez iniciada la sesión o el centro de ayuda.</p>
+            <div class="footer-contact-panel mt-4 mt-lg-5" id="contacto">
+                <div class="row align-items-center gy-3">
+                    <div class="col-lg-7">
+                        <p class="footer-contact-title mb-1">¿Empezamos?</p>
+                        <p class="footer-contact-sub mb-0">Escribinos o ingresá a la plataforma. Respondemos consultas sobre acceso, materias y facturación.</p>
+                    </div>
+                    <div class="col-lg-5">
+                        <div class="d-flex flex-column flex-sm-row flex-lg-column flex-xl-row gap-2 justify-content-lg-end">
+                            <a class="footer-btn-primary justify-content-center" href="selecionar-materias.php">Inscribite gratis</a>
+                            <a class="footer-btn-outline justify-content-center" href="mailto:contato@bancodechoices.com">contato@bancodechoices.com</a>
+                        </div>
+                        <p class="small mt-2 mb-0 text-center text-lg-end" style="color: rgba(255,255,255,0.45);">
+                            <a class="text-decoration-none" style="color: rgba(255,255,255,0.65);" href="https://bancodechoices.com" target="_blank" rel="noopener noreferrer">bancodechoices.com</a>
+                        </p>
+                    </div>
                 </div>
             </div>
 
-            <hr class="mt-5 mb-4 border-secondary opacity-25" />
+            <div class="footer-legal-box mt-4">
+                <p id="terminos" style="scroll-margin-top: 5rem;"><strong>Términos.</strong> Los servicios de BancodeChoices se ofrecen bajo los términos generales de uso del sitio. El acceso implica la aceptación de estas condiciones.</p>
+                <p id="privacidad" style="scroll-margin-top: 5rem;"><strong>Privacidad.</strong> Tratamos los datos personales conforme a nuestra política de privacidad y la normativa aplicable.</p>
+                <p id="lgpd" style="scroll-margin-top: 5rem;"><strong>LGPD.</strong> Cumplimos con la protección de datos personales (Ley Nº 13.709/2018 y principios equivalentes en la región).</p>
+                <p id="cookies" class="mb-0" style="scroll-margin-top: 5rem;"><strong>Cookies.</strong> Utilizamos cookies necesarias para el funcionamiento del sitio; podés ajustar preferencias en tu navegador.</p>
+            </div>
 
-            <div class="text-center">
-                <p class="small mb-1">
-                    © 2026 BancodeChoices. Todos los derechos reservados.
-                </p>
-                <p class="small opacity-75 mb-0">
-                    Este sitio cumple con la Ley General de Protección de Datos (Ley Nº 13.709/2018 – LGPD).
-                    Los datos personales son tratados de forma segura, transparente y únicamente para los fines
-                    informados.
-                </p>
+            <div class="footer-bottom-bar">
+                <div class="row align-items-center g-3">
+                    <div class="col-md-6">
+                        <p class="footer-copyright mb-0">© <?= (int) date('Y') ?> BancodeChoices. Todos los derechos reservados.</p>
+                    </div>
+                    <div class="col-md-6 text-md-end">
+                        <p class="footer-trust mb-0 ms-md-auto">
+                            Datos personales tratados de forma segura y transparente, únicamente para los fines informados.
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
     </footer>

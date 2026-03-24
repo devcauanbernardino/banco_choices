@@ -1,4 +1,5 @@
-<?php 
+<?php
+require_once __DIR__ . '/../../../config/public_url.php';
 /**
  * ARQUIVO: sidebar.php
  * OBJETIVO: Navegação lateral do sistema com rodapé aprimorado.
@@ -103,7 +104,7 @@ $pagina_atual = basename($_SERVER['PHP_SELF']);
     <!-- Logo -->
     <div class="logo-area">
         <div class="d-flex align-items-center gap-2">
-            <img src="/assets/img/logo-bd-transparente.svg" alt="logo" width="45" height="45">
+            <img src="<?= htmlspecialchars(public_asset_url('img/logo-bd-transparente.png')) ?>" alt="Banco de Choices" width="45" height="45" style="object-fit: contain;">
             <h4 class="brand-name fw-bold mb-0">Banco de Choices</h4>
         </div>
     </div>

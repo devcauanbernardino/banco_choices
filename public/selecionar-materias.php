@@ -48,8 +48,7 @@ $selectedMaterias = $_SESSION['selected_materias'] ?? [];
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-    <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
-    <link rel="apple-touch-icon" href="assets/img/favicon.svg">
+    <?php require_once __DIR__ . '/../config/favicon_links.php'; ?>
 
     <style>
         :root {
@@ -476,6 +475,18 @@ $selectedMaterias = $_SESSION['selected_materias'] ?? [];
             const checkboxes = document.querySelectorAll('input[name="materias[]"]');
             const selectedCountSpan = document.getElementById('selectedCount');
             const form = document.getElementById('materiasForm');
+            const runId = `run-${Date.now()}`;
+
+            function debugLog(hypothesisId, location, message, data) {
+                // #region agent log
+                const payload = {sessionId:'9ee9d7',runId,hypothesisId,location,message,data,timestamp:Date.now()};
+                fetch('http://127.0.0.1:7763/ingest/bfa7fb8e-f75f-490d-9516-9049669d6119',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'9ee9d7'},body:JSON.stringify(payload)}).catch(()=>{});
+                if (navigator.sendBeacon) {
+                    const blob = new Blob([JSON.stringify(payload)], { type: 'application/json' });
+                    navigator.sendBeacon('http://127.0.0.1:7763/ingest/bfa7fb8e-f75f-490d-9516-9049669d6119', blob);
+                }
+                // #endregion
+            }
 
             function updateCount() {
                 const checked = document.querySelectorAll('input[name="materias[]"]:checked').length;
@@ -491,10 +502,58 @@ $selectedMaterias = $_SESSION['selected_materias'] ?? [];
                 }
             }
 
+            function captureSelectedCardSnapshot(stage, sourceHypothesisId) {
+                const card = document.querySelector('.materia-card.selected');
+                const container = document.querySelector('.materias-container');
+                if (!card || !container) {
+                    debugLog(sourceHypothesisId, 'selecionar-materias.php:card-snapshot', 'Selected card or container missing', {
+                        stage,
+                        hasCard: Boolean(card),
+                        hasContainer: Boolean(container)
+                    });
+                    return;
+                }
+
+                const rect = card.getBoundingClientRect();
+                const containerRect = container.getBoundingClientRect();
+                const computed = window.getComputedStyle(card);
+                const containerComputed = window.getComputedStyle(container);
+
+                debugLog(sourceHypothesisId, 'selecionar-materias.php:card-snapshot', 'Selected card visual metrics', {
+                    stage,
+                    cardWidth: Math.round(rect.width),
+                    cardHeight: Math.round(rect.height),
+                    cardTop: Math.round(rect.top),
+                    cardLeft: Math.round(rect.left),
+                    cardDisplay: computed.display,
+                    cardAlignItems: computed.alignItems,
+                    cardPadding: computed.padding,
+                    cardLineHeight: computed.lineHeight,
+                    cardBorderRadius: computed.borderRadius,
+                    containerWidth: Math.round(containerRect.width),
+                    containerDisplay: containerComputed.display,
+                    containerTemplateColumns: containerComputed.gridTemplateColumns,
+                    containerGap: containerComputed.gap
+                });
+            }
+
+            debugLog('H1', 'selecionar-materias.php:dom-ready', 'Materia form initialized', {
+                cards: document.querySelectorAll('.materia-card').length,
+                selectedCards: document.querySelectorAll('.materia-card.selected').length,
+                checkboxes: checkboxes.length
+            });
+            captureSelectedCardSnapshot('initial', 'H2');
+
             checkboxes.forEach(checkbox => {
                 checkbox.addEventListener('change', function () {
+                    const card = this.closest('.materia-card');
+                    debugLog('H3', 'selecionar-materias.php:checkbox-change', 'Checkbox changed', {
+                        checked: this.checked,
+                        cardHasSelectedClassBefore: card ? card.classList.contains('selected') : false
+                    });
                     updateCardStyle(this);
                     updateCount();
+                    captureSelectedCardSnapshot('after-change', 'H4');
                 });
                 updateCardStyle(checkbox);
             });

@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../config/public_url.php';
 $mensagensErro = [
     'naologado' => 'Debés iniciar sesión para acceder al sistema.',
     'logininvalido' => 'Correo o contraseña incorrectos.',
@@ -28,9 +29,7 @@ $registroOk = isset($_GET['registered']) && $_GET['registered'] === '1';
         rel="stylesheet" />
     <link rel="stylesheet" href="assets/css/login.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-    <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
-    <link rel="apple-touch-icon" href="assets/img/favicon.svg">
-
+    <?php require_once __DIR__ . '/../config/favicon_links.php'; ?>
 
 </head>
 
@@ -42,8 +41,8 @@ $registroOk = isset($_GET['registered']) && $_GET['registered'] === '1';
                 <div class="login-sidebar-overlay"></div>
                 <div class="sidebar-content mw-100" style="max-width: 600px;">
                     <div class="mb-4">
-                        <img src="assets/img/logo-bd-transparente.svg" alt="Banco de Choices"
-                            style="width: 180px; height: auto; max-height: 48px; filter: brightness(0) invert(1);" />
+                        <img src="<?= htmlspecialchars(public_asset_url('img/logo-bd-transparente.png')) ?>" alt="Banco de Choices"
+                            style="width: 180px; height: auto; max-height: 56px; object-fit: contain;" />
                     </div>
                     <h1 class="display-4 fw-bold mb-4">Tu futuro como especialista empieza acá.</h1>
                     <p class="lead mb-5 opacity-75">Unite a la comunidad más grande de residentes médicos en Argentina y
@@ -101,7 +100,7 @@ $registroOk = isset($_GET['registered']) && $_GET['registered'] === '1';
                         </div>
                     <?php endif; ?>
 
-                    <form action="controllers/login-process.php" method="post" id="loginForm">
+                    <form action="login-process.php" method="post" id="loginForm">
                         <div class="mb-3">
                             <label class="form-label fw-medium small" for="emailInput">Email</label>
                             <div class="input-group">
@@ -127,7 +126,7 @@ $registroOk = isset($_GET['registered']) && $_GET['registered'] === '1';
                                     Recordarme
                                 </label>
                             </div>
-                            <a class="text-navy text-decoration-none small fw-bold" href="index.php#contacto">¿Olvidaste tu
+                            <a class="text-navy text-decoration-none small fw-bold" href="mailto:contato@bancodechoices.com">¿Olvidaste tu
                                 contraseña?</a>
                         </div>
                         <div class="d-grid mb-4">
@@ -172,7 +171,7 @@ $registroOk = isset($_GET['registered']) && $_GET['registered'] === '1';
                         <div class="mb-2">
                             <a class="text-muted text-decoration-none small mx-2" href="index.php#privacidad">Privacidad</a>
                             <a class="text-muted text-decoration-none small mx-2" href="index.php#terminos">Términos</a>
-                            <a class="text-muted text-decoration-none small mx-2" href="index.php#contacto">Contacto</a>
+                            <a class="text-muted text-decoration-none small mx-2" href="mailto:contato@bancodechoices.com">Contacto</a>
                         </div>
                         <p class="text-muted" style="font-size: 10px; letter-spacing: 1px;">© 2026 BANCODECHOICES</p>
                     </footer>
@@ -186,6 +185,11 @@ $registroOk = isset($_GET['registered']) && $_GET['registered'] === '1';
         document.addEventListener('DOMContentLoaded', function () {
             const form = document.getElementById('loginForm');
             const btn = document.getElementById('submitBtn');
+            const runId = `run-${Date.now()}`;
+
+            // #region agent log
+            fetch('http://127.0.0.1:7763/ingest/bfa7fb8e-f75f-490d-9516-9049669d6119',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'9ee9d7'},body:JSON.stringify({sessionId:'9ee9d7',runId,hypothesisId:'D1',location:'login.php:DOMContentLoaded',message:'Login contact links',data:{forgotHref:(document.querySelector('a.text-navy.text-decoration-none.small.fw-bold')||{}).getAttribute?.('href')||null,footerContactHref:(document.querySelector('footer a[href^="mailto:"]')||{}).getAttribute?.('href')||null},timestamp:Date.now()})}).catch(()=>{});
+            // #endregion
 
             form.addEventListener('submit', function () {
                 btn.classList.add('btn-loading');

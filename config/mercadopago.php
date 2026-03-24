@@ -23,7 +23,7 @@ function mercadopago_config(): array
         'access_token' => is_string($access) ? trim($access) : '',
         'public_key' => is_string($public) ? trim($public) : '',
         'webhook_secret' => is_string($webhookSecret) ? trim($webhookSecret) : '',
-        'site_url' => rtrim((string) (getenv('SITE_URL') ?: 'http://localhost:8000'), '/'),
+        'site_url' => rtrim((string) (getenv('SITE_URL') ?: 'https://bancodechoices.com'), '/'),
     ];
 }
 

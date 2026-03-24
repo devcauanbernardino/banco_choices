@@ -49,7 +49,7 @@ class PaymentEmailHelper
 
             $mail->Subject = '¡Bienvenido a Banco de Choices! Tus credenciales de acceso';
 
-            $siteUrl = getenv('SITE_URL') ?: 'http://localhost:8000';
+            $siteUrl = getenv('SITE_URL') ?: 'https://bancodechoices.com';
             $planName = self::getPlanName($planId);
 
             $mail->Body = "
@@ -125,7 +125,7 @@ class PaymentEmailHelper
             $mail->isHTML(true);
             $mail->CharSet = 'UTF-8';
 
-            $siteUrl = getenv('SITE_URL') ?: 'http://localhost:8000';
+            $siteUrl = getenv('SITE_URL') ?: 'https://bancodechoices.com';
             $planName = self::getPlanName($planId);
 
             $mail->Subject = 'Banco de Choices — Acceso a materias actualizado';
@@ -136,8 +136,7 @@ class PaymentEmailHelper
             $mail->send();
             return true;
         } catch (Throwable $e) {
-            $path = dirname(__DIR__, 2) . '/logs/mp_payment.log';
-            @file_put_contents($path, '[' . date('c') . '] [email_erro] ' . $e->getMessage() . PHP_EOL, FILE_APPEND | LOCK_EX);
+            error_log('PaymentEmailHelper existing user: ' . $e->getMessage());
             return false;
         }
     }
