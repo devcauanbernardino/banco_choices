@@ -768,11 +768,11 @@
         },
         {
           "letra": "C",
-          "texto": "Unión de nucleótidos en sentido 5’-3’"
+          "texto": "Unión de nucleótidos en sentido 5'-3'"
         },
         {
           "letra": "D",
-          "texto": "Remoción de nucleótidos en sentido 3’-5’"
+          "texto": "Remoción de nucleótidos en sentido 3'-5'"
         }
       ],
       "tipo": "multipla_escolha",
@@ -1871,32 +1871,6 @@
       "nota": "Marque la opción CORRECTA",
       "resposta_correta": "C",
       "feedback": "AUG es el codón de inicio universal que codifica para metionina."
-    },
-    {
-      "numero": 1,
-      "pergunta": "El calcio puede atravesar la membrana plasmática:",
-      "opcoes": [
-        {
-          "letra": "A",
-          "texto": "A través de bombas"
-        },
-        {
-          "letra": "B",
-          "texto": "Por transporte acoplado"
-        },
-        {
-          "letra": "C",
-          "texto": "Por difusión simple"
-        },
-        {
-          "letra": "D",
-          "texto": "A través de canales regulados por ligando"
-        }
-      ],
-      "tipo": "multipla_escolha",
-      "nota": "Marque la opción INCORRECTA",
-      "resposta_correta": "C",
-      "feedback": "El calcio es un ion con carga y no puede atravesar la bicapa lipídica por difusión simple; requiere proteínas transportadoras o canales."
     },
     {
       "numero": 73,

@@ -8,6 +8,7 @@
 session_start();
 
 // 1. Carregamos as dependências
+require_once __DIR__ . '/../../config/public_url.php';
 require_once __DIR__ . '/../../config/conexao.php';
 require_once __DIR__ . '/../Controllers/DashboardController.php';
 
@@ -17,7 +18,7 @@ $db = $objConexao->conectar();
 
 // Verificamos se o usuário está logado
 if (!isset($_SESSION['usuario']['id'])) {
-    header('Location: login.php');
+    header('Location: ' . app_url('login.php'));
     exit;
 }
 
@@ -38,6 +39,7 @@ $historicoSemanal = $dashboard->getHistoricoSemanal();
     <title>Estatísticas de Estudo | BancoChoices</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?php require_once __DIR__ . '/../../config/favicon_links.php'; ?>
+    <?php require_once __DIR__ . '/includes/theme-head.php'; ?>
 
     <!-- Bootstrap & Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -46,29 +48,16 @@ $historicoSemanal = $dashboard->getHistoricoSemanal();
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <link rel="stylesheet" href="/assets/css/sidebar.css">
+    <link rel="stylesheet" href="<?= htmlspecialchars(public_asset_url('assets/css/sidebar.css')) ?>">
 
     <style>
-        body {
-            background-color: #f6f6f8;
-        }
-
-        .sidebar-space {
-            margin-left: 260px;
-        }
-
-        /* Ajuste conforme seu sidebar */
-
         .card {
             border: none;
             border-radius: 12px;
         }
 
-        .text-primary {
-            color: white !important;
-        }
-
-        .bg-primary {
+        /* Só barras de progresso — evita quebrar bg-primary bg-opacity-10 nos ícones KPI */
+        .progress-bar.bg-primary {
             background-color: #6a0392 !important;
         }
 
@@ -76,9 +65,15 @@ $historicoSemanal = $dashboard->getHistoricoSemanal();
             width: 48px;
             height: 48px;
             border-radius: 12px;
-            display: flex;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .card-icon .material-icons {
+            font-size: 26px;
+            line-height: 1;
         }
 
         .progress {
@@ -91,28 +86,24 @@ $historicoSemanal = $dashboard->getHistoricoSemanal();
             border-radius: 10px;
         }
 
-        @media (max-width: 992px) {
-            .sidebar-space {
-                margin-left: 0;
-            }
-        }
     </style>
 </head>
 
-<body>
+<body class="app-private-body">
 
-    <?php require_once 'includes/sidebar.php'; ?>
+    <?php require_once __DIR__ . '/includes/sidebar.php'; ?>
 
-    <main class="sidebar-space p-4">
+    <header class="app-mobile-topbar d-lg-none justify-content-center">
+        <span class="fw-bold">Estatísticas</span>
+    </header>
+
+    <main class="app-main p-4">
 
         <!-- HEADER -->
         <header class="bg-white shadow-sm rounded-3 px-4 py-3 d-flex justify-content-between align-items-center mb-4">
-            <div class="d-flex align-items-center gap-3">
-                <img src="<?= htmlspecialchars(public_asset_url('img/logo-bd-transparente.png')) ?>" alt="Banco de Choices" style="width: 40px; height: 40px;">
-                <div>
-                    <h5 class="mb-0 fw-bold">Estatísticas de Evolução</h5>
-                    <small class="text-muted">Acompanhe seu progresso detalhado</small>
-                </div>
+            <div>
+                <h5 class="mb-0 fw-bold">Estatísticas de Evolução</h5>
+                <small class="text-muted">Acompanhe seu progresso detalhado</small>
             </div>
         </header>
 
@@ -152,9 +143,9 @@ $historicoSemanal = $dashboard->getHistoricoSemanal();
                         <div class="card-icon bg-warning bg-opacity-10 text-warning">
                             <span class="material-icons">stars</span>
                         </div>
-                        <div>
+                        <div class="min-w-0 flex-grow-1">
                             <small class="text-muted fw-bold text-uppercase" style="font-size: 10px;">Melhor Matéria</small>
-                            <h5 class="fw-bold mb-0 text-truncate" style="max-width: 120px;"><?= htmlspecialchars($stats['melhor_materia']) ?></h5>
+                            <h5 class="fw-bold mb-0 text-break"><?= htmlspecialchars($stats['melhor_materia']) ?></h5>
                         </div>
                     </div>
                 </div>
@@ -259,50 +250,57 @@ $historicoSemanal = $dashboard->getHistoricoSemanal();
     </main>
 
     <script>
-        // Configuração do Gráfico de Evolução
-        const ctx = document.getElementById('chartEvolucao').getContext('2d');
-        new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: <?= json_encode($evolucao['labels']) ?>,
-                datasets: [{
-                    label: 'Aproveitamento (%)',
-                    data: <?= json_encode($evolucao['data']) ?>,
-                    borderColor: '#6a0392',
-                    backgroundColor: 'rgba(106, 3, 146, 0.05)',
-                    borderWidth: 3,
-                    tension: 0.4,
-                    fill: true,
-                    pointBackgroundColor: '#6a0392',
-                    pointRadius: 4
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
+        (function () {
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            const tickColor = isDark ? '#9ca3af' : '#6b7280';
+            const gridColor = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)';
+            const ctx = document.getElementById('chartEvolucao').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: <?= json_encode($evolucao['labels']) ?>,
+                    datasets: [{
+                        label: 'Aproveitamento (%)',
+                        data: <?= json_encode($evolucao['data']) ?>,
+                        borderColor: '#a855f7',
+                        backgroundColor: isDark ? 'rgba(168, 85, 247, 0.12)' : 'rgba(106, 3, 146, 0.08)',
+                        borderWidth: 3,
+                        tension: 0.4,
+                        fill: true,
+                        pointBackgroundColor: '#c084fc',
+                        pointRadius: 4
+                    }]
                 },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        max: 100,
-                        grid: {
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
                             display: false
                         }
                     },
-                    x: {
-                        grid: {
-                            display: false
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: { color: tickColor },
+                            grid: isDark
+                                ? { color: gridColor }
+                                : { display: false }
+                        },
+                        x: {
+                            ticks: { color: tickColor },
+                            grid: isDark
+                                ? { color: gridColor }
+                                : { display: false }
                         }
                     }
                 }
-            }
-        });
+            });
+        })();
     </script>
 
+    <?php require_once __DIR__ . '/includes/private-footer-scripts.php'; ?>
 </body>
 
 </html>

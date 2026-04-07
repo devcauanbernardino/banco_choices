@@ -38,7 +38,7 @@ class Usuario
         string $email,
         string $senha,
         array $materias
-    ) {
+    ): bool {
         try {
             $this->conn->beginTransaction();
 
@@ -53,7 +53,8 @@ class Usuario
 
         } catch (Throwable $e) {
             $this->conn->rollBack();
-            die($e->getMessage());
+            error_log('Usuario::cadastrarComMaterias: ' . $e->getMessage());
+            return false;
         }
     }
 
@@ -67,6 +68,21 @@ class Usuario
             ':usuario' => $usuarioId,
             ':materia' => $materiaId
         ]);
+    }
+
+    /**
+     * Garante vínculos (ex.: matérias 1 e 2 no login) sem erro em duplicata.
+     */
+    public function garantirMateriasParaUsuario(int $usuarioId, array $materiaIds): void
+    {
+        $sql = 'INSERT IGNORE INTO usuarios_materias (usuario_id, materia_id) VALUES (:usuario, :materia)';
+        $stmt = $this->conn->prepare($sql);
+        foreach ($materiaIds as $mid) {
+            $stmt->execute([
+                ':usuario' => $usuarioId,
+                ':materia' => (int) $mid,
+            ]);
+        }
     }
 
     /**
@@ -114,15 +130,26 @@ class Usuario
         $sql = "
             SELECT m.*
             FROM materias m
-            INNER JOIN usuarios_materias um
-                ON um.materia_id = m.id
-            WHERE um.usuario_id = :usuario
+            INNER JOIN (
+                SELECT DISTINCT materia_id
+                FROM usuarios_materias
+                WHERE usuario_id = :usuario
+            ) um ON um.materia_id = m.id
         ";
 
         $stmt = $this->conn->prepare($sql);
         $stmt->execute([':usuario' => $usuarioId]);
 
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $porId = [];
+        foreach ($rows as $row) {
+            $id = (int) ($row['id'] ?? 0);
+            if ($id > 0 && !isset($porId[$id])) {
+                $porId[$id] = $row;
+            }
+        }
+
+        return array_values($porId);
     }
 
     /* ======================

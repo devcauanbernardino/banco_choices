@@ -1,8 +1,10 @@
 <?php
 session_start();
 
+require_once __DIR__ . '/../../config/public_url.php';
+
 if (!isset($_SESSION['usuario'])) {
-    header('Location: /login.php');
+    header('Location: ' . app_url('login.php'));
     exit;
 }
 
@@ -17,11 +19,12 @@ $materiasCompradas = $_SESSION['usuario']['materias'] ?? [];
     <title>Configurar Simulado | Banco de Choices</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?php require_once __DIR__ . '/../../config/favicon_links.php'; ?>
+    <?php require_once __DIR__ . '/includes/theme-head.php'; ?>
 
     <!-- Bootstrap & Google Fonts -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="/assets/css/sidebar.css">
+    <link rel="stylesheet" href="<?= htmlspecialchars(public_asset_url('assets/css/sidebar.css')) ?>">
 
     <style>
         :root {
@@ -31,13 +34,8 @@ $materiasCompradas = $_SESSION['usuario']['materias'] ?? [];
             --card-radius: 16px;
         }
 
-        body {
-            background-color: var(--bg-body);
+        body.app-private-body {
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-        }
-
-        .sidebar-space {
-            margin-left: 260px;
         }
 
         /* Estilo do Card Principal */
@@ -74,6 +72,10 @@ $materiasCompradas = $_SESSION['usuario']['materias'] ?? [];
             border: 1px solid #e0e0e0;
             background-color: #fcfcfc;
             transition: all 0.2s ease;
+        }
+
+        .form-select {
+            cursor: pointer;
         }
 
         .form-select:focus,
@@ -121,33 +123,6 @@ $materiasCompradas = $_SESSION['usuario']['materias'] ?? [];
             color: #777;
         }
 
-        /* Botão Iniciar */
-        .btn-start {
-            background: var(--primary-color);
-            border: none;
-            border-radius: 12px;
-            padding: 1rem;
-            font-weight: 700;
-            color: white;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            box-shadow: 0 4px 15px rgba(106, 3, 146, 0.3);
-        }
-
-        .btn-start:hover {
-            background: #5a027c;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(106, 3, 146, 0.4);
-            color: white;
-        }
-
-        .btn-start:active {
-            transform: translateY(0);
-        }
-
         /* Alerta de Exame */
         .exam-warning {
             background-color: #fff4e5;
@@ -159,19 +134,18 @@ $materiasCompradas = $_SESSION['usuario']['materias'] ?? [];
             /* Escondido por padrão */
         }
 
-        @media (max-width: 992px) {
-            .sidebar-space {
-                margin-left: 0;
-            }
-        }
     </style>
 </head>
 
-<body>
+<body class="app-private-body">
 
     <?php require_once __DIR__ . '/includes/sidebar.php'; ?>
 
-    <main class="sidebar-space p-4">
+    <header class="app-mobile-topbar d-lg-none justify-content-center">
+        <span class="fw-bold">Novo simulado</span>
+    </header>
+
+    <main class="app-main p-4">
 
         <div class="container py-4" style="max-width: 750px;">
 
@@ -187,10 +161,10 @@ $materiasCompradas = $_SESSION['usuario']['materias'] ?? [];
 
                 <!-- Corpo do Formulário -->
                 <div class="setup-body">
-                    <form action="/criar.php" method="post">
+                    <form action="<?= htmlspecialchars(app_url('criar.php')) ?>" method="post">
 
                         <!-- Seleção de Matéria -->
-                        <select class="form-select form-select-lg" name="materia" required>
+                        <select class="form-select form-select-lg mb-4" name="materia" required>
                             <option value="" selected disabled>Selecione uma disciplina...</option>
 
                             <?php if (empty($materiasCompradas)): ?>
@@ -205,10 +179,10 @@ $materiasCompradas = $_SESSION['usuario']['materias'] ?? [];
                         </select>
 
 
-                        <div class="row g-4 mb-4">
+                        <div class="row gx-4 gy-5 mb-4 setup-fields-row">
                             <!-- Quantidade de Questões -->
                             <div class="col-md-6">
-                                <label class="form-label fw-bold">Número de Questões</label>
+                                <label class="form-label fw-bold mb-2 d-block">Número de Questões</label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-white border-end-0 rounded-start-3"
                                         style="border-radius: 12px 0 0 12px;">
@@ -217,18 +191,18 @@ $materiasCompradas = $_SESSION['usuario']['materias'] ?? [];
                                     <input type="number" class="form-control border-start-0" name="quantidade" min="5"
                                         max="100" value="20" style="border-radius: 0 12px 12px 0;">
                                 </div>
-                                <div class="form-text">Recomendado: 20 a 50 questões.</div>
+                                <div class="form-text mt-2 mb-0">Recomendado: 20 a 50 questões.</div>
                             </div>
 
                             <!-- Tempo Estimado -->
                             <div class="col-md-6">
-                                <label class="form-label fw-bold">Tempo Disponível</label>
+                                <label class="form-label fw-bold mb-2 d-block">Tempo Disponível</label>
                                 <div class="d-flex align-items-center p-2 px-3 bg-light rounded-3"
                                     style="height: 48px;">
                                     <span class="material-icons text-primary me-2">schedule</span>
                                     <span class="fw-bold text-dark">60 Minutos</span>
                                 </div>
-                                <div class="form-text">Tempo padrão para o modo exame.</div>
+                                <div class="form-text mt-2 mb-0">Tempo padrão para o modo exame.</div>
                             </div>
                         </div>
 
@@ -272,7 +246,7 @@ $materiasCompradas = $_SESSION['usuario']['materias'] ?? [];
                         </div>
 
                         <!-- Botão de Ação -->
-                        <button type="submit" class="btn btn-start w-100 mt-2">
+                        <button type="submit" class="btn btn-primary btn-lg py-3 fw-bold shadow-sm w-100 mt-2 d-inline-flex align-items-center justify-content-center gap-2">
                             <span class="material-icons">rocket_launch</span>
                             INICIAR SIMULADO AGORA
                         </button>
@@ -289,7 +263,7 @@ $materiasCompradas = $_SESSION['usuario']['materias'] ?? [];
 
     </main>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <?php require_once __DIR__ . '/includes/private-footer-scripts.php'; ?>
     <script>
         // Lógica para mostrar/esconder o alerta de exame
         const radioEstudo = document.getElementById('radioEstudo');

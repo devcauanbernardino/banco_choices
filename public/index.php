@@ -2,13 +2,16 @@
 require_once __DIR__ . '/../config/public_url.php';
 ?>
 <!DOCTYPE html>
-<html lang="es-AR">
+<html lang="<?= htmlspecialchars(locale_html_lang()) ?>" data-bs-theme="light">
 
 <head>
     <meta charset="utf-8" />
+    <?php require_once __DIR__ . '/../App/Views/includes/theme-head-public.php'; ?>
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>Banco de Choices</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="<?= htmlspecialchars(public_asset_url('assets/css/buttons-global.css')) ?>" />
+    <link rel="stylesheet" href="<?= htmlspecialchars(public_asset_url('assets/css/public-language-selector.css')) ?>" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="assets/css/index.css" />
@@ -395,21 +398,30 @@ require_once __DIR__ . '/../config/public_url.php';
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto me-4">
+                <ul class="navbar-nav ms-auto me-lg-4">
                     <li class="nav-item">
-                        <a class="nav-link fw-medium px-3" href="#caracteristicas">Características</a>
+                        <a class="nav-link fw-medium px-3" href="#caracteristicas"><?= htmlspecialchars(__('index.nav.features')) ?></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link fw-medium px-3" href="#materias">Materias</a>
+                        <a class="nav-link fw-medium px-3" href="#materias"><?= htmlspecialchars(__('index.nav.subjects')) ?></a>
                     </li>
                     <!-- <li class="nav-item">
                         <a class="nav-link fw-medium px-3" href="#planes">Planes</a>
                     </li> -->
                 </ul>
-                <div class="d-flex gap-2">
-                    <a class="btn btn-link text-decoration-none rounded-pill fw-bold" href="login.php">Iniciá Sesión</a>
-                    <a class="btn btn-reverse text-decoration-none rounded-pill px-4" href="selecionar-materias.php">Inscribite gratis</a>
+                <div class="navbar-actions navbar-actions--landing">
+                    <div class="navbar-actions__inner">
+                        <?php
+                        $bc_lang_menu_landing = true;
+                        $bc_lang_selector_btn_class = 'btn btn-navbar-lang dropdown-toggle d-inline-flex align-items-center gap-2';
+                        require_once __DIR__ . '/../App/Views/includes/language-selector.php';
+                        ?>
+                        <span class="navbar-actions__divider" aria-hidden="true"></span>
+                        <a class="btn btn-nav-login text-decoration-none" href="login.php"><?= htmlspecialchars(__('index.nav.login')) ?></a>
+                        <a class="btn btn-reverse navbar-cta-register text-decoration-none shadow-sm" href="selecionar-materias.php"><?= htmlspecialchars(__('index.nav.register')) ?></a>
+                    </div>
                 </div>
+                <?php unset($bc_lang_selector_btn_class, $bc_lang_menu_landing); ?>
             </div>
         </div>
     </nav>
@@ -417,21 +429,20 @@ require_once __DIR__ . '/../config/public_url.php';
         <div class="container">
             <div class="row align-items-center gy-5">
                 <div class="col-lg-6">
-                    <span class="badge rounded-pill badge-soft mb-3">Herramienta Médica Argentina</span>
-                    <h1 class="display-3 fw-bold mb-4 text-dark">Dominá el examen de residencia y tus exámenes médicos
+                    <span class="badge rounded-pill badge-soft mb-3"><?= htmlspecialchars(__('index.hero.badge')) ?></span>
+                    <h1 class="display-3 fw-bold mb-4 text-dark"><?= htmlspecialchars(__('index.hero.title')) ?>
                     </h1>
                     <p class="lead mb-5 ">
-                        La plataforma premier diseñada para médicos argentinos que buscan la excelencia. Estudiá con el
-                        banco de preguntas más completo, actualizado y comentado por especialistas.
+                        <?= htmlspecialchars(__('index.hero.lead')) ?>
                     </p>
                     <div class="d-flex flex-column flex-md-row gap-3">
-                        <a class="btn btn-reverse btn-lg rounded-pill px-5" href="selecionar-materias.php">Empezá hoy gratis</a>
-                        <a class="btn btn-outline-primary btn-lg rounded-pill px-5" href="#caracteristicas">Mirá la demo</a>
+                        <a class="btn btn-reverse btn-lg rounded-pill px-5 py-3 fw-bold shadow-sm" href="selecionar-materias.php"><?= htmlspecialchars(__('index.hero.cta1')) ?></a>
+                        <a class="btn btn-outline-primary btn-lg rounded-pill px-5 py-3 fw-bold shadow-sm" href="#caracteristicas"><?= htmlspecialchars(__('index.hero.cta2')) ?></a>
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <div class="hero-image-container">
-                        <img alt="Estudiante de medicina estudiando" class="img-fluid w-100"
+                        <img alt="<?= htmlspecialchars(__('index.hero.alt')) ?>" class="img-fluid w-100"
                             src="https://lh3.googleusercontent.com/aida-public/AB6AXuAJrVuD5WbRNO1zzzt4UoFwBkgCqUzoRtNiqP7qKv66p8z6aWUXsnAbInu5f7fNYmO-OVq7q9Iz1QNQODMSbVpgi_Fuoek1UW2ktjoYWTuZNjr_OWwAa_bvgoh6UTzJHOWMjIha4zbIIhYsOmTvUdQKfa0QF5fF97ZeOo_w79ao6ZmrprXqPZKiocyGjSrMDBz577aDiuKT7rR9BM33rIXv_8DyNPxSBVSLIcjQVMpmA77tpGYy8m8J1saNHHTxjNCnRay_2tkPmaN5" />
                     </div>
                 </div>
@@ -442,9 +453,9 @@ require_once __DIR__ . '/../config/public_url.php';
     <section class="py-5 bg-light" id="caracteristicas">
         <div class="container py-5">
             <div class="text-center mb-5 animate__animated animate__fadeInUp">
-                <h2 class="display-5 fw-bold mb-3">Todo lo que necesitás para tu éxito</h2>
+                <h2 class="display-5 fw-bold mb-3"><?= htmlspecialchars(__('index.features.title')) ?></h2>
                 <p class="text-muted mx-auto" style="max-width: 700px;">
-                    Herramientas diseñadas por expertos para optimizar tu tiempo de estudio y asegurar los mejores resultados.
+                    <?= htmlspecialchars(__('index.features.lead')) ?>
                 </p>
             </div>
             <div class="row g-4">
@@ -453,9 +464,9 @@ require_once __DIR__ . '/../config/public_url.php';
                         <div class="feature-icon">
                             <span class="material-symbols-outlined fs-2">library_books</span>
                         </div>
-                        <h4 class="fw-bold mb-3">Preguntas Comentadas</h4>
+                        <h4 class="fw-bold mb-3"><?= htmlspecialchars(__('index.features.c1t')) ?></h4>
                         <p class="text-muted mb-0">
-                            Accedé a explicaciones detalladas para cada respuesta, redactadas para que entiendas el "por qué" de cada opción.
+                            <?= htmlspecialchars(__('index.features.c1p')) ?>
                         </p>
                     </div>
                 </div>
@@ -464,9 +475,9 @@ require_once __DIR__ . '/../config/public_url.php';
                         <div class="feature-icon">
                             <span class="material-symbols-outlined fs-2">leaderboard</span>
                         </div>
-                        <h4 class="fw-bold mb-3">Progreso en Tiempo Real</h4>
+                        <h4 class="fw-bold mb-3"><?= htmlspecialchars(__('index.features.c2t')) ?></h4>
                         <p class="text-muted mb-0">
-                            Monitoreá tu desempeño con estadísticas que detectan tus fortalezas y áreas que necesitan más refuerzo.
+                            <?= htmlspecialchars(__('index.features.c2p')) ?>
                         </p>
                     </div>
                 </div>
@@ -475,9 +486,9 @@ require_once __DIR__ . '/../config/public_url.php';
                         <div class="feature-icon">
                             <span class="material-symbols-outlined fs-2">assignment_turned_in</span>
                         </div>
-                        <h4 class="fw-bold mb-3">Simulacros Reales</h4>
+                        <h4 class="fw-bold mb-3"><?= htmlspecialchars(__('index.features.c3t')) ?></h4>
                         <p class="text-muted mb-0">
-                            Preparate con exámenes que replican las condiciones reales de las evaluaciones oficiales.
+                            <?= htmlspecialchars(__('index.features.c3p')) ?>
                         </p>
                     </div>
                 </div>
@@ -489,9 +500,9 @@ require_once __DIR__ . '/../config/public_url.php';
     <section class="py-5 bg-white" id="materias">
         <div class="container py-5">
             <div class="text-center mb-5">
-                <h2 class="display-5 fw-bold mb-3">Materias Disponibles</h2>
+                <h2 class="display-5 fw-bold mb-3"><?= htmlspecialchars(__('index.subjects.title')) ?></h2>
                 <p class="text-muted mx-auto" style="max-width: 700px;">
-                    Actualmente contamos con contenido especializado en las siguientes áreas fundamentales:
+                    <?= htmlspecialchars(__('index.subjects.lead')) ?>
                 </p>
             </div>
             <div class="row justify-content-center g-4">
@@ -500,9 +511,9 @@ require_once __DIR__ . '/../config/public_url.php';
                         <div class="feature-icon">
                             <span class="material-symbols-outlined">biotech</span>
                         </div>
-                        <h3 class="fw-bold mb-3">Microbiología</h3>
-                        <p class="text-muted">Estudio completo de bacterias, virus, hongos y parásitos con enfoque clínico.</p>
-                        <span class="badge rounded-pill bg-success px-3 py-2">Disponible</span>
+                        <h3 class="fw-bold mb-3"><?= htmlspecialchars(__('index.subjects.micro')) ?></h3>
+                        <p class="text-muted"><?= htmlspecialchars(__('index.subjects.microp')) ?></p>
+                        <span class="badge rounded-pill bg-success px-3 py-2"><?= htmlspecialchars(__('index.subjects.available')) ?></span>
                     </div>
                 </div>
                 <div class="col-md-5 col-lg-4">
@@ -510,14 +521,14 @@ require_once __DIR__ . '/../config/public_url.php';
                         <div class="feature-icon">
                             <span class="material-symbols-outlined">science</span>
                         </div>
-                        <h3 class="fw-bold mb-3">Biología Celular</h3>
-                        <p class="text-muted">Fundamentos de la vida celular, genética y mecanismos moleculares esenciales.</p>
-                        <span class="badge rounded-pill bg-success px-3 py-2">Disponible</span>
+                        <h3 class="fw-bold mb-3"><?= htmlspecialchars(__('index.subjects.bio')) ?></h3>
+                        <p class="text-muted"><?= htmlspecialchars(__('index.subjects.biop')) ?></p>
+                        <span class="badge rounded-pill bg-success px-3 py-2"><?= htmlspecialchars(__('index.subjects.available')) ?></span>
                     </div>
                 </div>
             </div>
             <div class="text-center mt-5">
-                <p class="text-muted italic">Estamos trabajando para agregar más materias próximamente...</p>
+                <p class="text-muted italic"><?= htmlspecialchars(__('index.subjects.more')) ?></p>
             </div>
         </div>
     </section>
@@ -545,7 +556,7 @@ require_once __DIR__ . '/../config/public_url.php';
                                         class="material-symbols-outlined text-success me-2">check_circle</span> 1
                                     simulacro al mes</li>
                             </ul>
-                            <a class="btn btn-outline-primary w-100 py-3 fw-bold" href="selecionar-materias.php">Elegí Básico</a>
+                            <a class="btn btn-outline-primary w-100 py-3 fw-bold shadow-sm" href="selecionar-materias.php">Elegí Básico</a>
                         </div>
                     </div>
                 </div>
@@ -575,7 +586,7 @@ require_once __DIR__ . '/../config/public_url.php';
                                         class="material-symbols-outlined text-primary me-2">check_circle</span> Ranking
                                     nacional</li>
                             </ul>
-                            <a class="btn btn-reverse w-100 py-3 fw-bold shadow" href="selecionar-materias.php">Elegí Plan Pro</a>
+                            <a class="btn btn-reverse w-100 py-3 fw-bold shadow-sm" href="selecionar-materias.php">Elegí Plan Pro</a>
                         </div>
                     </div>
                 </div>
@@ -595,7 +606,7 @@ require_once __DIR__ . '/../config/public_url.php';
                                         class="material-symbols-outlined text-success me-2">check_circle</span> Soporte
                                     prioritario 24/7</li>
                             </ul>
-                            <a class="btn btn-outline-primary w-100 py-3 fw-bold" href="selecionar-materias.php">Contactá ventas</a>
+                            <a class="btn btn-outline-primary w-100 py-3 fw-bold shadow-sm" href="selecionar-materias.php">Contactá ventas</a>
                         </div>
                     </div>
                 </div>
@@ -604,13 +615,12 @@ require_once __DIR__ . '/../config/public_url.php';
     </section> -->
     <section class="py-5 text-white text-center" id="listo">
         <div class="container py-5">
-            <h2 class="display-4 fw-bold mb-4">¿Listo para asegurar tu vacante?</h2>
+            <h2 class="display-4 fw-bold mb-4"><?= htmlspecialchars(__('index.cta.title')) ?></h2>
             <p class="lead mb-5 opacity-75 mx-auto" style="max-width: 800px;">
-                Unite a miles de médicos que ya están transformando su manera de estudiar con la plataforma de educación
-                médica más avanzada de la región.
+                <?= htmlspecialchars(__('index.cta.lead')) ?>
             </p>
             <div class="d-flex flex-column flex-sm-row justify-content-center gap-3">
-                <a class="btn btn-outline btn-lg rounded-pill px-5 py-3 fw-bold" href="selecionar-materias.php">Inscribite ahora</a>
+                <a class="btn btn-outline btn-lg rounded-pill px-5 py-3 fw-bold shadow-sm" href="selecionar-materias.php"><?= htmlspecialchars(__('index.cta.btn')) ?></a>
                 <!-- <a class="btn btn-outline btn-lg rounded-pill px-5 py-3 fw-bold" href="#">Mirá planes anuales</a> -->
             </div>
         </div>
@@ -626,35 +636,35 @@ require_once __DIR__ . '/../config/public_url.php';
                         <img src="<?= htmlspecialchars(public_asset_url('img/logo-bd-transparente.png')) ?>" alt="Banco de Choices" style="width: 168px; height: auto; max-height: 56px; object-fit: contain;" />
                     </a>
                     <p class="footer-brand-lead mb-4">
-                        Formando especialistas con tecnología de vanguardia y contenido médico de alta calidad científica en Argentina.
+                        <?= htmlspecialchars(__('index.footer.brand')) ?>
                     </p>
                 </div>
 
                 <div class="col-6 col-md-3 col-lg-2">
-                    <p class="footer-heading mb-0">Plataforma</p>
+                    <p class="footer-heading mb-0"><?= htmlspecialchars(__('index.footer.platform')) ?></p>
                     <ul class="list-unstyled mt-3 mb-0">
-                        <li class="mb-2"><a class="footer-link" href="login.php">Banco de preguntas</a></li>
-                        <li class="mb-2"><a class="footer-link" href="login.php">Simulacros</a></li>
-                        <li class="mb-2"><a class="footer-link" href="#materias">Especialidades</a></li>
+                        <li class="mb-2"><a class="footer-link" href="login.php"><?= htmlspecialchars(__('index.footer.f1')) ?></a></li>
+                        <li class="mb-2"><a class="footer-link" href="login.php"><?= htmlspecialchars(__('index.footer.f2')) ?></a></li>
+                        <li class="mb-2"><a class="footer-link" href="#materias"><?= htmlspecialchars(__('index.footer.f3')) ?></a></li>
                     </ul>
                 </div>
 
                 <div class="col-6 col-md-3 col-lg-2">
-                    <p class="footer-heading mb-0">Soporte</p>
+                    <p class="footer-heading mb-0"><?= htmlspecialchars(__('index.footer.support')) ?></p>
                     <ul class="list-unstyled mt-3 mb-0">
-                        <li class="mb-2"><a class="footer-link" href="login.php">Centro de ayuda</a></li>
-                        <li class="mb-2"><a class="footer-link" href="#contacto">Contacto</a></li>
-                        <li class="mb-2"><a class="footer-link" href="#caracteristicas">Recursos</a></li>
+                        <li class="mb-2"><a class="footer-link" href="login.php"><?= htmlspecialchars(__('index.footer.s1')) ?></a></li>
+                        <li class="mb-2"><a class="footer-link" href="#contacto"><?= htmlspecialchars(__('index.footer.s2')) ?></a></li>
+                        <li class="mb-2"><a class="footer-link" href="#caracteristicas"><?= htmlspecialchars(__('index.footer.s3')) ?></a></li>
                     </ul>
                 </div>
 
                 <div class="col-md-6 col-lg-3">
-                    <p class="footer-heading mb-0">Legal</p>
+                    <p class="footer-heading mb-0"><?= htmlspecialchars(__('index.footer.legal')) ?></p>
                     <ul class="list-unstyled mt-3 mb-0">
-                        <li class="mb-2"><a class="footer-link" href="#terminos">Términos y condiciones</a></li>
-                        <li class="mb-2"><a class="footer-link" href="#privacidad">Privacidad</a></li>
-                        <li class="mb-2"><a class="footer-link" href="#lgpd">Protección de datos (LGPD)</a></li>
-                        <li class="mb-2"><a class="footer-link" href="#cookies">Cookies</a></li>
+                        <li class="mb-2"><a class="footer-link" href="#terminos"><?= htmlspecialchars(__('index.footer.l1')) ?></a></li>
+                        <li class="mb-2"><a class="footer-link" href="#privacidad"><?= htmlspecialchars(__('index.footer.l2')) ?></a></li>
+                        <li class="mb-2"><a class="footer-link" href="#lgpd"><?= htmlspecialchars(__('index.footer.l3')) ?></a></li>
+                        <li class="mb-2"><a class="footer-link" href="#cookies"><?= htmlspecialchars(__('index.footer.l4')) ?></a></li>
                     </ul>
                 </div>
             </div>
@@ -662,12 +672,12 @@ require_once __DIR__ . '/../config/public_url.php';
             <div class="footer-contact-panel mt-4 mt-lg-5" id="contacto">
                 <div class="row align-items-center gy-3">
                     <div class="col-lg-7">
-                        <p class="footer-contact-title mb-1">¿Empezamos?</p>
-                        <p class="footer-contact-sub mb-0">Escribinos o ingresá a la plataforma. Respondemos consultas sobre acceso, materias y facturación.</p>
+                        <p class="footer-contact-title mb-1"><?= htmlspecialchars(__('index.footer.cta_title')) ?></p>
+                        <p class="footer-contact-sub mb-0"><?= htmlspecialchars(__('index.footer.cta_sub')) ?></p>
                     </div>
                     <div class="col-lg-5">
                         <div class="d-flex flex-column flex-sm-row flex-lg-column flex-xl-row gap-2 justify-content-lg-end">
-                            <a class="footer-btn-primary justify-content-center" href="selecionar-materias.php">Inscribite gratis</a>
+                            <a class="footer-btn-primary justify-content-center" href="selecionar-materias.php"><?= htmlspecialchars(__('index.footer.cta_btn')) ?></a>
                             <a class="footer-btn-outline justify-content-center" href="mailto:contato@bancodechoices.com">contato@bancodechoices.com</a>
                         </div>
                         <p class="small mt-2 mb-0 text-center text-lg-end" style="color: rgba(255,255,255,0.45);">

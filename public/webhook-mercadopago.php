@@ -98,6 +98,10 @@ function resolveMercadoPagoPaymentId(array $get, string $rawBody): ?int
         }
     }
 
+    // PHP converte "data.id" na query string em "data_id"
+    if (isset($get['data_id'])) {
+        return (int) $get['data_id'];
+    }
     if (isset($get['data.id'])) {
         return (int) $get['data.id'];
     }

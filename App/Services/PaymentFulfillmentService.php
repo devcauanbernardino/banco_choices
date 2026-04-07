@@ -184,10 +184,12 @@ class PaymentFulfillmentService
 
             self::upsertPedidoItens($pdo, $pedidoId, $materias, $planId, $planDays, $valorTotal);
 
+            // Mantém stripe_payment_id como external_reference (ORDER-...) para suporte e consistência;
+            // o id numérico do MP fica em mp_payment_processed.
             $stmt = $pdo->prepare(
-                "UPDATE pedidos SET status = 'completed', stripe_payment_id = :mpid WHERE id = :id"
+                "UPDATE pedidos SET status = 'completed' WHERE id = :id"
             );
-            $stmt->execute([':mpid' => (string) $mpId, ':id' => $pedidoId]);
+            $stmt->execute([':id' => $pedidoId]);
 
             try {
                 self::markPaymentProcessed($pdo, $mpId, 'approved', $extRef !== '' ? $extRef : null);

@@ -6,6 +6,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
 require_once __DIR__ . '/../config/bootstrap_env.php';
 loadProjectEnv();
+require_once __DIR__ . '/../config/public_url.php';
 
 $status = $_GET['status'] ?? null;
 $orderId = $_GET['order_id'] ?? null;
@@ -21,29 +22,32 @@ $errorMessage = null;
 $processingReturn = false;
 
 if (isset($_GET['error']) && $_GET['error'] === 'payment_failed') {
-    $errorMessage = 'El pago no pudo completarse. Podés intentar de nuevo.';
+    $errorMessage = __('signup.err.payment_failed');
 } elseif ($status === 'approved' || $status === 'pending') {
     $paymentSuccess = true;
     $processingReturn = true;
     unset($_SESSION['pending_order'], $_SESSION['selected_materias'], $_SESSION['selected_plan']);
 } else {
     $paymentSuccess = false;
-    $errorMessage = 'No pudimos identificar el resultado del pago. Si ya pagaste, esperá la confirmación por correo.';
+    $errorMessage = __('signup.err.payment_unknown');
 }
 
 $pageTitle = $paymentSuccess
-    ? 'Pago recibido'
-    : 'Error en el Pago';
+    ? __('signup.page_title.payment_ok')
+    : __('signup.page_title.payment_err');
 ?>
 
 <!DOCTYPE html>
-<html lang="es-AR">
+<html lang="<?= htmlspecialchars(locale_html_lang()) ?>" data-bs-theme="light">
 
 <head>
     <meta charset="utf-8" />
+    <?php require_once __DIR__ . '/../App/Views/includes/theme-head-public.php'; ?>
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title><?= htmlspecialchars($pageTitle) ?> | Banco de Choices</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="<?= htmlspecialchars(public_asset_url('assets/css/buttons-global.css')) ?>" />
+    <link rel="stylesheet" href="<?= htmlspecialchars(public_asset_url('assets/css/public-language-selector.css')) ?>" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
@@ -97,6 +101,17 @@ $pageTitle = $paymentSuccess
             z-index: 1;
             width: 100%;
             padding: 2rem 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .payment-success-topbar {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            justify-content: flex-end;
+            padding: 0 0.25rem 1rem;
         }
 
         @keyframes floatBg {
@@ -205,27 +220,6 @@ $pageTitle = $paymentSuccess
             color: var(--accent-purple);
         }
 
-        .btn-primary-custom {
-            background: linear-gradient(135deg, var(--navy-primary), var(--navy-dark));
-            border: none;
-            color: white;
-            padding: 14px 28px;
-            border-radius: 12px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            font-weight: 700;
-            font-size: 1rem;
-            letter-spacing: 0.3px;
-            text-decoration: none;
-            display: inline-block;
-            margin-top: 1rem;
-        }
-
-        .btn-primary-custom:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(0, 33, 71, 0.3);
-            color: white;
-        }
-
         .credentials-box {
             background: #f3f4f6;
             border: 2px solid #e5e7eb;
@@ -295,6 +289,18 @@ $pageTitle = $paymentSuccess
 
 <body>
     <main>
+        <div class="payment-success-topbar">
+            <div class="navbar-actions navbar-actions--landing flex-shrink-0">
+                <div class="navbar-actions__inner">
+                    <?php
+                    $bc_lang_menu_landing = true;
+                    $bc_lang_selector_btn_class = 'btn btn-navbar-lang dropdown-toggle d-inline-flex align-items-center gap-2';
+                    require_once __DIR__ . '/../App/Views/includes/language-selector.php';
+                    unset($bc_lang_menu_landing, $bc_lang_selector_btn_class);
+                    ?>
+                </div>
+            </div>
+        </div>
         <div class="card animate__animated animate__zoomIn">
             <div class="card-body">
                 <?php if ($paymentSuccess): ?>
@@ -302,34 +308,34 @@ $pageTitle = $paymentSuccess
                         <i class="bi bi-check-circle-fill"></i>
                     </div>
 
-                    <h1><?= !empty($processingReturn) ? '¡Recibimos tu pago!' : '¡Pago Confirmado!' ?></h1>
+                    <h1><?= !empty($processingReturn) ? htmlspecialchars(__('signup.payment.received_h1')) : htmlspecialchars(__('signup.payment.confirmed_h1')) ?></h1>
                     <p class="subtitle">
                         <?php if (!empty($processingReturn)): ?>
-                            Estamos confirmando el pago con Mercado Pago. <strong>No mostramos contraseñas en esta pantalla</strong> por seguridad: el acceso se libera cuando el pago queda <strong>aprobado</strong> en nuestro sistema (notificación oficial).
+                            <?= htmlspecialchars(__('signup.payment.processing_p')) ?>
                         <?php else: ?>
-                            Tu compra ha sido procesada exitosamente
+                            <?= htmlspecialchars(__('signup.payment.success_p')) ?>
                         <?php endif; ?>
                     </p>
 
                     <?php if ($userEmail !== ''): ?>
                         <div class="credentials-box">
                             <div class="credential-item">
-                                <span class="credential-label">Correo del pedido:</span>
+                                <span class="credential-label"><?= htmlspecialchars(__('signup.payment.order_email')) ?></span>
                                 <span class="credential-value"><?= htmlspecialchars($userEmail) ?></span>
                             </div>
                         </div>
                     <?php endif; ?>
 
                     <div class="info-box">
-                        <p><i class="bi bi-info-circle me-2"></i> <strong>Próximos pasos:</strong></p>
-                        <p>1. Si el pago fue aprobado, recibirás tus credenciales por <strong>email</strong> (revisá spam).</p>
-                        <p>2. Si el pago quedó pendiente (ej. efectivo), te avisaremos cuando se acredite.</p>
-                        <p>3. Podés iniciar sesión cuando recibas el correo con tu contraseña.</p>
+                        <p><i class="bi bi-info-circle me-2"></i> <strong><?= htmlspecialchars(__('signup.payment.next_title')) ?></strong></p>
+                        <p><?= htmlspecialchars(__('signup.payment.next1')) ?></p>
+                        <p><?= htmlspecialchars(__('signup.payment.next2')) ?></p>
+                        <p><?= htmlspecialchars(__('signup.payment.next3')) ?></p>
                     </div>
 
-                    <a href="<?= htmlspecialchars(getenv('SITE_URL') ?: 'https://bancodechoices.com') ?>/login.php" class="btn-primary-custom">
+                    <a href="<?= htmlspecialchars(getenv('SITE_URL') ?: 'https://bancodechoices.com') ?>/login.php" class="btn btn-primary btn-lg py-3 fw-bold shadow-sm d-inline-flex align-items-center mt-3">
                         <i class="bi bi-box-arrow-in-right me-2"></i>
-                        Ir al Login
+                        <?= htmlspecialchars(__('signup.payment.btn_login')) ?>
                     </a>
 
                 <?php else: ?>
@@ -337,8 +343,8 @@ $pageTitle = $paymentSuccess
                         <i class="bi bi-x-circle-fill"></i>
                     </div>
 
-                    <h1>Error en el Pago</h1>
-                    <p class="subtitle">No pudimos procesar tu compra</p>
+                    <h1><?= htmlspecialchars(__('signup.payment.error_h1')) ?></h1>
+                    <p class="subtitle"><?= htmlspecialchars(__('signup.payment.error_sub')) ?></p>
 
                     <div class="error-message">
                         <i class="bi bi-exclamation-circle me-2"></i>
@@ -346,15 +352,15 @@ $pageTitle = $paymentSuccess
                     </div>
 
                     <div class="info-box">
-                        <p><i class="bi bi-info-circle me-2"></i> <strong>¿Qué hacer ahora?</strong></p>
-                        <p>• Intenta nuevamente con tu tarjeta</p>
-                        <p>• Verifica que tus datos sean correctos</p>
-                        <p>• Contacta a nuestro soporte si el problema persiste</p>
+                        <p><i class="bi bi-info-circle me-2"></i> <strong><?= htmlspecialchars(__('signup.payment.error_what')) ?></strong></p>
+                        <p><?= htmlspecialchars(__('signup.payment.error_tip1')) ?></p>
+                        <p><?= htmlspecialchars(__('signup.payment.error_tip2')) ?></p>
+                        <p><?= htmlspecialchars(__('signup.payment.error_tip3')) ?></p>
                     </div>
 
-                    <a href="selecionar-materias.php" class="btn-primary-custom">
+                    <a href="selecionar-materias.php" class="btn btn-primary btn-lg py-3 fw-bold shadow-sm d-inline-flex align-items-center mt-3">
                         <i class="bi bi-arrow-left me-2"></i>
-                        Volver al Inicio
+                        <?= htmlspecialchars(__('signup.payment.back_start')) ?>
                     </a>
 
                 <?php endif; ?>

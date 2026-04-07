@@ -64,11 +64,12 @@ class MercadoPagoWebhookSignature
      */
     private static function extractDataId(array $get, string $rawBody): ?string
     {
-        if (isset($get['data.id'])) {
-            return (string) $get['data.id'];
-        }
+        // Query "data.id=..." vira $_GET['data_id'] no PHP
         if (isset($get['data_id'])) {
             return (string) $get['data_id'];
+        }
+        if (isset($get['data.id'])) {
+            return (string) $get['data.id'];
         }
         if (isset($get['id'])) {
             return (string) $get['id'];

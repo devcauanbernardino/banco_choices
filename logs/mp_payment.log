@@ -127,3 +127,4 @@
 [2026-03-22T05:52:00+01:00] [webhook] recebido method=POST get={"id":"39284688350","topic":"merchant_order"} body={"resource":"https://api.mercadolibre.com/merchant_orders/39284688350","topic":"merchant_order"}
 [2026-03-22T05:52:00+01:00] [webhook] notificacao payment_id=39284688350
 [2026-03-22T05:52:01+01:00] [webhook] get_payment_erro id=39284688350 Api error. Check response for details
+[2026-04-07T22:19:19+02:00] [preference] preference_ok id=3232686376-c5425ce1-4421-44e0-8675-a39a64722438 order=ORDER-1775593111-8093

@@ -7,21 +7,19 @@
 session_start();
 
 // 1. Carregamento de dependências
+require_once __DIR__ . '/../../config/public_url.php';
 require_once __DIR__ . '/../../config/conexao.php';
 require_once __DIR__ . '/../Controllers/DashboardController.php';
 
 // 2. Verificação de Sessão
 if (!isset($_SESSION['usuario']['id'])) {
-    header('Location: login.php');
+    header('Location: ' . app_url('login.php'));
     exit;
 }
 
-$materiaId = (int) ($_GET['materia'] ?? 0);
-
-$idsPermitidos = array_column(
-    $_SESSION['usuario']['materias'],
-    'id'
-);
+$materiasFiltro = array_values(array_filter(array_map(static function ($m) {
+    return $m['nome'] ?? '';
+}, $_SESSION['usuario']['materias'] ?? [])));
 
 // 3. Inicialização do Controlador
 $objConexao = new Conexao();
@@ -44,9 +42,12 @@ $stats = $dashboard->getStats();
     <title>Meus Simulados | Banco de Choices</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?php require_once __DIR__ . '/../../config/favicon_links.php'; ?>
+    <?php require_once __DIR__ . '/includes/theme-head.php'; ?>
 
     <!-- Bootstrap & Google Fonts -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="<?= htmlspecialchars(public_asset_url('assets/css/buttons-global.css')) ?>">
+    <link rel="stylesheet" href="<?= htmlspecialchars(public_asset_url('assets/css/sidebar.css')) ?>">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     
     <style>
@@ -56,12 +57,9 @@ $stats = $dashboard->getStats();
             --card-radius: 16px;
         }
 
-        body {
-            background-color: var(--bg-body);
+        body.app-private-body {
             font-family: 'Segoe UI', sans-serif;
         }
-
-        .sidebar-space { margin-left: 260px; }
 
         /* Cabeçalho da Página */
         .page-header {
@@ -155,16 +153,46 @@ $stats = $dashboard->getStats();
             text-align: center;
         }
 
-        @media (max-width: 992px) {
-            .sidebar-space { margin-left: 0; padding-bottom: 80px; }
+        @media (max-width: 991.98px) {
+            .simulados-main {
+                padding-left: 1rem !important;
+                padding-right: 1rem !important;
+                padding-top: 1rem !important;
+            }
+
+            .page-header {
+                flex-direction: column;
+                align-items: stretch !important;
+                gap: 1rem;
+                padding: 1.25rem !important;
+                margin-bottom: 1.25rem !important;
+            }
+
+            .page-header .btn {
+                width: 100%;
+            }
+
+            .filter-card {
+                padding: 1.1rem;
+                margin-bottom: 1.25rem;
+            }
+
+            .empty-state {
+                padding: 2rem 1rem;
+            }
         }
+
     </style>
 </head>
-<body>
+<body class="app-private-body">
 
     <?php require_once __DIR__ . '/includes/sidebar.php'; ?>
 
-    <main class="sidebar-space p-4">
+    <header class="app-mobile-topbar d-lg-none justify-content-center">
+        <span class="fw-bold">Meus simulados</span>
+    </header>
+
+    <main class="app-main p-4 simulados-main">
         
         <!-- Cabeçalho Dinâmico -->
         <div class="page-header d-flex justify-content-between align-items-center">
@@ -172,7 +200,7 @@ $stats = $dashboard->getStats();
                 <h3 class="fw-bold mb-1 text-dark">Meus Simulados</h3>
                 <p class="text-muted mb-0">Você já realizou <strong><?= $stats['total_simulados'] ?></strong> simulados no total.</p>
             </div>
-            <a href="bancoperguntas.php" class="btn btn-primary px-4 rounded-pill" style="background-color: var(--primary-color); border: none;">
+            <a href="<?= htmlspecialchars(app_url('bancoperguntas.php')) ?>" class="btn btn-primary btn-lg py-3 fw-bold shadow-sm px-4 rounded-pill">
                 Novo Simulado
             </a>
         </div>
@@ -184,9 +212,9 @@ $stats = $dashboard->getStats();
                     <label class="form-label fw-bold small">Filtrar por Matéria</label>
                     <select name="materia" class="form-select">
                         <option value="">Todas as matérias</option>
-                        <?php foreach ($materias as $m): ?>
-                            <option value="<?= $m ?>" <?= $filtroMateria === $m ? 'selected' : '' ?>>
-                                <?= ucfirst($m) ?>
+                        <?php foreach ($materiasFiltro as $m): ?>
+                            <option value="<?= htmlspecialchars($m) ?>" <?= $filtroMateria === $m ? 'selected' : '' ?>>
+                                <?= htmlspecialchars(ucfirst($m)) ?>
                             </option>
                         <?php endforeach; ?>
                     </select>
@@ -206,7 +234,7 @@ $stats = $dashboard->getStats();
                 </div>
                 <?php if (!empty($filtroMateria) || !empty($filtroStatus)): ?>
                 <div class="col-md-2">
-                    <a href="simulados.php" class="btn btn-link text-muted w-100 text-decoration-none small">Limpar Filtros</a>
+                    <a href="<?= htmlspecialchars(app_url('simulados.php')) ?>" class="btn btn-link text-muted w-100 text-decoration-none small">Limpar Filtros</a>
                 </div>
                 <?php endif; ?>
             </form>
@@ -255,7 +283,7 @@ $stats = $dashboard->getStats();
                                         </span>
                                     </td>
                                     <td class="text-center">
-                                        <a href="resultado.php?id=<?= $item['id'] ?>" class="btn-action" title="Ver Revisão">
+                                        <a href="<?= htmlspecialchars(app_url('resultado.php?id=' . (int) $item['id'])) ?>" class="btn-action" title="Ver Revisão">
                                             <span class="material-icons fs-5">visibility</span>
                                         </a>
                                     </td>
@@ -269,6 +297,6 @@ $stats = $dashboard->getStats();
 
     </main>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <?php require_once __DIR__ . '/includes/private-footer-scripts.php'; ?>
 </body>
 </html>

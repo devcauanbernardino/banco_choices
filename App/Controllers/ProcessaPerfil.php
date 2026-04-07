@@ -7,6 +7,7 @@
 session_start();
 
 // 1. Carregamos as dependências
+require_once __DIR__ . '/../../config/public_url.php';
 require_once __DIR__ . '/../../config/conexao.php';
 require_once __DIR__ . '/../Models/Usuario.php';
 require_once __DIR__ . '/../Controllers/PerfilController.php';
@@ -26,7 +27,7 @@ $controller = new PerfilController($userModel, $session);
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $controller->handleUpdate($_POST);
 } else {
-    header('Location: perfil.php');
+    header('Location: ' . app_url('perfil.php'));
     exit;
 }
 

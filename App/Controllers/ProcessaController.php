@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../../config/public_url.php';
 require_once __DIR__ . '/../Models/Question.php';
 require_once __DIR__ . '/../Session/SimulationSession.php';
 require_once __DIR__ . '/../../config/conexao.php';
@@ -115,7 +116,12 @@ class ProcessaController
 
     private function redirect(string $url): void
     {
-        header("Location: $url");
+        if (preg_match('#^https?://#i', $url)) {
+            header('Location: ' . $url);
+            exit;
+        }
+        $path = ltrim($url, '/');
+        header('Location: ' . app_url($path));
         exit;
     }
 }

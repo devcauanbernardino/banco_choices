@@ -1,39 +1,44 @@
 <?php
 require_once __DIR__ . '/../config/public_url.php';
+
 $mensagensErro = [
-    'naologado' => 'Debés iniciar sesión para acceder al sistema.',
-    'logininvalido' => 'Correo o contraseña incorrectos.',
-    'acessoinvalido' => 'Acceso inválido.',
-    'camposobrigatorios' => 'Completá todos los campos obligatorios y elegí al menos una materia.',
-    'emailinvalido' => 'Ingresá un correo electrónico válido.',
-    'naocoincidem' => 'Las contraseñas no coinciden.',
-    'senhafraca' => 'La contraseña debe tener al menos 8 caracteres, mayúscula, minúscula, número y un símbolo.',
-    'emailcadastrado' => 'Ese correo ya está registrado.',
-    'error' => 'No se pudo completar el registro. Intentá de nuevo.',
+    'naologado' => 'login.err.naologado',
+    'logininvalido' => 'login.err.logininvalido',
+    'acessoinvalido' => 'login.err.acessoinvalido',
+    'camposobrigatorios' => 'login.err.camposobrigatorios',
+    'emailinvalido' => 'login.err.emailinvalido',
+    'naocoincidem' => 'login.err.naocoincidem',
+    'senhafraca' => 'login.err.senhafraca',
+    'emailcadastrado' => 'login.err.emailcadastrado',
+    'error' => 'login.err.error',
 ];
 
 $erro = $_GET['error'] ?? null;
-$mensagem = $mensagensErro[$erro] ?? null;
+$mensagem = isset($mensagensErro[$erro]) ? __($mensagensErro[$erro]) : null;
 $registroOk = isset($_GET['registered']) && $_GET['registered'] === '1';
 ?>
 
 <!DOCTYPE html>
-<html lang="es-AR">
+<html lang="<?= htmlspecialchars(locale_html_lang()) ?>" data-bs-theme="light">
 
 <head>
     <meta charset="utf-8" />
+    <?php require_once __DIR__ . '/../App/Views/includes/theme-head-public.php'; ?>
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Login | Banco de Choices</title>
+    <title><?= htmlspecialchars(__('login.title_page')) ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap"
         rel="stylesheet" />
+    <link rel="stylesheet" href="<?= htmlspecialchars(public_asset_url('assets/css/buttons-global.css')) ?>" />
+    <link rel="stylesheet" href="<?= htmlspecialchars(public_asset_url('assets/css/public-language-selector.css')) ?>" />
+    <link rel="stylesheet" href="<?= htmlspecialchars(public_asset_url('assets/css/theme-app.css')) ?>" />
     <link rel="stylesheet" href="assets/css/login.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     <?php require_once __DIR__ . '/../config/favicon_links.php'; ?>
 
 </head>
 
-<body>
+<body class="login-page">
     <div class="container-fluid p-0">
         <div class="row g-0 login-wrapper">
             <div class="col-lg-7 d-none d-lg-flex login-sidebar align-items-center justify-content-center p-5 text-white"
@@ -41,8 +46,10 @@ $registroOk = isset($_GET['registered']) && $_GET['registered'] === '1';
                 <div class="login-sidebar-overlay"></div>
                 <div class="sidebar-content mw-100" style="max-width: 600px;">
                     <div class="mb-4">
-                        <img src="<?= htmlspecialchars(public_asset_url('img/logo-bd-transparente.png')) ?>" alt="Banco de Choices"
-                            style="width: 180px; height: auto; max-height: 56px; object-fit: contain;" />
+                        <div class="login-sidebar-logo-wrap">
+                            <img class="login-sidebar-logo" src="<?= htmlspecialchars(public_asset_url('img/logo-bd-transparente.png')) ?>"
+                                alt="Banco de Choices" width="200" height="56" />
+                        </div>
                     </div>
                     <h1 class="display-4 fw-bold mb-4">Tu futuro como especialista empieza acá.</h1>
                     <p class="lead mb-5 opacity-75">Unite a la comunidad más grande de residentes médicos en Argentina y
@@ -63,118 +70,110 @@ $registroOk = isset($_GET['registered']) && $_GET['registered'] === '1';
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-lg-5 d-flex align-items-center justify-content-center bg-white">
-                <div class="p-4 p-md-5 w-100" style="max-width: 480px;">
-                    <div class="d-lg-none mb-5 text-center">
-                        <div class="d-inline-flex align-items-center gap-2">
-                            <svg fill="none" height="32" viewBox="0 0 48 48" width="32"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M24 45.8096C19.6865 45.8096 15.4698 44.5305 11.8832 42.134C8.29667 39.7376 5.50128 36.3314 3.85056 32.3462C2.19985 28.361 1.76794 23.9758 2.60947 19.7452C3.451 15.5145 5.52816 11.6284 8.57829 8.5783C11.6284 5.52817 15.5145 3.45101 19.7452 2.60948C23.9758 1.76795 28.361 2.19986 32.3462 3.85057C36.3314 5.50129 39.7376 8.29668 42.134 11.8833C44.5305 15.4698 45.8096 19.6865 45.8096 24L24 24L24 45.8096Z"
-                                    fill="#6000df"></path>
-                            </svg>
-                            <span class="h4 mb-0 fw-bold text-dark">Banco de Choices</span>
+            <div class="col-12 col-lg-5 login-form-column">
+                <div class="login-form-inner">
+                    <div class="login-form-container">
+                        <div class="d-lg-none login-mobile-brand text-center">
+                            <a href="index.php" class="login-mobile-logo-link d-inline-block text-decoration-none" aria-label="Banco de Choices — inicio">
+                                <img class="login-mobile-logo" src="<?= htmlspecialchars(public_asset_url('img/logo-bd-transparente.png')) ?>"
+                                    alt="Banco de Choices" width="280" height="78" decoding="async" />
+                            </a>
                         </div>
-                    </div>
-                    <div class="mb-4">
-                        <a href="index.php"
-                            class="voltar-inicio gap-2 text-decoration-none text-muted small mb-3">
-                            <i class="bi bi-arrow-left"></i>
-                            Volver al inicio
-                        </a>
 
-                        <h2 class="fw-bold mb-1">Iniciá sesión</h2>
-                        <p class="text-muted small">Ingresá a tu cuenta de BancodeChoices</p>
-                    </div>
-
+                        <header class="login-form-header">
+                            <div class="d-flex flex-wrap align-items-start justify-content-between gap-3 mb-2">
+                                <a href="index.php" class="login-back-link mb-0 align-self-center">
+                                    <i class="bi bi-arrow-left" aria-hidden="true"></i>
+                                    <span><?= htmlspecialchars(__('login.back_home')) ?></span>
+                                </a>
+                                <div class="navbar-actions navbar-actions--landing login-lang-toolbar flex-shrink-0 ms-auto">
+                                    <div class="navbar-actions__inner">
+                                        <?php
+                                        $bc_lang_menu_landing = true;
+                                        $bc_lang_selector_btn_class = 'btn btn-navbar-lang dropdown-toggle d-inline-flex align-items-center gap-2';
+                                        require_once __DIR__ . '/../App/Views/includes/language-selector.php';
+                                        unset($bc_lang_menu_landing, $bc_lang_selector_btn_class);
+                                        ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <h2 class="login-title"><?= htmlspecialchars(__('login.heading')) ?></h2>
+                        </header>
 
                     <?php if ($registroOk): ?>
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            Registro exitoso. Ya podés iniciar sesión con tu correo y contraseña.
-                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        <div class="alert alert-success login-alert alert-dismissible fade show" role="alert">
+                            <?= htmlspecialchars(__('login.success')) ?>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="<?= htmlspecialchars(__('login.close')) ?>"></button>
                         </div>
                     <?php elseif ($mensagem): ?>
-                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        <div class="alert alert-warning login-alert alert-dismissible fade show" role="alert">
                             <?= htmlspecialchars($mensagem) ?>
-                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="<?= htmlspecialchars(__('login.close')) ?>"></button>
                         </div>
                     <?php endif; ?>
 
-                    <form action="login-process.php" method="post" id="loginForm">
-                        <div class="mb-3">
-                            <label class="form-label fw-medium small" for="emailInput">Email</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="bi bi-envelope text-muted"></i></span>
-                                <input class="form-control form-control-lg form-control-with-icon" id="emailInput"
-                                    placeholder="ejemplo@mail.com" required type="email" name="email" />
+                    <form action="login-process.php" method="post" id="loginForm" class="login-form">
+                        <div class="login-field">
+                            <label class="login-field-label" for="emailInput">
+                                <?= htmlspecialchars(__('login.email')) ?>
+                            </label>
+                            <div class="input-group input-group-lg login-input-group">
+                                <span class="input-group-text" aria-hidden="true"><i class="bi bi-envelope"></i></span>
+                                <input class="form-control" id="emailInput" name="email" type="email"
+                                    inputmode="email" autocomplete="email" autocapitalize="none" spellcheck="false"
+                                    placeholder="nombre@ejemplo.com" required
+                                    aria-required="true" />
                             </div>
                         </div>
-                        <div class="mb-3">
-                            <div class="d-flex justify-content-between">
-                                <label class="form-label fw-medium small" for="passwordInput">Contraseña</label>
-                            </div>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="bi bi-lock text-muted"></i></span>
-                                <input class="form-control form-control-lg form-control-with-icon" id="passwordInput"
-                                    placeholder="••••••••" required type="password" name="senha" />
+                        <div class="login-field">
+                            <label class="login-field-label" for="passwordInput">
+                                <?= htmlspecialchars(__('login.password')) ?>
+                            </label>
+                            <div class="input-group input-group-lg login-input-group">
+                                <span class="input-group-text" aria-hidden="true"><i class="bi bi-lock"></i></span>
+                                <input class="form-control" id="passwordInput" name="senha" type="password"
+                                    autocomplete="current-password" required
+                                    placeholder="••••••••" minlength="1"
+                                    aria-required="true" />
+                                <button type="button" class="btn login-password-toggle" id="togglePassword"
+                                    aria-label="<?= htmlspecialchars(__('login.show_pwd')) ?>" aria-controls="passwordInput" aria-pressed="false">
+                                    <i class="bi bi-eye" id="togglePasswordIcon" aria-hidden="true"></i>
+                                </button>
                             </div>
                         </div>
-                        <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div class="d-flex justify-content-between align-items-center login-row-extras">
                             <div class="form-check">
                                 <input class="form-check-input" id="rememberMe" type="checkbox" />
                                 <label class="form-check-label small" for="rememberMe">
-                                    Recordarme
+                                    <?= htmlspecialchars(__('login.remember')) ?>
                                 </label>
                             </div>
-                            <a class="text-navy text-decoration-none small fw-bold" href="mailto:contato@bancodechoices.com">¿Olvidaste tu
-                                contraseña?</a>
+                            <a class="text-navy text-decoration-none small fw-bold" href="mailto:contato@bancodechoices.com"><?= htmlspecialchars(__('login.forgot')) ?></a>
                         </div>
-                        <div class="d-grid mb-4">
-                            <button class="btn btn-lg py-3 fw-bold shadow-sm" type="submit" id="submitBtn">Ingresar <i
-                                    class="bi bi-box-arrow-in-right ms-2"></i></button>
+                        <div class="d-grid login-submit-wrap">
+                            <button class="btn btn-primary btn-lg py-3 fw-bold shadow-sm w-100" type="submit" id="submitBtn"><?= htmlspecialchars(__('login.submit')) ?> <i
+                                    class="bi bi-box-arrow-in-right ms-2" aria-hidden="true"></i></button>
                         </div>
-                        <!-- <div class="position-relative text-center mb-4">
-                            <hr class="text-muted" />
-                            <span
-                                class="position-absolute top-50 start-50 translate-middle bg-white px-3 text-muted small">O
-                                ingresá con</span>
-                        </div>
-                        <div class="row g-2 mb-5">
-                            <div class="col-6">
-                                <button
-                                    class="btn social-btn w-100 py-2 d-flex align-items-center justify-content-center gap-2"
-                                    type="button">
-                                    <img alt="Google" height="18"
-                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPMHIdOzvR61h0bSe-JxJ3JZAWS8vTn5eonQCUd1MLs8H5hOf1LvZK8B_DBx2-qmRybb-ytnVwmsybYDPJYHels3CVkbwppYgO19IKPJh4IXS3x8RsFncC-J2egzvxX-AhcczRUll4QWIHb-Vx6mPjXNSJf1zUqpbgIdsLoHM7X9mTMuNe5ezpi3hAboHyP2FcAGLftZdTq3vaz8HN-DrLX7HrPpFMj7pOhPyvmosg0WlLSqBIFFSiD3xeAsl5B2_PQGkyq_UZT4aV"
-                                        width="18" />
-                                    <span class="small fw-medium">Google</span>
-                                </button>
-                            </div>
-                            <div class="col-6">
-                                <button
-                                    class="btn social-btn w-100 py-2 d-flex align-items-center justify-content-center gap-2"
-                                    type="button">
-                                    <img alt="Apple" height="18"
-                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuC7XdL2mmgQEvCi5loKhNCjfKKr9RYP_3cx8VkXbzSrcVSjuGovtj9TdubAi_mXsh8xGiLixG0VE1K6WKxSGL1lIz1aSRfEKNkRMy2ITl9OdvL0fGlzx5JHGDs3k5Yfix5UH-BjJj-DvNNvk-33shONajvXlTpSZ95jtAOoU63QwIvLF9p9MuVf_eMyzKTs07d_teW8NKvrSc2S8gLf6RANuzxeQ2TLWm87Gkm99fzDJiejHyoIYz35HRFlXp28xf2HyHxwGnciJlCB"
-                                        width="18" />
-                                    <span class="small fw-medium">Apple</span>
-                                </button>
-                            </div>
-                        </div> -->
                     </form>
-                    <div class="text-center mb-5">
-                        <p class="text-muted small">¿No tenés una cuenta? <a
-                                class="text-navy fw-bold text-decoration-none" href="selecionar-materias.php">Registrate
-                                gratis</a></p>
+
+                    <div class="login-signup-cta">
+                        <p class="login-signup-text mb-0">
+                            <?= htmlspecialchars(__('login.signup')) ?>
+                            <a class="login-signup-link" href="selecionar-materias.php"><?= htmlspecialchars(__('login.signup_link')) ?></a>
+                        </p>
                     </div>
-                    <footer class="mt-auto border-top pt-4 text-center">
-                        <div class="mb-2">
-                            <a class="text-muted text-decoration-none small mx-2" href="index.php#privacidad">Privacidad</a>
-                            <a class="text-muted text-decoration-none small mx-2" href="index.php#terminos">Términos</a>
-                            <a class="text-muted text-decoration-none small mx-2" href="mailto:contato@bancodechoices.com">Contacto</a>
-                        </div>
-                        <p class="text-muted" style="font-size: 10px; letter-spacing: 1px;">© 2026 BANCODECHOICES</p>
+
+                    <footer class="login-footer">
+                        <nav class="login-footer-nav" aria-label="Legal">
+                            <a href="index.php#privacidad"><?= htmlspecialchars(__('login.footer_privacy')) ?></a>
+                            <span class="login-footer-dot" aria-hidden="true"></span>
+                            <a href="index.php#terminos"><?= htmlspecialchars(__('login.footer_terms')) ?></a>
+                            <span class="login-footer-dot" aria-hidden="true"></span>
+                            <a href="mailto:contato@bancodechoices.com"><?= htmlspecialchars(__('login.footer_contact')) ?></a>
+                        </nav>
+                        <p class="login-footer-copy"><?= htmlspecialchars(__('login.footer_copy')) ?></p>
                     </footer>
+                    </div>
                 </div>
             </div>
         </div>
@@ -185,15 +184,23 @@ $registroOk = isset($_GET['registered']) && $_GET['registered'] === '1';
         document.addEventListener('DOMContentLoaded', function () {
             const form = document.getElementById('loginForm');
             const btn = document.getElementById('submitBtn');
-            const runId = `run-${Date.now()}`;
+            const pwd = document.getElementById('passwordInput');
+            const toggle = document.getElementById('togglePassword');
+            const icon = document.getElementById('togglePasswordIcon');
 
-            // #region agent log
-            fetch('http://127.0.0.1:7763/ingest/bfa7fb8e-f75f-490d-9516-9049669d6119',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'9ee9d7'},body:JSON.stringify({sessionId:'9ee9d7',runId,hypothesisId:'D1',location:'login.php:DOMContentLoaded',message:'Login contact links',data:{forgotHref:(document.querySelector('a.text-navy.text-decoration-none.small.fw-bold')||{}).getAttribute?.('href')||null,footerContactHref:(document.querySelector('footer a[href^="mailto:"]')||{}).getAttribute?.('href')||null},timestamp:Date.now()})}).catch(()=>{});
-            // #endregion
+            if (toggle && pwd && icon) {
+                toggle.addEventListener('click', function () {
+                    const show = pwd.type === 'password';
+                    pwd.type = show ? 'text' : 'password';
+                    icon.className = show ? 'bi bi-eye-slash' : 'bi bi-eye';
+                    toggle.setAttribute('aria-label', show ? <?= json_encode(__('login.hide_pwd')) ?> : <?= json_encode(__('login.show_pwd')) ?>);
+                    toggle.setAttribute('aria-pressed', show ? 'true' : 'false');
+                });
+            }
 
             form.addEventListener('submit', function () {
                 btn.classList.add('btn-loading');
-                btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Tratamiento...';
+                btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> ' + <?= json_encode(__('login.submitting'), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE) ?>;
             });
         });
     </script>

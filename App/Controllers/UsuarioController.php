@@ -1,5 +1,6 @@
 <?php
 session_start();
+require_once __DIR__ . '/../../config/public_url.php';
 require_once __DIR__ . '/../../config/conexao.php';
 require_once __DIR__ . '/../Models/Usuario.php';
 
@@ -47,7 +48,7 @@ class UsuarioController
 
         // Se deu certo, limpamos a sessão antes de ir para o sucesso
         unset($_SESSION['old_input']);
-        header('Location: ../login.php?registered=1');
+        header('Location: ' . app_url('login.php?registered=1'));
         exit;
     }
 
@@ -106,7 +107,7 @@ class UsuarioController
             // Garante que a sessão seja gravada antes do redirecionamento
             session_write_close();
         }
-        header('Location: ../login.php?error=' . rawurlencode((string) $error));
+        header('Location: ' . app_url('login.php?error=' . rawurlencode((string) $error)));
         exit;
     }
 }

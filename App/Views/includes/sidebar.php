@@ -1,149 +1,112 @@
 <?php
-require_once __DIR__ . '/../../../config/public_url.php';
+declare(strict_types=1);
 /**
- * ARQUIVO: sidebar.php
- * OBJETIVO: Navegação lateral do sistema com rodapé aprimorado.
+ * Sidebar desktop + barra inferior mobile + painel "Mais" (tema / sair).
  */
-$pagina_atual = basename($_SERVER['PHP_SELF']);
+require_once __DIR__ . '/../../../config/public_url.php';
+require_once __DIR__ . '/sidebar-nav-config.php';
+
+if (session_status() === PHP_SESSION_ACTIVE && isset($_SESSION['usuario']['id'])) {
+    require_once __DIR__ . '/../../../config/conexao.php';
+    require_once __DIR__ . '/../../Models/Usuario.php';
+    static $materiasSessaoSincronizadas = false;
+    if (!$materiasSessaoSincronizadas) {
+        $materiasSessaoSincronizadas = true;
+        $cx = new Conexao();
+        $pdo = $cx->conectar();
+        $um = new Usuario($pdo);
+        $um->garantirMateriasParaUsuario((int) $_SESSION['usuario']['id'], [1, 2]);
+        $_SESSION['usuario']['materias'] = $um->buscarMateriasDoUsuario((int) $_SESSION['usuario']['id']);
+    }
+}
+
+$pagina_atual = basename($_SERVER['PHP_SELF'] ?? '');
+$main_links = sidebar_nav_links();
+$logoUrl = public_asset_url('img/logo-bd-transparente.png');
 ?>
 
-<style>
-    /* Estilos da Sidebar */
-    .sidebar {
-        width: 260px;
-        background-color: #1a1a1a;
-        color: #fff;
-        z-index: 1000;
-        transition: all 0.3s;
-        box-shadow: 4px 0 10px rgba(0,0,0,0.1);
-    }
-
-    .sidebar .logo-area {
-        padding: 2rem 1.5rem;
-        border-bottom: 1px solid rgba(255,255,255,0.05);
-    }
-
-    .sidebar .brand-name {
-        font-size: 1.25rem;
-        letter-spacing: -0.5px;
-        background: linear-gradient(135deg, #fff 0%, #a342cd 100%);
-        background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-
-    .sidebar nav {
-        padding: 1.5rem 1rem;
-    }
-
-    .sidebar nav a, .sidebar .footer-area a {
-        display: flex;
-        align-items: center;
-        padding: 0.85rem 1.25rem;
-        color: rgba(255,255,255,0.6);
-        text-decoration: none;
-        border-radius: 12px;
-        margin-bottom: 0.5rem;
-        transition: all 0.2s ease;
-        font-weight: 500;
-    }
-
-    .sidebar nav a:hover, .sidebar .footer-area a:hover {
-        color: #fff;
-        background-color: rgba(255,255,255,0.05);
-    }
-
-    .sidebar nav a.active, .sidebar .footer-area a.active {
-        color: #fff;
-        background-color: #6a0392;
-        box-shadow: 0 4px 12px rgba(106, 3, 146, 0.3);
-    }
-
-    .sidebar .material-icons {
-        margin-right: 12px;
-        font-size: 1.4rem;
-    }
-
-    /* AJUSTES NA FOOTER AREA */
-    .sidebar .footer-area {
-        padding: 1.25rem 1rem;
-        margin-top: auto; /* Garante que fique no fundo */
-        border-top: 1px solid rgba(255,255,255,0.08);
-        background-color: rgba(0,0,0,0.2); /* Leve destaque de fundo */
-    }
-
-    .sidebar .footer-label {
-        font-size: 0.7rem;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        color: rgba(255,255,255,0.3);
-        padding-left: 1.25rem;
-        margin-bottom: 0.75rem;
-        display: block;
-        font-weight: 700;
-    }
-
-    .sidebar .logout-link {
-        color: #ff5c5c !important;
-        margin-top: 0.5rem;
-    }
-
-    .sidebar .logout-link:hover {
-        background-color: rgba(255, 92, 92, 0.1) !important;
-        color: #ff8080 !important;
-    }
-
-    @media (max-width: 992px) {
-        .sidebar { transform: translateX(-100%); }
-        .sidebar.show { transform: translateX(0); }
-    }
-</style>
-
-<!-- Sidebar -->
-<aside class="sidebar position-fixed d-flex flex-column h-100">
-    
-    <!-- Logo -->
-    <div class="logo-area">
-        <div class="d-flex align-items-center gap-2">
-            <img src="<?= htmlspecialchars(public_asset_url('img/logo-bd-transparente.png')) ?>" alt="Banco de Choices" width="45" height="45" style="object-fit: contain;">
-            <h4 class="brand-name fw-bold mb-0">Banco de Choices</h4>
+<!-- Sidebar desktop -->
+<aside class="app-sidebar d-none d-lg-flex flex-column" id="appSidebarDesktop" aria-label="<?= htmlspecialchars(__('nav.menu_aria')) ?>">
+    <div class="app-sidebar-brand">
+        <a class="app-sidebar-brand-link text-decoration-none" href="<?= htmlspecialchars(app_url('dashboard.php')) ?>">
+            <span class="app-sidebar-logo-wrap" aria-hidden="true">
+                <img src="<?= htmlspecialchars($logoUrl) ?>" alt="" width="40" height="40" class="app-sidebar-logo">
+            </span>
+            <div class="app-sidebar-brand-text">
+                <div class="app-sidebar-title">Banco de Choices</div>
+                <div class="app-sidebar-sub"><?= htmlspecialchars(__('sidebar.subtitle')) ?></div>
+            </div>
+        </a>
+    </div>
+    <?php require __DIR__ . '/sidebar-nav-links.php'; ?>
+    <div class="app-sidebar-section px-3 pb-3 mt-auto border-top border-opacity-10 pt-3">
+        <span class="app-sidebar-section-label"><?= htmlspecialchars(__('lang.selector_label')) ?></span>
+        <div class="mt-2">
+            <?php require __DIR__ . '/language-selector.php'; ?>
         </div>
     </div>
+</aside>
 
-    <!-- MENU PRINCIPAL -->
-    <nav class="flex-grow-1">
-        <a class="<?= $pagina_atual === 'dashboard.php' ? 'active' : ''?>" href="/dashboard.php">
-            <span class="material-icons">dashboard</span>
-            Dashboard
-        </a>
-
-        <a class="<?= $pagina_atual === 'estatisticas.php' ? 'active' : ''?>" href="/estatisticas.php">
-            <span class="material-icons">bar_chart</span>
-            Estatísticas
-        </a>
-
-        <a class="<?= $pagina_atual === 'bancoperguntas.php' ? 'active' : ''?>" href="/bancoperguntas.php">
-            <span class="material-icons">quiz</span>
-            Banco de Perguntas
-        </a>
-
-        <a class="<?= $pagina_atual === 'simulados.php' ? 'active' : ''?>" href="/simulados.php">
-            <span class="material-icons">assignment</span>
-            Meus Simulados
-        </a>
-    </nav>
-
-    <!-- RODAPÉ DA SIDEBAR AJUSTADO -->
-    <div class="footer-area">
-        <span class="footer-label">Conta e Acesso</span>
-        
-        <a class="<?= $pagina_atual === 'perfil.php' ? 'active' : ''?>" href="/perfil.php">
-            <span class="material-icons">person</span>
-            Meu Perfil
-        </a>
-
-        <a class="logout-link" href="/logout.php">
-            <span class="material-icons">logout</span>
-            Sair
+<!-- Painel mobile: tema + sair -->
+<div class="offcanvas offcanvas-bottom app-offcanvas-more" tabindex="-1" id="sidebarMobile"
+    aria-labelledby="sidebarMobileLabel">
+    <div class="app-offcanvas-more-handle" aria-hidden="true"></div>
+    <div class="offcanvas-header border-bottom border-opacity-10">
+        <div class="d-flex align-items-center gap-2" id="sidebarMobileLabel">
+            <span class="fw-bold"><?= htmlspecialchars(__('sidebar.more_options')) ?></span>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="<?= htmlspecialchars(__('sidebar.close')) ?>"></button>
+    </div>
+    <div class="offcanvas-body pb-4">
+        <div class="app-sidebar-section px-0">
+            <span class="app-sidebar-section-label"><?= htmlspecialchars(__('sidebar.appearance')) ?></span>
+            <div class="app-sidebar-theme-row app-sidebar-theme-row--sheet" title="<?= htmlspecialchars(__('sidebar.dark_mode')) ?>">
+                <span class="material-icons app-sidebar-theme-icon" aria-hidden="true">dark_mode</span>
+                <span class="app-sidebar-theme-text"><?= htmlspecialchars(__('sidebar.dark_mode')) ?></span>
+                <div class="form-check form-switch m-0">
+                    <input class="form-check-input js-theme-toggle" type="checkbox" aria-label="<?= htmlspecialchars(__('sidebar.dark_aria')) ?>">
+                </div>
+            </div>
+        </div>
+        <div class="app-sidebar-section px-0 mt-3">
+            <span class="app-sidebar-section-label"><?= htmlspecialchars(__('lang.selector_label')) ?></span>
+            <div class="mt-2">
+                <?php require __DIR__ . '/language-selector.php'; ?>
+            </div>
+        </div>
+        <a class="app-sidebar-link app-sidebar-link-logout mt-3 d-flex rounded-3" href="<?= htmlspecialchars(app_url('logout.php')) ?>"
+            title="<?= htmlspecialchars(__('sidebar.logout')) ?>">
+            <span class="material-icons" aria-hidden="true">logout</span>
+            <span class="app-sidebar-link-text"><?= htmlspecialchars(__('sidebar.logout')) ?></span>
         </a>
     </div>
-</aside>
+</div>
+
+<!-- Barra de navegação inferior (mobile) -->
+<nav class="app-mobile-bottom d-lg-none" aria-label="<?= htmlspecialchars(__('nav.menu_aria')) ?>">
+    <div class="app-mobile-bottom-inner">
+        <?php foreach ($main_links as $link): ?>
+            <?php
+            $active = $pagina_atual === $link['page'];
+            $href = app_url($link['page']);
+            $short = $link['short'] ?? $link['label'];
+            ?>
+            <a class="app-mobile-bottom-item<?= $active ? ' active' : '' ?>" href="<?= htmlspecialchars($href) ?>"
+                <?= $active ? 'aria-current="page"' : '' ?>>
+                <span class="material-icons" aria-hidden="true"><?= htmlspecialchars($link['icon']) ?></span>
+                <span class="app-mobile-bottom-label"><?= htmlspecialchars($short) ?></span>
+            </a>
+        <?php endforeach; ?>
+        <a class="app-mobile-bottom-item<?= $pagina_atual === 'perfil.php' ? ' active' : '' ?>"
+            href="<?= htmlspecialchars(app_url('perfil.php')) ?>"
+            <?= $pagina_atual === 'perfil.php' ? 'aria-current="page"' : '' ?>>
+            <span class="material-icons" aria-hidden="true">person</span>
+            <span class="app-mobile-bottom-label"><?= htmlspecialchars(__('nav.profile')) ?></span>
+        </a>
+        <button type="button" class="app-mobile-bottom-item app-mobile-bottom-item--btn" data-bs-toggle="offcanvas"
+            data-bs-target="#sidebarMobile" aria-controls="sidebarMobile" aria-label="<?= htmlspecialchars(__('sidebar.more_aria')) ?>">
+            <span class="material-icons" aria-hidden="true">more_horiz</span>
+            <span class="app-mobile-bottom-label"><?= htmlspecialchars(__('sidebar.more')) ?></span>
+        </button>
+    </div>
+</nav>

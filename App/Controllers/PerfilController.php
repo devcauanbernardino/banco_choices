@@ -1,4 +1,7 @@
 <?php
+
+require_once __DIR__ . '/../../config/public_url.php';
+
 /**
  * ARQUIVO: PerfilController.php
  * OBJETIVO: Orquestrar as ações de atualização de perfil e segurança.
@@ -49,7 +52,7 @@ class PerfilController
             if ($sucesso) {
                 // Atualiza a sessão para refletir as mudanças
                 $_SESSION['usuario']['nome'] = $nome;
-                $this->redirect('../Views/perfil.php?sucesso=1');
+                $this->redirect('perfil.php?sucesso=1');
             } else {
                 $this->redirect('perfil.php?erro=falha_ao_salvar');
             }
@@ -83,7 +86,12 @@ class PerfilController
      */
     private function redirect(string $url): void
     {
-        header("Location: $url");
+        if (preg_match('#^https?://#i', $url)) {
+            header('Location: ' . $url);
+            exit;
+        }
+        $path = ltrim($url, '/');
+        header('Location: ' . app_url($path));
         exit;
     }
 }

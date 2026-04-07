@@ -6,23 +6,34 @@
 
 session_start();
 
-// 1. Carregamos as dependências
+require_once __DIR__ . '/../../config/public_url.php';
 require_once __DIR__ . '/../../config/conexao.php';
 require_once __DIR__ . '/../Controllers/DashboardController.php';
+require_once __DIR__ . '/../Models/Usuario.php';
 
-// 2. Verificamos se o usuário está logado
 if (!isset($_SESSION['usuario']['id'])) {
-    header('Location: login.php');
+    header('Location: ' . app_url('login.php'));
     exit;
 }
 
 $usuario = $_SESSION['usuario'];
 
-// 3. Inicializamos o controlador para buscar dados reais de resumo
 $objConexao = new Conexao();
 $db = $objConexao->conectar();
 $dashboard = new DashboardController($db, $usuario['id']);
 $stats = $dashboard->getStats();
+
+$objUsuario = new Usuario($db);
+$materiasUsuario = $objUsuario->buscarMateriasDoUsuario((int) $usuario['id']);
+
+$flashOk = isset($_GET['sucesso']) && $_GET['sucesso'] === '1';
+$flashErr = $_GET['erro'] ?? '';
+$msgErro = [
+    'nome_vazio' => 'Informe um nome válido.',
+    'falha_ao_salvar' => 'Não foi possível salvar. Tente novamente.',
+    'senha_incorreta' => 'Senha atual incorreta.',
+    'senha_curta' => 'A nova senha deve ter pelo menos 8 caracteres.',
+];
 ?>
 
 <!DOCTYPE html>
@@ -32,184 +43,237 @@ $stats = $dashboard->getStats();
     <title>Meu Perfil | Banco de Choices</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?php require_once __DIR__ . '/../../config/favicon_links.php'; ?>
+    <?php require_once __DIR__ . '/includes/theme-head.php'; ?>
 
-    <!-- Bootstrap & Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="/assets/css/sidebar.css">
-    
+    <link rel="stylesheet" href="<?= htmlspecialchars(public_asset_url('assets/css/sidebar.css')) ?>">
+
     <style>
-        :root {
-            --primary-color: #6a0392;
-            --bg-body: #f6f6f8;
+        :root { --primary-color: #6a0392; }
+
+        .perfil-hero {
+            background: linear-gradient(135deg, #4c0d6b 0%, #7c3aed 45%, #a78bfa 100%);
+            border-radius: 20px;
+            padding: 2rem 2rem 3rem;
+            position: relative;
+            overflow: hidden;
         }
-
-        body { background-color: var(--bg-body); }
-        .sidebar-space { margin-left: 260px; }
-
-        .profile-header {
-            background: linear-gradient(135deg, #6a0392 0%, #a342cd 100%);
-            height: 150px;
-            border-radius: 20px 20px 0 0;
-        }
-
-        .profile-avatar-container {
-            margin-top: -75px;
-            padding: 0 30px;
-        }
-
-        .profile-avatar {
-            width: 150px;
-            height: 150px;
-            border: 5px solid #fff;
+        .perfil-hero::after {
+            content: '';
+            position: absolute;
+            right: -40px;
+            top: -40px;
+            width: 180px;
+            height: 180px;
             border-radius: 50%;
-            background-color: #eee;
+            background: rgba(255,255,255,0.08);
+        }
+        .perfil-avatar {
+            width: 112px;
+            height: 112px;
+            border-radius: 50%;
+            border: 4px solid rgba(255,255,255,0.35);
             object-fit: cover;
+            box-shadow: 0 12px 32px rgba(0,0,0,0.2);
+        }
+        .perfil-stat {
+            background: var(--app-surface);
+            border: 1px solid var(--app-border);
+            border-radius: 14px;
+            padding: 1rem 1.1rem;
+        }
+        .perfil-card {
+            border-radius: 16px;
+            border: 1px solid var(--app-border);
+            background: var(--app-surface);
         }
 
-        .card { border: none; border-radius: 16px; }
-        .btn-primary { background-color: var(--primary-color); border-color: var(--primary-color); }
-        .text-primary { color: var(--primary-color) !important; }
+        .perfil-form-actions {
+            border-top: 1px solid var(--app-border);
+            margin-top: 1.75rem;
+            padding-top: 1.35rem;
+        }
 
-        @media (max-width: 992px) {
-            .sidebar-space { margin-left: 0; }
+        [data-theme="dark"] .perfil-form-actions {
+            border-top-color: rgba(255, 255, 255, 0.08);
+        }
+
+        .perfil-form-actions .btn {
+            min-height: 48px;
+            font-weight: 600;
+        }
+        /* Chips sobre o gradiente: fundo claro + texto escuro (evita .text-white do hero forçar branco) */
+        .perfil-hero .materia-chip {
+            font-size: 0.8rem;
+            border-radius: 999px;
+            padding: 0.4rem 0.95rem;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.96);
+            color: #4a0d5c !important;
+            border: 1px solid rgba(255, 255, 255, 0.55);
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+        }
+        [data-theme="dark"] .perfil-hero .materia-chip {
+            background: rgba(22, 22, 30, 0.92);
+            color: #ede9fe !important;
+            border-color: rgba(255, 255, 255, 0.12);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
         }
     </style>
 </head>
-<body>
+<body class="app-private-body">
 
-<?php require_once 'includes/sidebar.php'; ?>
+<?php require_once __DIR__ . '/includes/sidebar.php'; ?>
 
-<main class="sidebar-space p-4">
-    
-    <div class="container-fluid">
-        <!-- Capa e Avatar -->
-        <div class="card shadow-sm overflow-hidden mb-4">
-            <div class="profile-header"></div>
-            <div class="profile-avatar-container d-flex align-items-end justify-content-between flex-wrap gap-3">
-                <div class="d-flex align-items-end gap-3 flex-wrap">
-                    <img src="https://ui-avatars.com/api/?name=<?= urlencode($usuario['nome']) ?>&size=150&background=6a0392&color=fff" 
-                         alt="Avatar" class="profile-avatar shadow">
-                    <div class="mb-2">
-                        <h3 class="fw-bold mb-0"><?= htmlspecialchars($usuario['nome']) ?></h3>
-                        <p class="text-muted mb-0"><?= htmlspecialchars($usuario['email']) ?></p>
-                    </div>
-                </div>
-                <div class="mb-2">
-                    <button class="btn btn-primary px-4 rounded-pill">
-                        <i class="material-icons align-middle fs-5 me-1">edit</i> Editar Perfil
-                    </button>
-                </div>
+<header class="app-mobile-topbar d-lg-none justify-content-center">
+    <span class="fw-bold">Meu perfil</span>
+</header>
+
+<main class="app-main p-3 p-lg-4">
+    <div class="container-fluid" style="max-width: 1100px;">
+
+        <?php if ($flashOk): ?>
+            <div class="alert alert-success border-0 shadow-sm rounded-3 mb-4" role="alert">
+                Alterações salvas com sucesso.
             </div>
-            <div class="card-body mt-3">
-                <hr class="text-muted opacity-25">
-                <div class="row text-center py-2">
-                    <div class="col-4 border-end">
-                        <h5 class="fw-bold mb-0 text-primary"><?= $stats['total_simulados'] ?></h5>
-                        <small class="text-muted text-uppercase fw-bold" style="font-size: 10px;">Simulados</small>
-                    </div>
-                    <div class="col-4 border-end">
-                        <h5 class="fw-bold mb-0 text-primary"><?= number_format($stats['questoes_respondidas'], 0, ',', '.') ?></h5>
-                        <small class="text-muted text-uppercase fw-bold" style="font-size: 10px;">Questões</small>
-                    </div>
-                    <div class="col-4">
-                        <h5 class="fw-bold mb-0 text-primary"><?= $stats['aproveitamento_geral'] ?>%</h5>
-                        <small class="text-muted text-uppercase fw-bold" style="font-size: 10px;">Média</small>
+        <?php endif; ?>
+
+        <?php if ($flashErr !== '' && isset($msgErro[$flashErr])): ?>
+            <div class="alert alert-danger border-0 shadow-sm rounded-3 mb-4" role="alert">
+                <?= htmlspecialchars($msgErro[$flashErr]) ?>
+            </div>
+        <?php elseif ($flashErr !== ''): ?>
+            <div class="alert alert-danger border-0 shadow-sm rounded-3 mb-4" role="alert">
+                Não foi possível concluir a operação.
+            </div>
+        <?php endif; ?>
+
+        <div class="perfil-hero mb-4">
+            <div class="row align-items-end g-4 position-relative" style="z-index: 1;">
+                <div class="col-md-auto text-center text-md-start">
+                    <img class="perfil-avatar"
+                        src="https://ui-avatars.com/api/?name=<?= urlencode($usuario['nome']) ?>&size=224&background=ffffff&color=6a0392"
+                        alt="">
+                </div>
+                <div class="col-md">
+                    <h1 class="h3 fw-bold mb-1 text-white"><?= htmlspecialchars($usuario['nome']) ?></h1>
+                    <p class="mb-2 opacity-90 small text-white"><?= htmlspecialchars($usuario['email']) ?></p>
+                    <div class="d-flex flex-wrap gap-2">
+                        <?php if (empty($materiasUsuario)): ?>
+                            <span class="badge bg-light text-dark">Nenhuma matéria vinculada ainda</span>
+                        <?php else: ?>
+                            <?php foreach ($materiasUsuario as $mat): ?>
+                                <span class="materia-chip"><?= htmlspecialchars($mat['nome'] ?? '') ?></span>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="row g-4">
-            <!-- Informações Pessoais -->
-            <div class="col-lg-8">
-                <div class="card shadow-sm h-100">
-                    <div class="card-header bg-white py-3 border-0">
-                        <h6 class="fw-bold mb-0">Informações da Conta</h6>
+            <div class="col-lg-4">
+                <div class="perfil-card shadow-sm p-4 mb-4">
+                    <h2 class="h6 fw-bold mb-3">Resumo</h2>
+                    <div class="row g-2">
+                        <div class="col-12">
+                            <div class="perfil-stat d-flex justify-content-between align-items-center">
+                                <span class="text-muted small">Simulados</span>
+                                <span class="fw-bold fs-5 text-primary"><?= (int) $stats['total_simulados'] ?></span>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="perfil-stat d-flex justify-content-between align-items-center">
+                                <span class="text-muted small">Questões respondidas</span>
+                                <span class="fw-bold fs-5 text-primary"><?= number_format((int) $stats['questoes_respondidas'], 0, ',', '.') ?></span>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="perfil-stat d-flex justify-content-between align-items-center">
+                                <span class="text-muted small">Média geral</span>
+                                <span class="fw-bold fs-5 text-primary"><?= htmlspecialchars((string) $stats['aproveitamento_geral']) ?>%</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <form action="../Controllers/ProcessaPerfil.php" method="POST">
-                            <div class="row g-3">
-                                <div class="col-md-6">
-                                    <label class="form-label small fw-bold text-muted">Nome Completo</label>
-                                    <input type="text" class="form-control bg-light border-0" name="nome" value="<?= htmlspecialchars($usuario['nome']) ?>">
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label small fw-bold text-muted">E-mail</label>
-                                    <input type="email" class="form-control bg-light border-0" name="email" value="<?= htmlspecialchars($usuario['email']) ?>">
-                                </div>
-                                <!-- <div class="col-md-6">
-                                    <label class="form-label small fw-bold text-muted">Especialidade (Opcional)</label>
-                                    <input type="text" class="form-control" placeholder="Ex: Clínica Médica">
-                                </div> -->
-                                <!-- <div class="col-md-6">
-                                    <label class="form-label small fw-bold text-muted">Data de Cadastro</label>
-                                    <input type="text" class="form-control bg-light border-0" value="12/05/2024" readonly>
-                                </div> -->
-                            </div>
+                </div>
 
-                            <hr class="my-4">
-
-                            <h6 class="fw-bold mb-3">Segurança</h6>
-                            <div class="row g-3">
-                                <div class="col-md-6">
-                                    <label class="form-label small fw-bold text-muted">Senha Atual</label>
-                                    <input type="password" class="form-control" placeholder="••••••••">
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label small fw-bold text-muted">Nova Senha</label>
-                                    <input type="password" class="form-control" placeholder="Mínimo 8 caracteres">
-                                </div>
-                            </div>
-
-                            <div class="mt-4 text-end">
-                                <button type="submit" class="btn btn-primary px-5">Salvar Alterações</button>
-                            </div>
-                        </form>
+                <div class="perfil-card shadow-sm p-4">
+                    <h2 class="h6 fw-bold mb-3">Aparência</h2>
+                    <div class="d-flex align-items-center justify-content-between gap-3">
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="material-icons text-muted">dark_mode</span>
+                            <span>Modo escuro</span>
+                        </div>
+                        <div class="form-check form-switch m-0">
+                            <input class="form-check-input js-theme-toggle" type="checkbox" aria-label="Modo escuro">
+                        </div>
                     </div>
+                    <p class="small text-muted mt-3 mb-0">A preferência é salva neste navegador.</p>
                 </div>
             </div>
 
-            <!-- Configurações e Status -->
-            <div class="col-lg-4">
-                <div class="card shadow-sm mb-4">
-                    <div class="card-body">
-                        <h6 class="fw-bold mb-4">Plano Atual</h6>
-                        <div class="d-flex align-items-center gap-3 p-3 bg-primary bg-opacity-10 rounded-3 mb-3">
-                            <div class="card-icon bg-primary text-white">
-                                <span class="material-icons">workspace_premium</span>
+            <div class="col-lg-8">
+                <div class="perfil-card shadow-sm p-4 mb-4">
+                    <h2 class="h6 fw-bold mb-4">Dados da conta</h2>
+                    <form action="<?= htmlspecialchars(app_url('processa-perfil.php')) ?>" method="post" autocomplete="off">
+                        <div class="row g-3">
+                            <div class="col-md-12">
+                                <label class="form-label small fw-semibold text-muted">Nome completo</label>
+                                <input type="text" class="form-control form-control-lg" name="nome" required
+                                    value="<?= htmlspecialchars($usuario['nome']) ?>">
                             </div>
-                            <div>
-                                <h6 class="fw-bold mb-0">Premium Anual</h6>
-                                <small class="text-muted">Válido até Maio 2025</small>
+                            <div class="col-md-12">
+                                <label class="form-label small fw-semibold text-muted">E-mail</label>
+                                <input type="email" class="form-control" value="<?= htmlspecialchars($usuario['email']) ?>" readonly disabled>
+                                <div class="form-text">O e-mail não pode ser alterado aqui.</div>
                             </div>
                         </div>
-                        <button class="btn btn-outline-primary btn-sm w-100">Gerenciar Assinatura</button>
-                    </div>
+
+                        <hr class="my-4 opacity-25">
+
+                        <h3 class="h6 fw-bold mb-3">Segurança</h3>
+                        <p class="small text-muted">Para trocar a senha, preencha os dois campos abaixo.</p>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label small fw-semibold text-muted">Senha atual</label>
+                                <input type="password" class="form-control" name="senha_atual" placeholder="••••••••" autocomplete="current-password">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-semibold text-muted">Nova senha</label>
+                                <input type="password" class="form-control" name="nova_senha" placeholder="Mínimo 8 caracteres" autocomplete="new-password">
+                            </div>
+                        </div>
+
+                        <div class="perfil-form-actions">
+                            <div class="d-flex flex-wrap gap-2 justify-content-center justify-content-lg-end align-items-center">
+                                <a href="<?= htmlspecialchars(app_url('dashboard.php')) ?>"
+                                    class="btn btn-outline-secondary btn-lg px-4 rounded-3 d-inline-flex align-items-center justify-content-center gap-2">
+                                    <span class="material-icons" style="font-size: 1.15rem;" aria-hidden="true">arrow_back</span>
+                                    Voltar ao painel
+                                </a>
+                                <button type="submit"
+                                    class="btn btn-primary btn-lg px-4 rounded-3 d-inline-flex align-items-center justify-content-center gap-2 shadow-sm">
+                                    <span class="material-icons" style="font-size: 1.15rem;" aria-hidden="true">save</span>
+                                    Salvar alterações
+                                </button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
 
-                <div class="card shadow-sm">
-                    <div class="card-body">
-                        <h6 class="fw-bold mb-3">Configurações</h6>
-                        <div class="form-check form-switch mb-3">
-                            <input class="form-check-input" type="checkbox" id="notifEmail" checked>
-                            <label class="form-check-label small" for="notifEmail">Notificações por e-mail</label>
-                        </div>
-                        <div class="form-check form-switch mb-3">
-                            <input class="form-check-input" type="checkbox" id="modoNoturno">
-                            <label class="form-check-label small" for="modoNoturno">Modo Noturno (Beta)</label>
-                        </div>
-                        <hr>
-                        <a href="logout.php" class="btn btn-outline-danger btn-sm w-100 d-flex align-items-center justify-content-center gap-2">
-                            <span class="material-icons fs-6">logout</span> Sair da Conta
-                        </a>
-                    </div>
+                <div class="perfil-card shadow-sm p-4 border-danger border-opacity-25">
+                    <h2 class="h6 fw-bold mb-2 text-danger">Encerrar sessão</h2>
+                    <p class="small text-muted mb-3">Você precisará entrar novamente para acessar o painel.</p>
+                    <a href="<?= htmlspecialchars(app_url('logout.php')) ?>" class="btn btn-outline-danger w-100 d-inline-flex align-items-center justify-content-center gap-2">
+                        <span class="material-icons fs-6">logout</span> Sair da conta
+                    </a>
                 </div>
             </div>
         </div>
     </div>
-
 </main>
 
+<?php require_once __DIR__ . '/includes/private-footer-scripts.php'; ?>
 </body>
 </html>

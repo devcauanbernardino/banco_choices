@@ -8,6 +8,7 @@ require_once __DIR__ . '/bootstrap_env.php';
  * MP_ACCESS_TOKEN — obrigatório para API / SDK
  * MP_PUBLIC_KEY — Checkout Pro em geral só redireciona; útil para Bricks futuros
  * MP_WEBHOOK_SECRET — validação do cabeçalho x-signature (recomendado em produção)
+ * MP_CURRENCY_ID — moeda da preferência (ARS para conta Argentina; BRL para Brasil)
  *
  * Compatibilidade: MERCADOPAGO_ACCESS_TOKEN / MERCADOPAGO_PUBLIC_KEY
  */
@@ -18,12 +19,18 @@ function mercadopago_config(): array
     $access = getenv('MP_ACCESS_TOKEN') ?: getenv('MERCADOPAGO_ACCESS_TOKEN') ?: '';
     $public = getenv('MP_PUBLIC_KEY') ?: getenv('MERCADOPAGO_PUBLIC_KEY') ?: '';
     $webhookSecret = getenv('MP_WEBHOOK_SECRET') ?: '';
+    $currency = getenv('MP_CURRENCY_ID') ?: '';
+    $currency = is_string($currency) ? strtoupper(trim($currency)) : '';
+    if ($currency === '') {
+        $currency = 'ARS';
+    }
 
     return [
         'access_token' => is_string($access) ? trim($access) : '',
         'public_key' => is_string($public) ? trim($public) : '',
         'webhook_secret' => is_string($webhookSecret) ? trim($webhookSecret) : '',
         'site_url' => rtrim((string) (getenv('SITE_URL') ?: 'https://bancodechoices.com'), '/'),
+        'currency_id' => $currency,
     ];
 }
 

@@ -1,5 +1,6 @@
 <?php
 
+require_once __DIR__ . '/../../config/public_url.php';
 require_once __DIR__ . '/../../config/conexao.php';
 require_once __DIR__ . '/../Models/Usuario.php';
 
@@ -24,7 +25,7 @@ class LoginController
     {
         // Permite apenas POST
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            $this->redirect('/login.php?error=acessoinvalido');
+            $this->redirect(app_url('login.php?error=acessoinvalido'));
         }
 
         // Captura e valida dados
@@ -32,7 +33,7 @@ class LoginController
         $senha = $_POST['senha'] ?? '';
 
         if ($email === '' || $senha === '') {
-            $this->redirect('/login.php?error=camposobrigatorios');
+            $this->redirect(app_url('login.php?error=camposobrigatorios'));
         }
 
         // Autenticação
@@ -40,12 +41,16 @@ class LoginController
         $usuario = $usuarioModel->autenticar($email, $senha);
 
         if (!$usuario) {
-            $this->redirect('/login.php?error=logininvalido');
+            $this->redirect(app_url('login.php?error=logininvalido'));
         }
 
         if (session_status() === PHP_SESSION_ACTIVE) {
             session_regenerate_id(true);
         }
+
+        // Matérias padrão do sistema (IDs alinhados a CriarController: 1 e 2)
+        $usuarioModel->garantirMateriasParaUsuario((int) $usuario['id'], [1, 2]);
+        $usuario['materias'] = $usuarioModel->buscarMateriasDoUsuario((int) $usuario['id']);
 
         //Sessão do usuário (PADRÃO DO SISTEMA)
         $_SESSION['usuario'] = [
@@ -56,12 +61,12 @@ class LoginController
         ];
 
         // Redireciona para o dashboard
-        $this->redirect('/dashboard.php');
+        $this->redirect(app_url('dashboard.php'));
     }
 
     private function redirect(string $url): void
     {
-        header("Location: $url");
+        header('Location: ' . $url);
         exit;
     }
 }

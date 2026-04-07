@@ -1,32 +1,27 @@
 <?php
+
+declare(strict_types=1);
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// ============================================
-// CARREGAR CONFIGURAÇÕES
-// ============================================
-if (file_exists(__DIR__ . '/.env')) {
-    $env = parse_ini_file(__DIR__ . '/.env');
-    foreach ($env as $key => $value) {
-        putenv("$key=$value");
-    }
-}
+require_once __DIR__ . '/../config/bootstrap_env.php';
+loadProjectEnv();
 
 require_once __DIR__ . '/../config/conexao.php';
+require_once __DIR__ . '/../config/public_url.php';
 
 $conexao = new Conexao();
 $pdo = $conexao->conectar();
 
-// Buscar matérias do banco de dados
-$materias = $pdo->query("SELECT id, nome FROM materias ORDER BY nome")->fetchAll(PDO::FETCH_ASSOC);
+$materias = $pdo->query('SELECT id, nome FROM materias ORDER BY nome')->fetchAll(PDO::FETCH_ASSOC);
 
-// Inicializar sessão com matérias selecionadas
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $selectedMaterias = $_POST['materias'] ?? [];
-    
-    if (empty($selectedMaterias)) {
-        $error = 'Selecione pelo menos uma matéria';
+
+    if ($selectedMaterias === []) {
+        $error = __('signup.err.min_materias');
     } else {
         $_SESSION['selected_materias'] = array_map('intval', $selectedMaterias);
         header('Location: selecionar-plano.php');
@@ -35,19 +30,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $selectedMaterias = $_SESSION['selected_materias'] ?? [];
-?>
 
+/**
+ * Ícone por nombre de materia (didáctico y visual).
+ *
+ * @return array{icon: string, hint_key: string}
+ */
+function materia_visual_meta(string $nome): array
+{
+    $n = function_exists('mb_strtolower') ? mb_strtolower($nome, 'UTF-8') : strtolower($nome);
+    if (str_contains($n, 'micro')) {
+        return ['icon' => 'bi bi-bug-fill', 'hint_key' => 'signup.materia.hint.micro'];
+    }
+    if (str_contains($n, 'celular') || str_contains($n, 'biolog')) {
+        return ['icon' => 'bi bi-droplet', 'hint_key' => 'signup.materia.hint.bio'];
+    }
+    if (str_contains($n, 'anatom') || str_contains($n, 'fisio')) {
+        return ['icon' => 'bi bi-heart-pulse-fill', 'hint_key' => 'signup.materia.hint.anat'];
+    }
+
+    return ['icon' => 'bi bi-journal-medical', 'hint_key' => 'signup.materia.hint.default'];
+}
+
+?>
 <!DOCTYPE html>
-<html lang="es-AR">
+<html lang="<?= htmlspecialchars(locale_html_lang()) ?>" data-bs-theme="light">
 
 <head>
     <meta charset="utf-8" />
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Seleccionar Materias | Banco de Choices</title>
+    <?php require_once __DIR__ . '/../App/Views/includes/theme-head-public.php'; ?>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title><?= htmlspecialchars(__('signup.page_title.materias')) ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="<?= htmlspecialchars(public_asset_url('assets/css/buttons-global.css')) ?>" />
+    <link rel="stylesheet" href="<?= htmlspecialchars(public_asset_url('assets/css/public-language-selector.css')) ?>" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link rel="stylesheet" href="<?= htmlspecialchars(public_asset_url('assets/css/top-bar-brand.css')) ?>" />
     <?php require_once __DIR__ . '/../config/favicon_links.php'; ?>
 
     <style>
@@ -57,36 +77,45 @@ $selectedMaterias = $_SESSION['selected_materias'] ?? [];
             --accent-purple: #6a0392;
             --accent-purple-light: #6a03928e;
             --accent-purple-lighter: #6a039220;
-            --bg-light: #f8f9fa;
+            --accent-purple-soft: rgba(106, 3, 146, 0.08);
         }
 
         * {
-            margin: 0;
-            padding: 0;
             box-sizing: border-box;
         }
 
         body {
-            font-family: 'Inter', sans-serif;
+            margin: 0;
+            font-family: 'Inter', system-ui, sans-serif;
             overflow-x: hidden;
-            background: linear-gradient(135deg, #6a0392 0%, #6d6d6d 50%, #460161 100%);
-            background-size: 160% 160%;
-            animation: floatBg 14s ease-in-out infinite;
             min-height: 100vh;
+            background: linear-gradient(135deg, #6a0392 0%, #6d6d6d 45%, #460161 100%);
+            background-size: 160% 160%;
+            animation: floatBg 16s ease-in-out infinite;
             position: relative;
         }
 
         body::before {
             content: '';
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(circle at 20% 50%, rgba(106, 3, 146, 0.1) 0%, transparent 50%),
-                        radial-gradient(circle at 80% 80%, rgba(70, 1, 97, 0.1) 0%, transparent 50%);
+            inset: 0;
+            background:
+                radial-gradient(circle at 20% 40%, rgba(106, 3, 146, 0.12) 0%, transparent 45%),
+                radial-gradient(circle at 85% 75%, rgba(0, 33, 71, 0.12) 0%, transparent 42%);
             pointer-events: none;
             z-index: 0;
+        }
+
+        @keyframes floatBg {
+
+            0%,
+            100% {
+                background-position: 0% 40%;
+            }
+
+            50% {
+                background-position: 100% 60%;
+            }
         }
 
         main {
@@ -94,73 +123,86 @@ $selectedMaterias = $_SESSION['selected_materias'] ?? [];
             z-index: 1;
         }
 
-        @keyframes floatBg {
-            0% {
-                background-position: 0% 0%;
-            }
-            50% {
-                background-position: 100% 50%;
-            }
-            100% {
-                background-position: 0% 0%;
-            }
-        }
-
         .container-custom {
-            max-width: 900px;
+            max-width: 1100px;
             margin: 0 auto;
-            padding: 2rem 1rem;
+            padding: 1.75rem 1rem 3rem;
         }
 
-        .card {
-            border: none;
-            border-radius: 20px;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
-            backdrop-filter: blur(10px);
-            background-color: rgba(255, 255, 255, 0.98);
-            overflow: hidden;
-            position: relative;
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 1.25rem;
+            opacity: 0.95;
+            transition: gap 0.2s ease, opacity 0.2s ease;
         }
 
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, var(--accent-purple), var(--accent-purple-light));
+        .back-link:hover {
+            color: #fff;
+            gap: 0.65rem;
+            opacity: 1;
         }
 
-        .card-header {
-            background: linear-gradient(135deg, rgba(106, 3, 146, 0.05) 0%, rgba(0, 33, 71, 0.03) 100%);
-            padding: 2rem;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        .top-bar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 0.5rem;
         }
 
-        .card-header h1 {
+        .brand-mark {
+            display: inline-flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .header-section {
+            text-align: center;
+            margin-bottom: 1.75rem;
+            color: #fff;
+        }
+
+        .header-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.28);
+            color: #fff;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            padding: 0.4rem 0.9rem;
+            border-radius: 999px;
+            margin-bottom: 1rem;
+        }
+
+        .header-section h1 {
             font-family: 'Poppins', sans-serif;
             font-weight: 800;
-            font-size: 2rem;
-            letter-spacing: -0.5px;
-            background: linear-gradient(135deg, var(--navy-primary), var(--accent-purple));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin: 0;
+            font-size: clamp(1.65rem, 4vw, 2.45rem);
+            margin: 0 0 0.5rem;
+            line-height: 1.2;
+            text-shadow: 0 2px 14px rgba(0, 0, 0, 0.18);
         }
 
-        .card-header p {
-            font-size: 0.95rem;
-            font-weight: 500;
-            color: #6b7280;
-            margin-top: 0.5rem;
+        .header-section .lead {
+            font-size: 1.05rem;
+            opacity: 0.92;
+            max-width: 36rem;
+            margin: 0 auto;
+            line-height: 1.55;
         }
 
-        .card-body {
-            padding: 2rem;
-        }
-
+        /* Pasos — mismo estilo que selecionar-plano.php */
         .step-indicator {
             display: flex;
             justify-content: space-between;
@@ -175,7 +217,7 @@ $selectedMaterias = $_SESSION['selected_materias'] ?? [];
             left: 0;
             right: 0;
             height: 2px;
-            background: #e5e7eb;
+            background: rgba(255, 255, 255, 0.22);
             z-index: 0;
         }
 
@@ -192,206 +234,354 @@ $selectedMaterias = $_SESSION['selected_materias'] ?? [];
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            background: white;
-            border: 3px solid #e5e7eb;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.85);
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 700;
-            color: #9ca3af;
-            margin-bottom: 0.5rem;
+            color: #fff;
+            margin-bottom: 0.45rem;
             transition: all 0.3s ease;
         }
 
         .step.active .step-number {
             background: var(--accent-purple);
-            border-color: var(--accent-purple);
-            color: white;
-            box-shadow: 0 0 0 0.3rem var(--accent-purple-lighter);
+            border-color: #fff;
+            box-shadow: 0 0 0 0.28rem var(--accent-purple-lighter);
         }
 
         .step-label {
-            font-size: 0.75rem;
+            font-size: 0.68rem;
             font-weight: 600;
-            color: #9ca3af;
+            color: rgba(255, 255, 255, 0.72);
             text-align: center;
             text-transform: uppercase;
-            letter-spacing: 0.3px;
+            letter-spacing: 0.04em;
+            line-height: 1.2;
         }
 
         .step.active .step-label {
+            color: #fff;
+        }
+
+        /* Panel didáctico */
+        .flow-card {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 20px;
+            box-shadow: 0 22px 48px rgba(0, 0, 0, 0.14);
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+
+        .flow-card-top {
+            padding: 1.35rem 1.5rem 1rem;
+            border-bottom: 1px solid rgba(0, 33, 71, 0.06);
+            background: linear-gradient(135deg, rgba(106, 3, 146, 0.06) 0%, rgba(0, 33, 71, 0.03) 100%);
+        }
+
+        .flow-card-top h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--navy-primary);
+            margin: 0 0 0.35rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .flow-card-top h2 i {
             color: var(--accent-purple);
+        }
+
+        .flow-card-top p {
+            margin: 0;
+            font-size: 0.92rem;
+            color: #5b6570;
+            line-height: 1.55;
+        }
+
+        .how-steps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            padding: 1.25rem 1.5rem 1.5rem;
+        }
+
+        .how-step {
+            display: flex;
+            gap: 0.75rem;
+            align-items: flex-start;
+        }
+
+        .how-step-num {
+            flex-shrink: 0;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--accent-purple-soft);
+            color: var(--accent-purple);
+            font-weight: 800;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .how-step h3 {
+            margin: 0 0 0.2rem;
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--navy-primary);
+        }
+
+        .how-step p {
+            margin: 0;
+            font-size: 0.8rem;
+            color: #6b7280;
+            line-height: 1.45;
+        }
+
+        .info-callout {
+            margin: 0 1.5rem 1.5rem;
+            padding: 1rem 1.1rem;
+            border-radius: 12px;
+            background: linear-gradient(135deg, rgba(0, 33, 71, 0.06), rgba(106, 3, 146, 0.06));
+            border-left: 4px solid var(--accent-purple);
+            font-size: 0.88rem;
+            color: #374151;
+            line-height: 1.5;
+        }
+
+        .info-callout strong {
+            color: var(--navy-primary);
+        }
+
+        .info-callout .bi {
+            color: var(--accent-purple);
+        }
+
+        .form-section {
+            padding: 0 1.5rem 1.5rem;
+        }
+
+        .section-label {
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #9ca3af;
+            margin-bottom: 0.75rem;
         }
 
         .materias-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
             gap: 1rem;
-            margin-bottom: 2rem;
         }
 
         .materia-card {
-            border: 2px solid #e5e7eb;
-            border-radius: 12px;
-            padding: 1.5rem;
+            border: 2px solid #e8ecf0;
+            border-radius: 16px;
+            padding: 1.15rem 1.2rem;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            background: white;
+            transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.2s ease, background 0.25s ease;
+            background: #fff;
             position: relative;
-            overflow: hidden;
-        }
-
-        .materia-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: var(--accent-purple-lighter);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            z-index: 0;
         }
 
         .materia-card:hover {
-            border-color: var(--accent-purple);
-            transform: translateY(-4px);
-            box-shadow: 0 10px 25px rgba(106, 3, 146, 0.2);
+            border-color: rgba(106, 3, 146, 0.45);
+            box-shadow: 0 10px 28px rgba(106, 3, 146, 0.12);
+            transform: translateY(-2px);
         }
 
         .materia-card.selected {
             border-color: var(--accent-purple);
-            background: var(--accent-purple-lighter);
-            box-shadow: 0 10px 25px rgba(106, 3, 146, 0.2);
+            background: linear-gradient(180deg, rgba(106, 3, 146, 0.07) 0%, #fff 55%);
+            box-shadow: 0 12px 32px rgba(106, 3, 146, 0.15);
         }
 
-        .materia-card-content {
-            position: relative;
-            z-index: 1;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .materia-checkbox {
-            width: 24px;
-            height: 24px;
-            border: 2px solid #d1d5db;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            flex-shrink: 0;
-        }
-
-        .materia-card input[type="checkbox"]:checked + .materia-checkbox {
-            background-color: var(--accent-purple);
-            border-color: var(--accent-purple);
+        .materia-card:focus-within {
+            outline: 2px solid var(--accent-purple);
+            outline-offset: 2px;
         }
 
         .materia-card input[type="checkbox"] {
-            display: none;
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
         }
 
-        .materia-info {
+        .materia-card-content {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.9rem;
+            min-width: 0;
+        }
+
+        .materia-icon-wrap {
+            flex-shrink: 0;
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, var(--navy-primary), var(--accent-purple));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.35rem;
+            box-shadow: 0 6px 16px rgba(106, 3, 146, 0.25);
+        }
+
+        .materia-card.selected .materia-icon-wrap {
+            box-shadow: 0 8px 22px rgba(106, 3, 146, 0.35);
+        }
+
+        .materia-checkbox {
+            width: 22px;
+            height: 22px;
+            margin-top: 4px;
+            border: 2px solid #cbd5e1;
+            border-radius: 6px;
+            flex-shrink: 0;
+            position: relative;
+            transition: background 0.2s ease, border-color 0.2s ease;
+        }
+
+        .materia-card input[type="checkbox"]:checked + .materia-card-content .materia-checkbox {
+            background: var(--accent-purple);
+            border-color: var(--accent-purple);
+        }
+
+        .materia-card input[type="checkbox"]:checked + .materia-card-content .materia-checkbox::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 45%;
+            width: 5px;
+            height: 9px;
+            border: solid #fff;
+            border-width: 0 2px 2px 0;
+            transform: translate(-50%, -50%) rotate(45deg);
+        }
+
+        .materia-main {
             flex: 1;
+            min-width: 0;
+            display: flex;
+            gap: 0.65rem;
+            align-items: flex-start;
+        }
+
+        .materia-text {
+            flex: 1;
+            min-width: 0;
         }
 
         .materia-name {
-            font-weight: 600;
-            color: var(--navy-primary);
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
             font-size: 1rem;
-            margin: 0;
+            color: var(--navy-primary);
+            margin: 0 0 0.25rem;
+            line-height: 1.3;
         }
 
         .materia-card.selected .materia-name {
             color: var(--accent-purple);
         }
 
-        .materia-description {
-            font-size: 0.85rem;
-            color: #9ca3af;
-            margin-top: 0.25rem;
+        .materia-hint {
+            font-size: 0.8rem;
+            color: #6b7280;
+            margin: 0;
+            line-height: 1.4;
         }
 
-        .materia-icon {
-            font-size: 1.5rem;
-            color: var(--accent-purple);
-            opacity: 0;
-            transition: opacity 0.3s ease;
+        .form-footer {
+            padding: 1.25rem 1.5rem 1.5rem;
+            border-top: 1px solid rgba(0, 33, 71, 0.06);
+            background: #fafbfc;
         }
 
-        .materia-card.selected .materia-icon {
-            opacity: 1;
-        }
-
-        .alert {
-            border-radius: 12px;
-            border: none;
-            padding: 1rem 1.25rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .alert-danger {
-            background-color: #fee2e2;
-            color: #991b1b;
-        }
-
-        .btn-continue {
-            background: linear-gradient(135deg, var(--navy-primary), var(--navy-dark));
-            border: none;
-            color: white;
-            padding: 14px 28px;
-            border-radius: 12px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-            font-weight: 700;
-            font-size: 1rem;
-            letter-spacing: 0.3px;
-            width: 100%;
-        }
-
-        .btn-continue:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(0, 33, 71, 0.3);
-            color: white;
-        }
-
-        .btn-continue:active {
-            transform: translateY(-1px);
-        }
-
-        .btn-continue:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
+        .selected-summary {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 1rem;
         }
 
         .selected-count {
-            font-size: 0.9rem;
-            color: #6b7280;
-            text-align: center;
-            margin-bottom: 1rem;
+            font-size: 0.92rem;
+            color: #5b6570;
         }
 
         .selected-count strong {
             color: var(--accent-purple);
-            font-weight: 700;
+            font-weight: 800;
+        }
+
+        .next-hint {
+            font-size: 0.82rem;
+            color: #9ca3af;
+            max-width: 22rem;
+            line-height: 1.45;
+        }
+
+        .alert-custom {
+            border-radius: 12px;
+            border: none;
+            padding: 0.9rem 1.1rem;
+            margin: 0 1.5rem 1rem;
+            background: #fee2e2;
+            color: #991b1b;
+            font-size: 0.9rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 2.5rem 1.5rem;
+            color: #6b7280;
+        }
+
+        .empty-state i {
+            font-size: 2.5rem;
+            color: var(--accent-purple);
+            opacity: 0.5;
+            margin-bottom: 0.75rem;
+        }
+
+        @media (max-width: 900px) {
+            .how-steps {
+                grid-template-columns: 1fr;
+            }
         }
 
         @media (max-width: 768px) {
-            .materias-container {
-                grid-template-columns: 1fr;
+            .step-indicator::before {
+                display: none;
             }
 
             .step-indicator {
                 flex-wrap: wrap;
-                gap: 1rem;
+                gap: 0.75rem;
+                justify-content: center;
             }
 
-            .step-indicator::before {
-                display: none;
+            .step {
+                flex: 0 0 auto;
+                min-width: 72px;
             }
         }
     </style>
@@ -399,175 +589,211 @@ $selectedMaterias = $_SESSION['selected_materias'] ?? [];
 
 <body>
     <main class="container-custom">
-        <div class="card animate__animated animate__fadeInUp">
-            <div class="card-header">
-                <h1>Seleccionar Materias</h1>
-                <p>Elige las materias que deseas estudiar</p>
-            </div>
-
-            <div class="card-body">
-                <!-- Indicador de Pasos -->
-                <div class="step-indicator">
-                    <div class="step active">
-                        <div class="step-number">1</div>
-                        <div class="step-label">Materias</div>
-                    </div>
-                    <div class="step">
-                        <div class="step-number">2</div>
-                        <div class="step-label">Plan</div>
-                    </div>
-                    <div class="step">
-                        <div class="step-number">3</div>
-                        <div class="step-label">Pago</div>
-                    </div>
-                    <div class="step">
-                        <div class="step-number">4</div>
-                        <div class="step-label">Confirmación</div>
+        <div class="top-bar animate__animated animate__fadeIn">
+            <a href="index.php" class="brand-mark" aria-label="Banco de Choices — inicio">
+                <span class="brand-mark-img-wrap">
+                    <img src="<?= htmlspecialchars(public_asset_url('img/logo-bd-transparente.png')) ?>" alt="Banco de Choices" width="180" height="40" />
+                </span>
+            </a>
+            <div class="d-flex flex-wrap align-items-center gap-2 ms-auto justify-content-end">
+                <div class="navbar-actions navbar-actions--landing flex-shrink-0">
+                    <div class="navbar-actions__inner">
+                        <?php
+                        $bc_lang_menu_landing = true;
+                        $bc_lang_selector_btn_class = 'btn btn-navbar-lang dropdown-toggle d-inline-flex align-items-center gap-2';
+                        require_once __DIR__ . '/../App/Views/includes/language-selector.php';
+                        unset($bc_lang_menu_landing, $bc_lang_selector_btn_class);
+                        ?>
                     </div>
                 </div>
-
-                <!-- Mensaje de Error -->
-                <?php if (isset($error)): ?>
-                    <div class="alert alert-danger">
-                        <i class="bi bi-exclamation-circle me-2"></i>
-                        <?= htmlspecialchars($error) ?>
-                    </div>
-                <?php endif; ?>
-
-                <!-- Formulario de Selección -->
-                <form method="POST" id="materiasForm">
-                    <!-- Materias -->
-                    <div class="materias-container">
-                        <?php foreach ($materias as $materia): ?>
-                            <?php $isSelected = in_array($materia['id'], $selectedMaterias); ?>
-                            <label class="materia-card <?= $isSelected ? 'selected' : '' ?>">
-                                <input type="checkbox" name="materias[]" value="<?= $materia['id'] ?>" 
-                                    <?= $isSelected ? 'checked' : '' ?>>
-                                <div class="materia-card-content">
-                                    <div class="materia-checkbox"></div>
-                                    <div class="materia-info">
-                                        <p class="materia-name"><?= htmlspecialchars($materia['nome']) ?></p>
-                                        <p class="materia-description">Acceso completo a todos los temas</p>
-                                    </div>
-                                    <i class="bi bi-check-circle-fill materia-icon"></i>
-                                </div>
-                            </label>
-                        <?php endforeach; ?>
-                    </div>
-
-                    <!-- Contador de Seleccionadas -->
-                    <div class="selected-count">
-                        Seleccionadas: <strong id="selectedCount">0</strong> materia(s)
-                    </div>
-
-                    <!-- Botón Continuar -->
-                    <button type="submit" class="btn-continue">
-                        Continuar <i class="bi bi-arrow-right ms-2"></i>
-                    </button>
-                </form>
+                <a href="index.php" class="back-link mb-0">
+                    <i class="bi bi-arrow-left-short" style="font-size:1.35rem;line-height:0"></i>
+                    <?= htmlspecialchars(__('signup.back_home')) ?>
+                </a>
             </div>
         </div>
+
+        <header class="header-section animate__animated animate__fadeInDown">
+            <span class="header-badge"><i class="bi bi-mortarboard-fill"></i> <?= htmlspecialchars(__('signup.step_badge')) ?></span>
+            <h1><?= htmlspecialchars(__('signup.materias.h1')) ?></h1>
+            <p class="lead">
+                <?= htmlspecialchars(__('signup.materias.lead_before')) ?>
+                <strong><?= htmlspecialchars(__('signup.materias.lead_strong')) ?></strong>
+                <?= htmlspecialchars(__('signup.materias.lead_after')) ?>
+            </p>
+        </header>
+
+        <div class="step-indicator animate__animated animate__fadeIn" aria-hidden="true">
+            <div class="step active">
+                <div class="step-number">1</div>
+                <div class="step-label"><?= htmlspecialchars(__('signup.step.materias')) ?></div>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-label"><?= htmlspecialchars(__('signup.step.plan')) ?></div>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-label"><?= htmlspecialchars(__('signup.step.pago')) ?></div>
+            </div>
+            <div class="step">
+                <div class="step-number">4</div>
+                <div class="step-label"><?= htmlspecialchars(__('signup.step.confirmacion')) ?></div>
+            </div>
+        </div>
+
+        <div class="flow-card animate__animated animate__fadeInUp">
+            <div class="flow-card-top">
+                <h2><i class="bi bi-lightbulb"></i> <?= htmlspecialchars(__('signup.materias.what_title')) ?></h2>
+                <p><?= htmlspecialchars(__('signup.materias.what_p')) ?></p>
+            </div>
+
+            <div class="how-steps">
+                <div class="how-step">
+                    <span class="how-step-num">1</span>
+                    <div>
+                        <h3><?= htmlspecialchars(__('signup.how1.title')) ?></h3>
+                        <p><?= htmlspecialchars(__('signup.how1.p')) ?></p>
+                    </div>
+                </div>
+                <div class="how-step">
+                    <span class="how-step-num">2</span>
+                    <div>
+                        <h3><?= htmlspecialchars(__('signup.how2.title')) ?></h3>
+                        <p><?= htmlspecialchars(__('signup.how2.p')) ?></p>
+                    </div>
+                </div>
+                <div class="how-step">
+                    <span class="how-step-num">3</span>
+                    <div>
+                        <h3><?= htmlspecialchars(__('signup.how3.title')) ?></h3>
+                        <p><?= htmlspecialchars(__('signup.how3.p')) ?></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-callout">
+                <i class="bi bi-info-circle-fill me-1" aria-hidden="true"></i>
+                <?= htmlspecialchars(__('signup.materias.tip')) ?>
+            </div>
+
+            <?php if (isset($error)): ?>
+                <div class="alert-custom" role="alert">
+                    <i class="bi bi-exclamation-circle me-2"></i><?= htmlspecialchars($error) ?>
+                </div>
+            <?php endif; ?>
+
+            <?php if ($materias === []): ?>
+                <div class="empty-state">
+                    <i class="bi bi-inbox"></i>
+                    <p><strong><?= htmlspecialchars(__('signup.empty.title')) ?></strong></p>
+                    <p class="small mb-0"><?= htmlspecialchars(__('signup.empty.p')) ?></p>
+                    <a href="index.php" class="btn btn-outline-primary btn-lg py-3 fw-bold shadow-sm mt-3 rounded-pill px-4"><?= htmlspecialchars(__('signup.empty.btn')) ?></a>
+                </div>
+            <?php else: ?>
+                <form method="post" id="materiasForm" novalidate>
+                    <div class="form-section">
+                        <div class="section-label"><?= htmlspecialchars(__('signup.section.available')) ?></div>
+                        <div class="materias-container">
+                            <?php foreach ($materias as $materia): ?>
+                                <?php
+                                $isSelected = in_array((int) $materia['id'], $selectedMaterias, true);
+                                $meta = materia_visual_meta((string) $materia['nome']);
+                                ?>
+                                <label class="materia-card<?= $isSelected ? ' selected' : '' ?>">
+                                    <input type="checkbox" name="materias[]" value="<?= (int) $materia['id'] ?>"
+                                        <?= $isSelected ? 'checked' : '' ?> />
+                                    <div class="materia-card-content">
+                                        <div class="materia-main">
+                                            <div class="materia-icon-wrap" aria-hidden="true">
+                                                <i class="<?= htmlspecialchars($meta['icon']) ?>"></i>
+                                            </div>
+                                            <div class="materia-text">
+                                                <p class="materia-name"><?= htmlspecialchars($materia['nome']) ?></p>
+                                                <p class="materia-hint"><?= htmlspecialchars(__($meta['hint_key'])) ?></p>
+                                            </div>
+                                        </div>
+                                        <div class="materia-checkbox" aria-hidden="true"></div>
+                                    </div>
+                                </label>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+
+                    <div class="form-footer">
+                        <div class="selected-summary">
+                            <p class="selected-count mb-0">
+                                <?= htmlspecialchars(__('signup.selected.label')) ?> <strong id="selectedCount">0</strong>
+                                <span id="selectedWord"><?= htmlspecialchars(__('signup.word.subject_plural')) ?></span>
+                            </p>
+                            <p class="next-hint mb-0">
+                                <?= htmlspecialchars(__('signup.selected.next_hint')) ?>
+                            </p>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-lg py-3 fw-bold shadow-sm w-100" id="btnContinue">
+                            <?= htmlspecialchars(__('signup.btn.continue_plan')) ?>
+                            <i class="bi bi-arrow-right ms-2"></i>
+                        </button>
+                    </div>
+                </form>
+            <?php endif; ?>
+        </div>
+
+        <p class="text-center mt-3 mb-0 small" style="color: rgba(255,255,255,0.75);">
+            <?= htmlspecialchars(__('signup.footer.account')) ?> <a href="login.php" class="text-white fw-semibold"><?= htmlspecialchars(__('signup.footer.login')) ?></a>
+        </p>
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const checkboxes = document.querySelectorAll('input[name="materias[]"]');
-            const selectedCountSpan = document.getElementById('selectedCount');
+        (function () {
+            const BC_SIGNUP = {
+                wordSingular: <?= json_encode(__('signup.word.subject_singular'), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE) ?>,
+                wordPlural: <?= json_encode(__('signup.word.subject_plural'), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE) ?>,
+                alertMin: <?= json_encode(__('signup.alert.min_materias'), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE) ?>
+            };
             const form = document.getElementById('materiasForm');
-            const runId = `run-${Date.now()}`;
+            if (!form) return;
 
-            function debugLog(hypothesisId, location, message, data) {
-                // #region agent log
-                const payload = {sessionId:'9ee9d7',runId,hypothesisId,location,message,data,timestamp:Date.now()};
-                fetch('http://127.0.0.1:7763/ingest/bfa7fb8e-f75f-490d-9516-9049669d6119',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'9ee9d7'},body:JSON.stringify(payload)}).catch(()=>{});
-                if (navigator.sendBeacon) {
-                    const blob = new Blob([JSON.stringify(payload)], { type: 'application/json' });
-                    navigator.sendBeacon('http://127.0.0.1:7763/ingest/bfa7fb8e-f75f-490d-9516-9049669d6119', blob);
-                }
-                // #endregion
-            }
+            const checkboxes = form.querySelectorAll('input[name="materias[]"]');
+            const selectedCountSpan = document.getElementById('selectedCount');
+            const selectedWord = document.getElementById('selectedWord');
+            const btnContinue = document.getElementById('btnContinue');
 
             function updateCount() {
-                const checked = document.querySelectorAll('input[name="materias[]"]:checked').length;
-                selectedCountSpan.textContent = checked;
+                const n = form.querySelectorAll('input[name="materias[]"]:checked').length;
+                selectedCountSpan.textContent = String(n);
+                if (selectedWord) {
+                    selectedWord.textContent = n === 1 ? BC_SIGNUP.wordSingular : BC_SIGNUP.wordPlural;
+                }
+                if (btnContinue) {
+                    btnContinue.disabled = n === 0;
+                }
             }
 
             function updateCardStyle(checkbox) {
                 const card = checkbox.closest('.materia-card');
-                if (checkbox.checked) {
-                    card.classList.add('selected');
-                } else {
-                    card.classList.remove('selected');
-                }
+                if (!card) return;
+                card.classList.toggle('selected', checkbox.checked);
             }
 
-            function captureSelectedCardSnapshot(stage, sourceHypothesisId) {
-                const card = document.querySelector('.materia-card.selected');
-                const container = document.querySelector('.materias-container');
-                if (!card || !container) {
-                    debugLog(sourceHypothesisId, 'selecionar-materias.php:card-snapshot', 'Selected card or container missing', {
-                        stage,
-                        hasCard: Boolean(card),
-                        hasContainer: Boolean(container)
-                    });
-                    return;
-                }
-
-                const rect = card.getBoundingClientRect();
-                const containerRect = container.getBoundingClientRect();
-                const computed = window.getComputedStyle(card);
-                const containerComputed = window.getComputedStyle(container);
-
-                debugLog(sourceHypothesisId, 'selecionar-materias.php:card-snapshot', 'Selected card visual metrics', {
-                    stage,
-                    cardWidth: Math.round(rect.width),
-                    cardHeight: Math.round(rect.height),
-                    cardTop: Math.round(rect.top),
-                    cardLeft: Math.round(rect.left),
-                    cardDisplay: computed.display,
-                    cardAlignItems: computed.alignItems,
-                    cardPadding: computed.padding,
-                    cardLineHeight: computed.lineHeight,
-                    cardBorderRadius: computed.borderRadius,
-                    containerWidth: Math.round(containerRect.width),
-                    containerDisplay: containerComputed.display,
-                    containerTemplateColumns: containerComputed.gridTemplateColumns,
-                    containerGap: containerComputed.gap
-                });
-            }
-
-            debugLog('H1', 'selecionar-materias.php:dom-ready', 'Materia form initialized', {
-                cards: document.querySelectorAll('.materia-card').length,
-                selectedCards: document.querySelectorAll('.materia-card.selected').length,
-                checkboxes: checkboxes.length
-            });
-            captureSelectedCardSnapshot('initial', 'H2');
-
-            checkboxes.forEach(checkbox => {
+            checkboxes.forEach(function (checkbox) {
                 checkbox.addEventListener('change', function () {
-                    const card = this.closest('.materia-card');
-                    debugLog('H3', 'selecionar-materias.php:checkbox-change', 'Checkbox changed', {
-                        checked: this.checked,
-                        cardHasSelectedClassBefore: card ? card.classList.contains('selected') : false
-                    });
                     updateCardStyle(this);
                     updateCount();
-                    captureSelectedCardSnapshot('after-change', 'H4');
                 });
                 updateCardStyle(checkbox);
             });
 
             form.addEventListener('submit', function (e) {
-                const checked = document.querySelectorAll('input[name="materias[]"]:checked').length;
-                if (checked === 0) {
+                if (form.querySelectorAll('input[name="materias[]"]:checked').length === 0) {
                     e.preventDefault();
-                    alert('Por favor, selecciona al menos una materia');
+                    alert(BC_SIGNUP.alertMin);
                 }
             });
 
             updateCount();
-        });
+        })();
     </script>
 </body>
 

@@ -1,5 +1,6 @@
 <?php
 
+require_once __DIR__ . '/../../config/public_url.php';
 require_once __DIR__ . '/../Session/SimulationSession.php';
 require_once __DIR__ . '/../../config/conexao.php';
 require_once __DIR__ . '/../Models/Usuario.php';
@@ -94,7 +95,7 @@ class SimulationFactory
 
 try {
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-        header('Location: /bancoperguntas.php');
+        header('Location: ' . app_url('bancoperguntas.php'));
         exit;
     }
 
@@ -103,7 +104,7 @@ try {
     }
 
     if (!isset($_SESSION['usuario']['id'])) {
-        header('Location: /login.php');
+        header('Location: ' . app_url('login.php'));
         exit;
     }
 
@@ -141,10 +142,10 @@ try {
     $session = new SimulationSession();
     $session->init($novoSimulado);
 
-    header('Location: /questionario.php');
+    header('Location: ' . app_url('questionario.php'));
     exit;
 } catch (Exception $e) {
     error_log('CriarController: ' . $e->getMessage());
-    header('Location: /bancoperguntas.php');
+    header('Location: ' . app_url('bancoperguntas.php'));
     exit;
 }

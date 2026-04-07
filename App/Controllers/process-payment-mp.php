@@ -12,6 +12,9 @@ require_once __DIR__ . '/../../config/mercadopago.php';
 require_once __DIR__ . '/../../config/conexao.php';
 
 use MercadoPago\Client\Preference\PreferenceClient;
+
+$mpCfg = mercadopago_config();
+$checkoutRedirect = rtrim($mpCfg['site_url'], '/') . '/checkout-mercadopago.php';
 use MercadoPago\Exceptions\MPApiException;
 
 /**
@@ -38,15 +41,15 @@ if (!$email || !$name || !$orderId || $totalPrice <= 0 || $materiasRaw === [] ||
     mp_integration_log($errorMsg);
     error_log($errorMsg);
     $_SESSION['error'] = 'Dados incompletos. Por favor, tente novamente.';
-    header('Location: /checkout-mercadopago.php');
+    header('Location: ' . $checkoutRedirect);
     exit;
 }
 
-$cfg = mercadopago_config();
+$cfg = $mpCfg;
 if ($cfg['access_token'] === '') {
     mp_integration_log('MP_ACCESS_TOKEN ausente');
     $_SESSION['error'] = 'Configuração do Mercado Pago não disponível.';
-    header('Location: /checkout-mercadopago.php');
+    header('Location: ' . $checkoutRedirect);
     exit;
 }
 
@@ -75,7 +78,7 @@ try {
 } catch (Throwable $e) {
     mp_integration_log('insert_pedido ' . $e->getMessage());
     $_SESSION['error'] = 'Não foi possível registrar o pedido.';
-    header('Location: /checkout-mercadopago.php');
+    header('Location: ' . $checkoutRedirect);
     exit;
 }
 
@@ -90,7 +93,7 @@ $preferenceData = [
             'title' => $itemTitle,
             'quantity' => 1,
             'unit_price' => $totalPrice,
-            'currency_id' => 'BRL',
+            'currency_id' => $cfg['currency_id'],
         ],
     ],
     'payer' => [
@@ -126,12 +129,12 @@ try {
     mp_integration_log('MPApiException: ' . $e->getMessage());
     error_log('Mercado Pago preference: ' . $e->getMessage());
     $_SESSION['error'] = 'Erro ao criar preferência de pagamento.';
-    header('Location: /checkout-mercadopago.php');
+    header('Location: ' . $checkoutRedirect);
     exit;
 } catch (Throwable $e) {
     mp_integration_log('preference_error: ' . $e->getMessage());
     $_SESSION['error'] = 'Erro ao processar pagamento.';
-    header('Location: /checkout-mercadopago.php');
+    header('Location: ' . $checkoutRedirect);
     exit;
 }
 
@@ -139,7 +142,7 @@ $initPoint = $preference->init_point ?: $preference->sandbox_init_point;
 if (!$initPoint) {
     mp_integration_log('preference_sem_init_point id=' . ($preference->id ?? ''));
     $_SESSION['error'] = 'Resposta inválida do Mercado Pago.';
-    header('Location: /checkout-mercadopago.php');
+    header('Location: ' . $checkoutRedirect);
     exit;
 }
 
