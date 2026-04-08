@@ -26,13 +26,7 @@ $main_links = sidebar_nav_links();
 
 <div class="app-sidebar-section">
     <span class="app-sidebar-section-label"><?= htmlspecialchars(__('sidebar.appearance')) ?></span>
-    <div class="app-sidebar-theme-row" title="<?= htmlspecialchars(__('sidebar.dark_mode')) ?>">
-        <span class="material-icons app-sidebar-theme-icon" aria-hidden="true">dark_mode</span>
-        <span class="app-sidebar-theme-text"><?= htmlspecialchars(__('sidebar.dark_mode')) ?></span>
-        <div class="form-check form-switch m-0">
-            <input class="form-check-input js-theme-toggle" type="checkbox" aria-label="<?= htmlspecialchars(__('sidebar.dark_aria')) ?>">
-        </div>
-    </div>
+    <?php require __DIR__ . '/theme-mode-toggle.php'; ?>
 </div>
 
 <div class="app-sidebar-footer">

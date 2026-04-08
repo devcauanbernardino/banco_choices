@@ -12,11 +12,11 @@ $materiasCompradas = $_SESSION['usuario']['materias'] ?? [];
 
 ?>
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="<?= htmlspecialchars(locale_html_lang()) ?>">
 
 <head>
     <meta charset="UTF-8">
-    <title>Configurar Simulado | Banco de Choices</title>
+    <title><?= htmlspecialchars(__('bank.page_title')) ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?php require_once __DIR__ . '/../../config/favicon_links.php'; ?>
     <?php require_once __DIR__ . '/includes/theme-head.php'; ?>
@@ -142,7 +142,7 @@ $materiasCompradas = $_SESSION['usuario']['materias'] ?? [];
     <?php require_once __DIR__ . '/includes/sidebar.php'; ?>
 
     <header class="app-mobile-topbar d-lg-none justify-content-center">
-        <span class="fw-bold">Novo simulado</span>
+        <span class="fw-bold"><?= htmlspecialchars(__('bank.mobile_title')) ?></span>
     </header>
 
     <main class="app-main p-4">
@@ -155,8 +155,8 @@ $materiasCompradas = $_SESSION['usuario']['materias'] ?? [];
                     <div class="mb-2">
                         <span class="material-icons fs-1">psychology</span>
                     </div>
-                    <h2 class="fw-bold mb-1">Configurar Simulado</h2>
-                    <p class="opacity-75 mb-0">Prepare sua mente para o próximo desafio</p>
+                    <h2 class="fw-bold mb-1"><?= htmlspecialchars(__('bank.header.title')) ?></h2>
+                    <p class="opacity-75 mb-0"><?= htmlspecialchars(__('bank.header.sub')) ?></p>
                 </div>
 
                 <!-- Corpo do Formulário -->
@@ -165,10 +165,10 @@ $materiasCompradas = $_SESSION['usuario']['materias'] ?? [];
 
                         <!-- Seleção de Matéria -->
                         <select class="form-select form-select-lg mb-4" name="materia" required>
-                            <option value="" selected disabled>Selecione uma disciplina...</option>
+                            <option value="" selected disabled><?= htmlspecialchars(__('bank.select_subject')) ?></option>
 
                             <?php if (empty($materiasCompradas)): ?>
-                                <option disabled>Você não possui matérias ativas</option>
+                                <option disabled><?= htmlspecialchars(__('bank.no_subjects')) ?></option>
                             <?php else: ?>
                                 <?php foreach ($materiasCompradas as $materia): ?>
                                     <option value="<?= (int) $materia['id'] ?>">
@@ -182,7 +182,7 @@ $materiasCompradas = $_SESSION['usuario']['materias'] ?? [];
                         <div class="row gx-4 gy-5 mb-4 setup-fields-row">
                             <!-- Quantidade de Questões -->
                             <div class="col-md-6">
-                                <label class="form-label fw-bold mb-2 d-block">Número de Questões</label>
+                                <label class="form-label fw-bold mb-2 d-block"><?= htmlspecialchars(__('bank.num_questions')) ?></label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-white border-end-0 rounded-start-3"
                                         style="border-radius: 12px 0 0 12px;">
@@ -191,40 +191,38 @@ $materiasCompradas = $_SESSION['usuario']['materias'] ?? [];
                                     <input type="number" class="form-control border-start-0" name="quantidade" min="5"
                                         max="100" value="20" style="border-radius: 0 12px 12px 0;">
                                 </div>
-                                <div class="form-text mt-2 mb-0">Recomendado: 20 a 50 questões.</div>
+                                <div class="form-text mt-2 mb-0"><?= htmlspecialchars(__('bank.num_questions_hint')) ?></div>
                             </div>
 
                             <!-- Tempo Estimado -->
                             <div class="col-md-6">
-                                <label class="form-label fw-bold mb-2 d-block">Tempo Disponível</label>
+                                <label class="form-label fw-bold mb-2 d-block"><?= htmlspecialchars(__('bank.time_label')) ?></label>
                                 <div class="d-flex align-items-center p-2 px-3 bg-light rounded-3"
                                     style="height: 48px;">
                                     <span class="material-icons text-primary me-2">schedule</span>
-                                    <span class="fw-bold text-dark">60 Minutos</span>
+                                    <span class="fw-bold text-dark"><?= htmlspecialchars(__('bank.time_value')) ?></span>
                                 </div>
-                                <div class="form-text mt-2 mb-0">Tempo padrão para o modo exame.</div>
+                                <div class="form-text mt-2 mb-0"><?= htmlspecialchars(__('bank.time_hint')) ?></div>
                             </div>
                         </div>
 
                         <!-- Seleção de Modo (Cards) -->
                         <div class="mb-4">
-                            <label class="form-label fw-bold">Modo de Aplicação</label>
+                            <label class="form-label fw-bold"><?= htmlspecialchars(__('bank.mode_label')) ?></label>
 
                             <div class="row g-3">
                                 <div class="col-md-6">
                                     <input type="radio" name="modo" value="estudo" id="radioEstudo" checked>
                                     <label for="radioEstudo" class="mode-option">
-                                        <span class="mode-title">Modo Estudo</span>
-                                        <span class="mode-desc">Veja a resposta correta e o comentário após cada
-                                            questão.</span>
+                                        <span class="mode-title"><?= htmlspecialchars(__('bank.mode_study.title')) ?></span>
+                                        <span class="mode-desc"><?= htmlspecialchars(__('bank.mode_study.desc')) ?></span>
                                     </label>
                                 </div>
                                 <div class="col-md-6">
                                     <input type="radio" name="modo" value="exame" id="radioExame">
                                     <label for="radioExame" class="mode-option">
-                                        <span class="mode-title">Modo Exame</span>
-                                        <span class="mode-desc">Simulação real. Resultado e revisão apenas ao
-                                            finalizar.</span>
+                                        <span class="mode-title"><?= htmlspecialchars(__('bank.mode_exam.title')) ?></span>
+                                        <span class="mode-desc"><?= htmlspecialchars(__('bank.mode_exam.desc')) ?></span>
                                     </label>
                                 </div>
                             </div>
@@ -235,11 +233,11 @@ $materiasCompradas = $_SESSION['usuario']['materias'] ?? [];
                             <div class="d-flex gap-3">
                                 <span class="material-icons text-warning">warning</span>
                                 <div>
-                                    <h6 class="fw-bold mb-1 text-dark">Atenção ao Modo Exame</h6>
+                                    <h6 class="fw-bold mb-1 text-dark"><?= htmlspecialchars(__('bank.exam_warn.title')) ?></h6>
                                     <ul class="mb-0 small text-muted ps-3">
-                                        <li>O cronômetro não pode ser pausado.</li>
-                                        <li>As respostas certas não serão exibidas durante o teste.</li>
-                                        <li>Certifique-se de ter uma conexão estável.</li>
+                                        <li><?= htmlspecialchars(__('bank.exam_warn.li1')) ?></li>
+                                        <li><?= htmlspecialchars(__('bank.exam_warn.li2')) ?></li>
+                                        <li><?= htmlspecialchars(__('bank.exam_warn.li3')) ?></li>
                                     </ul>
                                 </div>
                             </div>
@@ -248,14 +246,14 @@ $materiasCompradas = $_SESSION['usuario']['materias'] ?? [];
                         <!-- Botão de Ação -->
                         <button type="submit" class="btn btn-primary btn-lg py-3 fw-bold shadow-sm w-100 mt-2 d-inline-flex align-items-center justify-content-center gap-2">
                             <span class="material-icons">rocket_launch</span>
-                            INICIAR SIMULADO AGORA
+                            <?= htmlspecialchars(__('bank.submit')) ?>
                         </button>
 
                     </form>
                 </div>
 
                 <div class="card-footer bg-light border-0 py-3 text-center">
-                    <small class="text-muted">© 2026 Banco de Choices — Preparação Médica de Elite</small>
+                    <small class="text-muted">© <?= (int) date('Y') ?> <?= htmlspecialchars(__('bank.footer_copy')) ?></small>
                 </div>
             </div>
 

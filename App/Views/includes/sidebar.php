@@ -39,10 +39,15 @@ $logoUrl = public_asset_url('img/logo-bd-transparente.png');
         </a>
     </div>
     <?php require __DIR__ . '/sidebar-nav-links.php'; ?>
-    <div class="app-sidebar-section px-3 pb-3 mt-auto border-top border-opacity-10 pt-3">
+    <div class="app-sidebar-section px-3 pb-3 mt-auto pt-3 app-sidebar-section--lang">
         <span class="app-sidebar-section-label"><?= htmlspecialchars(__('lang.selector_label')) ?></span>
         <div class="mt-2">
-            <?php require __DIR__ . '/language-selector.php'; ?>
+            <?php
+            $bc_lang_menu_landing = true;
+            $bc_lang_selector_btn_class = 'btn btn-navbar-lang dropdown-toggle d-inline-flex align-items-center gap-2 w-100';
+            $bc_lang_popper_fixed = true;
+            require __DIR__ . '/language-selector.php';
+            ?>
         </div>
     </div>
 </aside>
@@ -60,18 +65,20 @@ $logoUrl = public_asset_url('img/logo-bd-transparente.png');
     <div class="offcanvas-body pb-4">
         <div class="app-sidebar-section px-0">
             <span class="app-sidebar-section-label"><?= htmlspecialchars(__('sidebar.appearance')) ?></span>
-            <div class="app-sidebar-theme-row app-sidebar-theme-row--sheet" title="<?= htmlspecialchars(__('sidebar.dark_mode')) ?>">
-                <span class="material-icons app-sidebar-theme-icon" aria-hidden="true">dark_mode</span>
-                <span class="app-sidebar-theme-text"><?= htmlspecialchars(__('sidebar.dark_mode')) ?></span>
-                <div class="form-check form-switch m-0">
-                    <input class="form-check-input js-theme-toggle" type="checkbox" aria-label="<?= htmlspecialchars(__('sidebar.dark_aria')) ?>">
-                </div>
-            </div>
+            <?php
+            $theme_mode_toggle_sheet = true;
+            require __DIR__ . '/theme-mode-toggle.php';
+            ?>
         </div>
         <div class="app-sidebar-section px-0 mt-3">
             <span class="app-sidebar-section-label"><?= htmlspecialchars(__('lang.selector_label')) ?></span>
             <div class="mt-2">
-                <?php require __DIR__ . '/language-selector.php'; ?>
+                <?php
+                $bc_lang_menu_landing = true;
+                $bc_lang_selector_btn_class = 'btn btn-navbar-lang dropdown-toggle d-inline-flex align-items-center gap-2 w-100';
+                $bc_lang_popper_fixed = false;
+                require __DIR__ . '/language-selector.php';
+                ?>
             </div>
         </div>
         <a class="app-sidebar-link app-sidebar-link-logout mt-3 d-flex rounded-3" href="<?= htmlspecialchars(app_url('logout.php')) ?>"

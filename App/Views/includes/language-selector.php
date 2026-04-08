@@ -16,6 +16,7 @@ $variants = [
 ];
 $bc_lang_selector_btn_class = $bc_lang_selector_btn_class ?? 'btn btn-sm btn-outline-secondary dropdown-toggle d-inline-flex align-items-center gap-1';
 $bc_lang_menu_landing = !empty($bc_lang_menu_landing);
+$bc_lang_popper_fixed = !empty($bc_lang_popper_fixed);
 
 $menuClass = 'dropdown-menu dropdown-menu-end shadow-sm';
 if ($bc_lang_menu_landing) {
@@ -27,11 +28,16 @@ $flags = [
     'pt_BR' => '🇧🇷',
     'en_US' => '🇺🇸',
 ];
+$bc_lang_codes = [
+    'es_AR' => 'AR',
+    'pt_BR' => 'BR',
+    'en_US' => 'US',
+];
 ?>
-<div class="dropdown bc-lang-selector">
+<div class="dropdown bc-lang-selector<?= $bc_lang_popper_fixed ? ' bc-lang-selector--popper-fixed' : '' ?>">
     <button class="<?= htmlspecialchars($bc_lang_selector_btn_class, ENT_QUOTES, 'UTF-8') ?>"
         type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false"
-        aria-label="<?= htmlspecialchars(__('lang.selector_aria')) ?>">
+        aria-label="<?= htmlspecialchars(__('lang.selector_aria')) ?>"<?= $bc_lang_popper_fixed ? ' data-bs-popper-config=\'{"strategy":"fixed"}\'' : '' ?>>
         <?php if ($bc_lang_menu_landing): ?>
             <svg class="bc-lang-icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                 <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" stroke-width="1.5"/>
@@ -54,6 +60,7 @@ $flags = [
                 <?php if ($code === $current): ?>
                     <span class="dropdown-item bc-lang-menu__item bc-lang-menu__item--active" aria-current="true">
                         <?php if ($bc_lang_menu_landing): ?>
+                            <span class="bc-lang-menu__code" aria-hidden="true"><?= htmlspecialchars($bc_lang_codes[$code] ?? '') ?></span>
                             <span class="bc-lang-menu__flag" aria-hidden="true"><?= htmlspecialchars($flags[$code] ?? '') ?></span>
                         <?php endif; ?>
                         <span class="bc-lang-menu__label"><?= htmlspecialchars($info['label']) ?></span>
@@ -64,6 +71,7 @@ $flags = [
                 <?php else: ?>
                     <a class="dropdown-item bc-lang-menu__item" href="<?= htmlspecialchars(app_url('set-locale.php?locale=' . rawurlencode($code) . '&return=' . $returnParam)) ?>">
                         <?php if ($bc_lang_menu_landing): ?>
+                            <span class="bc-lang-menu__code" aria-hidden="true"><?= htmlspecialchars($bc_lang_codes[$code] ?? '') ?></span>
                             <span class="bc-lang-menu__flag" aria-hidden="true"><?= htmlspecialchars($flags[$code] ?? '') ?></span>
                         <?php endif; ?>
                         <span class="bc-lang-menu__label"><?= htmlspecialchars($info['label']) ?></span>

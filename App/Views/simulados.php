@@ -36,10 +36,10 @@ $stats = $dashboard->getStats();
 ?>
 
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="<?= htmlspecialchars(locale_html_lang()) ?>">
 <head>
     <meta charset="UTF-8">
-    <title>Meus Simulados | Banco de Choices</title>
+    <title><?= htmlspecialchars(__('simulados.page_title')) ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?php require_once __DIR__ . '/../../config/favicon_links.php'; ?>
     <?php require_once __DIR__ . '/includes/theme-head.php'; ?>
@@ -189,7 +189,7 @@ $stats = $dashboard->getStats();
     <?php require_once __DIR__ . '/includes/sidebar.php'; ?>
 
     <header class="app-mobile-topbar d-lg-none justify-content-center">
-        <span class="fw-bold">Meus simulados</span>
+        <span class="fw-bold"><?= htmlspecialchars(__('simulados.mobile_title')) ?></span>
     </header>
 
     <main class="app-main p-4 simulados-main">
@@ -197,11 +197,11 @@ $stats = $dashboard->getStats();
         <!-- Cabeçalho Dinâmico -->
         <div class="page-header d-flex justify-content-between align-items-center">
             <div>
-                <h3 class="fw-bold mb-1 text-dark">Meus Simulados</h3>
-                <p class="text-muted mb-0">Você já realizou <strong><?= $stats['total_simulados'] ?></strong> simulados no total.</p>
+                <h3 class="fw-bold mb-1 text-dark"><?= htmlspecialchars(__('simulados.heading')) ?></h3>
+                <p class="text-muted mb-0"><?= htmlspecialchars(__('simulados.subtitle_before')) ?><strong><?= (int) $stats['total_simulados'] ?></strong><?= htmlspecialchars(__('simulados.subtitle_after')) ?></p>
             </div>
             <a href="<?= htmlspecialchars(app_url('bancoperguntas.php')) ?>" class="btn btn-primary btn-lg py-3 fw-bold shadow-sm px-4 rounded-pill">
-                Novo Simulado
+                <?= htmlspecialchars(__('simulados.new')) ?>
             </a>
         </div>
 
@@ -209,9 +209,9 @@ $stats = $dashboard->getStats();
         <div class="filter-card">
             <form action="" method="GET" class="row g-3 align-items-end">
                 <div class="col-md-4">
-                    <label class="form-label fw-bold small">Filtrar por Matéria</label>
+                    <label class="form-label fw-bold small"><?= htmlspecialchars(__('simulados.filter_subject')) ?></label>
                     <select name="materia" class="form-select">
-                        <option value="">Todas as matérias</option>
+                        <option value=""><?= htmlspecialchars(__('simulados.all_subjects')) ?></option>
                         <?php foreach ($materiasFiltro as $m): ?>
                             <option value="<?= htmlspecialchars($m) ?>" <?= $filtroMateria === $m ? 'selected' : '' ?>>
                                 <?= htmlspecialchars(ucfirst($m)) ?>
@@ -220,21 +220,21 @@ $stats = $dashboard->getStats();
                     </select>
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label fw-bold small">Status</label>
+                    <label class="form-label fw-bold small"><?= htmlspecialchars(__('simulados.filter_status')) ?></label>
                     <select name="status" class="form-select">
-                        <option value="">Todos os status</option>
-                        <option value="aprovado" <?= $filtroStatus === 'aprovado' ? 'selected' : '' ?>>Aprovado (>= 70%)</option>
-                        <option value="reprovado" <?= $filtroStatus === 'reprovado' ? 'selected' : '' ?>>Reprovado (< 70%)</option>
+                        <option value=""><?= htmlspecialchars(__('simulados.all_status')) ?></option>
+                        <option value="aprovado" <?= $filtroStatus === 'aprovado' ? 'selected' : '' ?>><?= htmlspecialchars(__('simulados.status_ok')) ?></option>
+                        <option value="reprovado" <?= $filtroStatus === 'reprovado' ? 'selected' : '' ?>><?= htmlspecialchars(__('simulados.status_fail')) ?></option>
                     </select>
                 </div>
                 <div class="col-md-3">
                     <button type="submit" class="btn btn-dark w-100 rounded-3">
-                        <span class="material-icons align-middle fs-5 me-1">filter_alt</span> Filtrar
+                        <span class="material-icons align-middle fs-5 me-1">filter_alt</span> <?= htmlspecialchars(__('simulados.filter_btn')) ?>
                     </button>
                 </div>
                 <?php if (!empty($filtroMateria) || !empty($filtroStatus)): ?>
                 <div class="col-md-2">
-                    <a href="<?= htmlspecialchars(app_url('simulados.php')) ?>" class="btn btn-link text-muted w-100 text-decoration-none small">Limpar Filtros</a>
+                    <a href="<?= htmlspecialchars(app_url('simulados.php')) ?>" class="btn btn-link text-muted w-100 text-decoration-none small"><?= htmlspecialchars(__('simulados.clear_filters')) ?></a>
                 </div>
                 <?php endif; ?>
             </form>
@@ -246,11 +246,11 @@ $stats = $dashboard->getStats();
                 <table class="table mb-0">
                     <thead>
                         <tr>
-                            <th>Data e Hora</th>
-                            <th>Matéria</th>
-                            <th>Desempenho</th>
-                            <th>Status</th>
-                            <th class="text-center">Ações</th>
+                            <th><?= htmlspecialchars(__('simulados.th_datetime')) ?></th>
+                            <th><?= htmlspecialchars(__('simulados.th_subject')) ?></th>
+                            <th><?= htmlspecialchars(__('simulados.th_performance')) ?></th>
+                            <th><?= htmlspecialchars(__('simulados.th_status')) ?></th>
+                            <th class="text-center"><?= htmlspecialchars(__('simulados.th_actions')) ?></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -258,8 +258,8 @@ $stats = $dashboard->getStats();
                             <tr>
                                 <td colspan="5" class="empty-state">
                                     <span class="material-icons fs-1 text-muted mb-3">history_toggle_off</span>
-                                    <h5 class="text-dark">Nenhum simulado encontrado</h5>
-                                    <p class="text-muted">Tente ajustar seus filtros ou inicie um novo desafio.</p>
+                                    <h5 class="text-dark"><?= htmlspecialchars(__('simulados.empty_title')) ?></h5>
+                                    <p class="text-muted"><?= htmlspecialchars(__('simulados.empty_hint')) ?></p>
                                 </td>
                             </tr>
                         <?php else: ?>
@@ -283,7 +283,7 @@ $stats = $dashboard->getStats();
                                         </span>
                                     </td>
                                     <td class="text-center">
-                                        <a href="<?= htmlspecialchars(app_url('resultado.php?id=' . (int) $item['id'])) ?>" class="btn-action" title="Ver Revisão">
+                                        <a href="<?= htmlspecialchars(app_url('resultado.php?id=' . (int) $item['id'])) ?>" class="btn-action" title="<?= htmlspecialchars(__('simulados.review_aria')) ?>">
                                             <span class="material-icons fs-5">visibility</span>
                                         </a>
                                     </td>

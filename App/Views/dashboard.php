@@ -171,7 +171,7 @@ $materias = $objUsuario->buscarMateriasDoUsuario($usuario['id']);
     <div class="content">
         <header class="px-4 py-3 d-flex justify-content-between align-items-center sticky-top border-bottom bg-white">
             <a class="d-lg-none text-decoration-none" href="<?= htmlspecialchars(app_url('dashboard.php')) ?>"
-                aria-label="Banco de Choices — Painel">
+                aria-label="<?= htmlspecialchars(__('dashboard.header.aria')) ?>">
                 <span class="dashboard-header-logo-wrap">
                     <img src="<?= htmlspecialchars(public_asset_url('img/logo-bd-transparente.png')) ?>" alt="" width="32" height="32">
                 </span>
@@ -189,8 +189,8 @@ $materias = $objUsuario->buscarMateriasDoUsuario($usuario['id']);
             <!-- Boas-vindas -->
             <div class="mb-4 d-flex justify-content-between align-items-end">
                 <div>
-                    <h2 class="fw-bold mb-1">Olá, Dr. <?= htmlspecialchars(explode(' ', $usuario['nome'])[0]) ?> </h2>
-                    <p class="text-muted mb-0">Seu progresso está incrível hoje. Continue assim!</p>
+                    <h2 class="fw-bold mb-1"><?= htmlspecialchars(sprintf(__('dashboard.greeting'), explode(' ', $usuario['nome'])[0])) ?></h2>
+                    <p class="text-muted mb-0"><?= htmlspecialchars(__('dashboard.greeting_sub')) ?></p>
                 </div>
                 <div class="d-none d-md-block">
                     <span class="badge bg-primary-soft text-primary p-2 px-3 rounded-pill">
@@ -210,8 +210,7 @@ $materias = $objUsuario->buscarMateriasDoUsuario($usuario['id']);
                             </div>
                             <h3 class="fw-bold mb-0"><?= number_format($stats['questoes_respondidas'], 0, ',', '.') ?>
                             </h3>
-                            <small class="text-muted text-uppercase fw-semibold" style="font-size: 11px;">Questões
-                                Respondidas</small>
+                            <small class="text-muted text-uppercase fw-semibold" style="font-size: 11px;"><?= htmlspecialchars(__('dashboard.stat.questions_answered')) ?></small>
                         </div>
                     </div>
                 </div>
@@ -223,8 +222,7 @@ $materias = $objUsuario->buscarMateriasDoUsuario($usuario['id']);
                                 <span class="material-icons text-primary">insights</span>
                             </div>
                             <h3 class="fw-bold mb-0"><?= $stats['aproveitamento_geral'] ?>%</h3>
-                            <small class="text-muted text-uppercase fw-semibold" style="font-size: 11px;">Aproveitamento
-                                Geral</small>
+                            <small class="text-muted text-uppercase fw-semibold" style="font-size: 11px;"><?= htmlspecialchars(__('dashboard.stat.overall')) ?></small>
                         </div>
                     </div>
                 </div>
@@ -235,9 +233,8 @@ $materias = $objUsuario->buscarMateriasDoUsuario($usuario['id']);
                             <div class="icon-box bg-warning-subtle mb-3">
                                 <span class="material-icons text-warning">local_fire_department</span>
                             </div>
-                            <h3 class="fw-bold mb-0"><?= $stats['sequencia_dias'] ?> dias</h3>
-                            <small class="text-muted text-uppercase fw-semibold" style="font-size: 11px;">Sua
-                                Sequência</small>
+                            <h3 class="fw-bold mb-0"><?= $stats['sequencia_dias'] ?> <?= htmlspecialchars(__('dashboard.stat.streak_days')) ?></h3>
+                            <small class="text-muted text-uppercase fw-semibold" style="font-size: 11px;"><?= htmlspecialchars(__('dashboard.stat.streak')) ?></small>
                         </div>
                     </div>
                 </div>
@@ -249,8 +246,7 @@ $materias = $objUsuario->buscarMateriasDoUsuario($usuario['id']);
                                 <span class="material-icons text-info">emoji_events</span>
                             </div>
                             <h3 class="fw-bold mb-0"><?= number_format($stats['pontuacao_total'], 0, ',', '.') ?></h3>
-                            <small class="text-muted text-uppercase fw-semibold" style="font-size: 11px;">Pontuação
-                                Total</small>
+                            <small class="text-muted text-uppercase fw-semibold" style="font-size: 11px;"><?= htmlspecialchars(__('dashboard.stat.total_score')) ?></small>
                         </div>
                     </div>
                 </div>
@@ -262,25 +258,24 @@ $materias = $objUsuario->buscarMateriasDoUsuario($usuario['id']);
                     <div class="card shadow-sm border-0 h-100">
                         <div
                             class="card-header bg-white border-0 py-3 d-flex justify-content-between align-items-center">
-                            <h6 class="fw-bold mb-0">Simulados Recentes</h6>
-                            <a href="<?= htmlspecialchars(app_url('estatisticas.php')) ?>" class="text-primary text-decoration-none small fw-bold">Ver
-                                tudo</a>
+                            <h6 class="fw-bold mb-0"><?= htmlspecialchars(__('dashboard.recent.title')) ?></h6>
+                            <a href="<?= htmlspecialchars(app_url('estatisticas.php')) ?>" class="text-primary text-decoration-none small fw-bold"><?= htmlspecialchars(__('dashboard.recent.see_all')) ?></a>
                         </div>
                         <div class="table-responsive">
                             <table class="table align-middle">
                                 <thead>
                                     <tr>
-                                        <th>Data</th>
-                                        <th>Matéria</th>
-                                        <th>Resultado</th>
-                                        <th>Status</th>
+                                        <th><?= htmlspecialchars(__('dashboard.table.date')) ?></th>
+                                        <th><?= htmlspecialchars(__('dashboard.table.subject')) ?></th>
+                                        <th><?= htmlspecialchars(__('dashboard.table.result')) ?></th>
+                                        <th><?= htmlspecialchars(__('dashboard.table.status')) ?></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php if (empty($recentes)): ?>
                                         <tr>
                                             <td colspan="4" class="text-center py-5 text-muted">
-                                                Nenhum simulado realizado ainda.
+                                                <?= htmlspecialchars(__('dashboard.recent.empty')) ?>
                                             </td>
                                         </tr>
                                     <?php else: ?>
@@ -310,12 +305,11 @@ $materias = $objUsuario->buscarMateriasDoUsuario($usuario['id']);
                             <div class="mb-3">
                                 <span class="material-icons" style="font-size: 48px;">psychology</span>
                             </div>
-                            <h4 class="fw-bold mb-2">Pronto para o próximo nível?</h4>
-                            <p class="opacity-75 small mb-4">Teste seus conhecimentos com um novo simulado personalizado
-                                agora mesmo.</p>
+                            <h4 class="fw-bold mb-2"><?= htmlspecialchars(__('dashboard.cta.title')) ?></h4>
+                            <p class="opacity-75 small mb-4"><?= htmlspecialchars(__('dashboard.cta.text')) ?></p>
                             <a href="<?= htmlspecialchars(app_url('bancoperguntas.php')) ?>"
                                 class="btn btn-light btn-lg fw-bold rounded-pill py-3 shadow-sm">
-                                Iniciar Simulado
+                                <?= htmlspecialchars(__('dashboard.cta.btn')) ?>
                             </a>
                         </div>
                     </div>

@@ -1,6 +1,8 @@
 <?php
 // App/Controllers/DashboardController.php
 
+require_once __DIR__ . '/../../config/public_url.php';
+
 class DashboardController
 {
     private $db;
@@ -93,10 +95,11 @@ class DashboardController
             $total = (int) $row['total_questoes'];
             $acertos = (int) $row['acertos'];
             $porcentagem = ($total > 0) ? ($acertos / $total) : 0;
-            $status = ($porcentagem >= 0.7) ? 'Aprovado' : 'Reprovado';
+            $statusKey = ($porcentagem >= 0.7) ? 'aprovado' : 'reprovado';
+            $statusLabel = ($porcentagem >= 0.7) ? __('dashboard.status.approved') : __('dashboard.status.failed');
 
             // Aplica filtro de status no PHP para simplificar o SQL
-            if (!empty($filtroStatus) && strtolower($status) !== strtolower($filtroStatus)) {
+            if (!empty($filtroStatus) && strtolower((string) $filtroStatus) !== $statusKey) {
                 continue;
             }
 
@@ -106,7 +109,7 @@ class DashboardController
                 'materia' => ucfirst($row['materia']),
                 'pontuacao' => "$acertos/$total",
                 'porcentagem' => round($porcentagem * 100) . '%',
-                'status' => $status,
+                'status' => $statusLabel,
                 'classe' => ($porcentagem >= 0.7) ? 'success' : 'danger'
             ];
         }
@@ -172,7 +175,7 @@ class DashboardController
                 'data' => date('d/m/Y', strtotime($row['data_realizacao'])),
                 'categoria' => $row['materia'],
                 'pontuacao' => "$acertos/$total",
-                'status' => ($porcentagem >= 0.7) ? 'Aprovado' : 'Reprovado',
+                'status' => ($porcentagem >= 0.7) ? __('dashboard.status.approved') : __('dashboard.status.failed'),
                 'classe' => ($porcentagem >= 0.7) ? 'success' : 'danger'
             ];
         }

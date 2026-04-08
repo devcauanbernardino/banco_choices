@@ -1,5 +1,8 @@
 /* Variáveis de tema — usadas no painel e em theme-app.css */
 :root {
+  /* Alinha Bootstrap (.text-primary, .btn-primary, barras) à marca */
+  --bs-primary: #6a0392;
+  --bs-primary-rgb: 106, 3, 146;
   --app-bg: #f0f2f7;
   --app-surface: #ffffff;
   --app-surface-2: #f8f9fc;

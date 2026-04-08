@@ -29,18 +29,18 @@ $materiasUsuario = $objUsuario->buscarMateriasDoUsuario((int) $usuario['id']);
 $flashOk = isset($_GET['sucesso']) && $_GET['sucesso'] === '1';
 $flashErr = $_GET['erro'] ?? '';
 $msgErro = [
-    'nome_vazio' => 'Informe um nome válido.',
-    'falha_ao_salvar' => 'Não foi possível salvar. Tente novamente.',
-    'senha_incorreta' => 'Senha atual incorreta.',
-    'senha_curta' => 'A nova senha deve ter pelo menos 8 caracteres.',
+    'nome_vazio' => __('perfil.err.nome_vazio'),
+    'falha_ao_salvar' => __('perfil.err.falha_ao_salvar'),
+    'senha_incorreta' => __('perfil.err.senha_incorreta'),
+    'senha_curta' => __('perfil.err.senha_curta'),
 ];
 ?>
 
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="<?= htmlspecialchars(locale_html_lang()) ?>">
 <head>
     <meta charset="UTF-8">
-    <title>Meu Perfil | Banco de Choices</title>
+    <title><?= htmlspecialchars(__('perfil.page_title')) ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?php require_once __DIR__ . '/../../config/favicon_links.php'; ?>
     <?php require_once __DIR__ . '/includes/theme-head.php'; ?>
@@ -127,7 +127,7 @@ $msgErro = [
 <?php require_once __DIR__ . '/includes/sidebar.php'; ?>
 
 <header class="app-mobile-topbar d-lg-none justify-content-center">
-    <span class="fw-bold">Meu perfil</span>
+    <span class="fw-bold"><?= htmlspecialchars(__('perfil.mobile_title')) ?></span>
 </header>
 
 <main class="app-main p-3 p-lg-4">
@@ -135,7 +135,7 @@ $msgErro = [
 
         <?php if ($flashOk): ?>
             <div class="alert alert-success border-0 shadow-sm rounded-3 mb-4" role="alert">
-                Alterações salvas com sucesso.
+                <?= htmlspecialchars(__('perfil.flash_ok')) ?>
             </div>
         <?php endif; ?>
 
@@ -145,7 +145,7 @@ $msgErro = [
             </div>
         <?php elseif ($flashErr !== ''): ?>
             <div class="alert alert-danger border-0 shadow-sm rounded-3 mb-4" role="alert">
-                Não foi possível concluir a operação.
+                <?= htmlspecialchars(__('perfil.flash_generic_err')) ?>
             </div>
         <?php endif; ?>
 
@@ -161,7 +161,7 @@ $msgErro = [
                     <p class="mb-2 opacity-90 small text-white"><?= htmlspecialchars($usuario['email']) ?></p>
                     <div class="d-flex flex-wrap gap-2">
                         <?php if (empty($materiasUsuario)): ?>
-                            <span class="badge bg-light text-dark">Nenhuma matéria vinculada ainda</span>
+                            <span class="badge bg-light text-dark"><?= htmlspecialchars(__('perfil.no_materias')) ?></span>
                         <?php else: ?>
                             <?php foreach ($materiasUsuario as $mat): ?>
                                 <span class="materia-chip"><?= htmlspecialchars($mat['nome'] ?? '') ?></span>
@@ -175,23 +175,23 @@ $msgErro = [
         <div class="row g-4">
             <div class="col-lg-4">
                 <div class="perfil-card shadow-sm p-4 mb-4">
-                    <h2 class="h6 fw-bold mb-3">Resumo</h2>
+                    <h2 class="h6 fw-bold mb-3"><?= htmlspecialchars(__('perfil.summary')) ?></h2>
                     <div class="row g-2">
                         <div class="col-12">
                             <div class="perfil-stat d-flex justify-content-between align-items-center">
-                                <span class="text-muted small">Simulados</span>
+                                <span class="text-muted small"><?= htmlspecialchars(__('perfil.stat_sims')) ?></span>
                                 <span class="fw-bold fs-5 text-primary"><?= (int) $stats['total_simulados'] ?></span>
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="perfil-stat d-flex justify-content-between align-items-center">
-                                <span class="text-muted small">Questões respondidas</span>
+                                <span class="text-muted small"><?= htmlspecialchars(__('perfil.stat_questions')) ?></span>
                                 <span class="fw-bold fs-5 text-primary"><?= number_format((int) $stats['questoes_respondidas'], 0, ',', '.') ?></span>
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="perfil-stat d-flex justify-content-between align-items-center">
-                                <span class="text-muted small">Média geral</span>
+                                <span class="text-muted small"><?= htmlspecialchars(__('perfil.stat_avg')) ?></span>
                                 <span class="fw-bold fs-5 text-primary"><?= htmlspecialchars((string) $stats['aproveitamento_geral']) ?>%</span>
                             </div>
                         </div>
@@ -199,49 +199,44 @@ $msgErro = [
                 </div>
 
                 <div class="perfil-card shadow-sm p-4">
-                    <h2 class="h6 fw-bold mb-3">Aparência</h2>
-                    <div class="d-flex align-items-center justify-content-between gap-3">
-                        <div class="d-flex align-items-center gap-2">
-                            <span class="material-icons text-muted">dark_mode</span>
-                            <span>Modo escuro</span>
-                        </div>
-                        <div class="form-check form-switch m-0">
-                            <input class="form-check-input js-theme-toggle" type="checkbox" aria-label="Modo escuro">
-                        </div>
-                    </div>
-                    <p class="small text-muted mt-3 mb-0">A preferência é salva neste navegador.</p>
+                    <h2 class="h6 fw-bold mb-3"><?= htmlspecialchars(__('perfil.appearance')) ?></h2>
+                    <?php
+                    $theme_mode_toggle_sheet = true;
+                    require __DIR__ . '/includes/theme-mode-toggle.php';
+                    ?>
+                    <p class="small text-muted mt-3 mb-0"><?= htmlspecialchars(__('perfil.preference_note')) ?></p>
                 </div>
             </div>
 
             <div class="col-lg-8">
                 <div class="perfil-card shadow-sm p-4 mb-4">
-                    <h2 class="h6 fw-bold mb-4">Dados da conta</h2>
+                    <h2 class="h6 fw-bold mb-4"><?= htmlspecialchars(__('perfil.account_data')) ?></h2>
                     <form action="<?= htmlspecialchars(app_url('processa-perfil.php')) ?>" method="post" autocomplete="off">
                         <div class="row g-3">
                             <div class="col-md-12">
-                                <label class="form-label small fw-semibold text-muted">Nome completo</label>
+                                <label class="form-label small fw-semibold text-muted"><?= htmlspecialchars(__('perfil.label_name')) ?></label>
                                 <input type="text" class="form-control form-control-lg" name="nome" required
                                     value="<?= htmlspecialchars($usuario['nome']) ?>">
                             </div>
                             <div class="col-md-12">
-                                <label class="form-label small fw-semibold text-muted">E-mail</label>
+                                <label class="form-label small fw-semibold text-muted"><?= htmlspecialchars(__('perfil.label_email')) ?></label>
                                 <input type="email" class="form-control" value="<?= htmlspecialchars($usuario['email']) ?>" readonly disabled>
-                                <div class="form-text">O e-mail não pode ser alterado aqui.</div>
+                                <div class="form-text"><?= htmlspecialchars(__('perfil.email_help')) ?></div>
                             </div>
                         </div>
 
                         <hr class="my-4 opacity-25">
 
-                        <h3 class="h6 fw-bold mb-3">Segurança</h3>
-                        <p class="small text-muted">Para trocar a senha, preencha os dois campos abaixo.</p>
+                        <h3 class="h6 fw-bold mb-3"><?= htmlspecialchars(__('perfil.security')) ?></h3>
+                        <p class="small text-muted"><?= htmlspecialchars(__('perfil.security_hint')) ?></p>
                         <div class="row g-3">
                             <div class="col-md-6">
-                                <label class="form-label small fw-semibold text-muted">Senha atual</label>
+                                <label class="form-label small fw-semibold text-muted"><?= htmlspecialchars(__('perfil.label_cur_pass')) ?></label>
                                 <input type="password" class="form-control" name="senha_atual" placeholder="••••••••" autocomplete="current-password">
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label small fw-semibold text-muted">Nova senha</label>
-                                <input type="password" class="form-control" name="nova_senha" placeholder="Mínimo 8 caracteres" autocomplete="new-password">
+                                <label class="form-label small fw-semibold text-muted"><?= htmlspecialchars(__('perfil.label_new_pass')) ?></label>
+                                <input type="password" class="form-control" name="nova_senha" placeholder="<?= htmlspecialchars(__('perfil.placeholder_new')) ?>" autocomplete="new-password">
                             </div>
                         </div>
 
@@ -250,12 +245,12 @@ $msgErro = [
                                 <a href="<?= htmlspecialchars(app_url('dashboard.php')) ?>"
                                     class="btn btn-outline-secondary btn-lg px-4 rounded-3 d-inline-flex align-items-center justify-content-center gap-2">
                                     <span class="material-icons" style="font-size: 1.15rem;" aria-hidden="true">arrow_back</span>
-                                    Voltar ao painel
+                                    <?= htmlspecialchars(__('perfil.back')) ?>
                                 </a>
                                 <button type="submit"
                                     class="btn btn-primary btn-lg px-4 rounded-3 d-inline-flex align-items-center justify-content-center gap-2 shadow-sm">
                                     <span class="material-icons" style="font-size: 1.15rem;" aria-hidden="true">save</span>
-                                    Salvar alterações
+                                    <?= htmlspecialchars(__('perfil.save')) ?>
                                 </button>
                             </div>
                         </div>
@@ -263,10 +258,10 @@ $msgErro = [
                 </div>
 
                 <div class="perfil-card shadow-sm p-4 border-danger border-opacity-25">
-                    <h2 class="h6 fw-bold mb-2 text-danger">Encerrar sessão</h2>
-                    <p class="small text-muted mb-3">Você precisará entrar novamente para acessar o painel.</p>
+                    <h2 class="h6 fw-bold mb-2 text-danger"><?= htmlspecialchars(__('perfil.logout_section')) ?></h2>
+                    <p class="small text-muted mb-3"><?= htmlspecialchars(__('perfil.logout_hint')) ?></p>
                     <a href="<?= htmlspecialchars(app_url('logout.php')) ?>" class="btn btn-outline-danger w-100 d-inline-flex align-items-center justify-content-center gap-2">
-                        <span class="material-icons fs-6">logout</span> Sair da conta
+                        <span class="material-icons fs-6">logout</span> <?= htmlspecialchars(__('perfil.logout_btn')) ?>
                     </a>
                 </div>
             </div>

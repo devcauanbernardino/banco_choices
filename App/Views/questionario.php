@@ -30,11 +30,11 @@ $progresso = (($indiceAtual + 1) / $totalQuestoes) * 100;
 
 ?>
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="<?= htmlspecialchars(locale_html_lang()) ?>">
 
 <head>
     <meta charset="UTF-8">
-    <title>Simulador | BancoChoices</title>
+    <title><?= htmlspecialchars(__('quiz.page_title')) ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?php require_once __DIR__ . '/../../config/favicon_links.php'; ?>
     <?php require_once __DIR__ . '/includes/theme-head.php'; ?>
@@ -562,17 +562,17 @@ $progresso = (($indiceAtual + 1) / $totalQuestoes) * 100;
                         <img src="<?= htmlspecialchars(public_asset_url('img/logo-bd-transparente.png')) ?>" alt="">
                     </div>
                     <div class="min-w-0">
-                        <div class="quiz-nav-eyebrow">Simulado</div>
+                        <div class="quiz-nav-eyebrow"><?= htmlspecialchars(__('quiz.eyebrow')) ?></div>
                         <div class="quiz-nav-title text-truncate"><?= htmlspecialchars($nome_materia) ?></div>
-                        <div class="quiz-nav-meta"><?= $modo === 'estudo' ? 'Modo estudo · feedback imediato' : 'Modo exame · cronômetro ativo' ?></div>
+                        <div class="quiz-nav-meta"><?= $modo === 'estudo' ? htmlspecialchars(__('quiz.meta_study')) : htmlspecialchars(__('quiz.meta_exam')) ?></div>
                     </div>
                 </div>
                 <div class="d-flex align-items-center gap-2 gap-sm-3 ms-auto">
                     <div class="quiz-theme-pill d-flex">
                         <span class="material-icons" aria-hidden="true">dark_mode</span>
-                        <span class="d-none d-sm-inline small fw-semibold text-muted me-1">Escuro</span>
+                        <span class="d-none d-sm-inline small fw-semibold text-muted me-1"><?= htmlspecialchars(__('quiz.dark')) ?></span>
                         <div class="form-check form-switch m-0">
-                            <input class="form-check-input js-theme-toggle" type="checkbox" id="quizThemeToggle" aria-label="Modo escuro">
+                            <input class="form-check-input js-theme-toggle" type="checkbox" id="quizThemeToggle" aria-label="<?= htmlspecialchars(__('quiz.dark_aria')) ?>">
                         </div>
                     </div>
                     <?php if ($modo === 'exame' && $tempoRestante !== null): ?>
@@ -595,9 +595,9 @@ $progresso = (($indiceAtual + 1) / $totalQuestoes) * 100;
                     <div class="quiz-q-header">
                         <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
                             <span class="badge quiz-badge-q px-3 py-2 rounded-pill">
-                                Questão <?= $indiceAtual + 1 ?> / <?= $totalQuestoes ?>
+                                <?= htmlspecialchars(sprintf(__('quiz.q_num'), (int) ($indiceAtual + 1), (int) $totalQuestoes)) ?>
                             </span>
-                            <span class="small fw-semibold text-muted"><?= round($progresso) ?>% concluído</span>
+                            <span class="small fw-semibold text-muted"><?= htmlspecialchars(sprintf(__('quiz.progress_done'), (string) (int) round($progresso))) ?></span>
                         </div>
                         <div class="progress quiz-progress">
                             <div class="progress-bar quiz-progress-bar" role="progressbar" style="width: <?= $progresso ?>%" aria-valuenow="<?= (int) round($progresso) ?>" aria-valuemin="0" aria-valuemax="100"></div>
@@ -608,7 +608,7 @@ $progresso = (($indiceAtual + 1) / $totalQuestoes) * 100;
                     <form id="formResposta" method="post" action="<?= htmlspecialchars(app_url('processa.php')) ?>">
                         <div class="card-body p-4 p-md-5">
                             <p class="quiz-question-text">
-                                <?= htmlspecialchars($questao->getData()['pergunta'] ?? $questao->getData()['texto'] ?? 'Questão sem texto') ?>
+                                <?= htmlspecialchars($questao->getData()['pergunta'] ?? $questao->getData()['texto'] ?? __('quiz.no_text')) ?>
                             </p>
 
                             <div class="options-list">

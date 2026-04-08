@@ -38,6 +38,12 @@
       btn.setAttribute('aria-pressed', dark ? 'true' : 'false');
       btn.classList.toggle('is-dark', dark);
     });
+    document.querySelectorAll('.js-theme-mode-btn').forEach(function (btn) {
+      var want = btn.getAttribute('data-theme');
+      var pressed = want === theme;
+      btn.setAttribute('aria-pressed', pressed ? 'true' : 'false');
+      btn.classList.toggle('is-active', pressed);
+    });
   }
 
   function initFromStorage() {
@@ -62,6 +68,15 @@
       btn.addEventListener('click', function () {
         var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
         applyTheme(next);
+      });
+    });
+
+    document.querySelectorAll('.js-theme-mode-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var next = btn.getAttribute('data-theme');
+        if (next === 'dark' || next === 'light') {
+          applyTheme(next);
+        }
       });
     });
   });

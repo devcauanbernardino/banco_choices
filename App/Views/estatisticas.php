@@ -32,11 +32,11 @@ $historicoSemanal = $dashboard->getHistoricoSemanal();
 ?>
 
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="<?= htmlspecialchars(locale_html_lang()) ?>">
 
 <head>
     <meta charset="UTF-8">
-    <title>Estatísticas de Estudo | BancoChoices</title>
+    <title><?= htmlspecialchars(__('stats.page_title')) ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?php require_once __DIR__ . '/../../config/favicon_links.php'; ?>
     <?php require_once __DIR__ . '/includes/theme-head.php'; ?>
@@ -94,7 +94,7 @@ $historicoSemanal = $dashboard->getHistoricoSemanal();
     <?php require_once __DIR__ . '/includes/sidebar.php'; ?>
 
     <header class="app-mobile-topbar d-lg-none justify-content-center">
-        <span class="fw-bold">Estatísticas</span>
+        <span class="fw-bold"><?= htmlspecialchars(__('stats.mobile_title')) ?></span>
     </header>
 
     <main class="app-main p-4">
@@ -102,8 +102,8 @@ $historicoSemanal = $dashboard->getHistoricoSemanal();
         <!-- HEADER -->
         <header class="bg-white shadow-sm rounded-3 px-4 py-3 d-flex justify-content-between align-items-center mb-4">
             <div>
-                <h5 class="mb-0 fw-bold">Estatísticas de Evolução</h5>
-                <small class="text-muted">Acompanhe seu progresso detalhado</small>
+                <h5 class="mb-0 fw-bold"><?= htmlspecialchars(__('stats.heading')) ?></h5>
+                <small class="text-muted"><?= htmlspecialchars(__('stats.subhead')) ?></small>
             </div>
         </header>
 
@@ -116,7 +116,7 @@ $historicoSemanal = $dashboard->getHistoricoSemanal();
                             <span class="material-icons">quiz</span>
                         </div>
                         <div>
-                            <small class="text-muted fw-bold text-uppercase" style="font-size: 10px;">Total Respondidas</small>
+                            <small class="text-muted fw-bold text-uppercase" style="font-size: 10px;"><?= htmlspecialchars(__('stats.kpi_total')) ?></small>
                             <h4 class="fw-bold mb-0"><?= number_format($stats['questoes_respondidas'], 0, ',', '.') ?></h4>
                         </div>
                     </div>
@@ -130,7 +130,7 @@ $historicoSemanal = $dashboard->getHistoricoSemanal();
                             <span class="material-icons">trending_up</span>
                         </div>
                         <div>
-                            <small class="text-muted fw-bold text-uppercase" style="font-size: 10px;">Média de Acertos</small>
+                            <small class="text-muted fw-bold text-uppercase" style="font-size: 10px;"><?= htmlspecialchars(__('stats.kpi_avg')) ?></small>
                             <h4 class="fw-bold text-success mb-0"><?= $stats['aproveitamento_geral'] ?>%</h4>
                         </div>
                     </div>
@@ -144,7 +144,7 @@ $historicoSemanal = $dashboard->getHistoricoSemanal();
                             <span class="material-icons">stars</span>
                         </div>
                         <div class="min-w-0 flex-grow-1">
-                            <small class="text-muted fw-bold text-uppercase" style="font-size: 10px;">Melhor Matéria</small>
+                            <small class="text-muted fw-bold text-uppercase" style="font-size: 10px;"><?= htmlspecialchars(__('stats.kpi_best')) ?></small>
                             <h5 class="fw-bold mb-0 text-break"><?= htmlspecialchars($stats['melhor_materia']) ?></h5>
                         </div>
                     </div>
@@ -158,7 +158,7 @@ $historicoSemanal = $dashboard->getHistoricoSemanal();
                             <span class="material-icons">history</span>
                         </div>
                         <div>
-                            <small class="text-muted fw-bold text-uppercase" style="font-size: 10px;">Simulados Feitos</small>
+                            <small class="text-muted fw-bold text-uppercase" style="font-size: 10px;"><?= htmlspecialchars(__('stats.kpi_sims')) ?></small>
                             <h4 class="fw-bold mb-0"><?= $stats['total_simulados'] ?></h4>
                         </div>
                     </div>
@@ -172,7 +172,7 @@ $historicoSemanal = $dashboard->getHistoricoSemanal();
             <div class="col-lg-8">
                 <div class="card shadow-sm h-100">
                     <div class="card-body">
-                        <h6 class="fw-bold mb-4">Evolução de Desempenho (%)</h6>
+                        <h6 class="fw-bold mb-4"><?= htmlspecialchars(__('stats.chart_title')) ?></h6>
                         <canvas id="chartEvolucao" style="max-height: 300px;"></canvas>
                     </div>
                 </div>
@@ -182,10 +182,10 @@ $historicoSemanal = $dashboard->getHistoricoSemanal();
             <div class="col-lg-4">
                 <div class="card shadow-sm h-100">
                     <div class="card-body">
-                        <h6 class="fw-bold mb-4">Desempenho por Matéria</h6>
+                        <h6 class="fw-bold mb-4"><?= htmlspecialchars(__('stats.bar_title')) ?></h6>
 
                         <?php if (empty($materias)): ?>
-                            <p class="text-muted text-center py-5">Nenhum dado disponível.</p>
+                            <p class="text-muted text-center py-5"><?= htmlspecialchars(__('stats.no_data')) ?></p>
                         <?php else: ?>
                             <?php foreach (array_slice($materias, 0, 5) as $m): ?>
                                 <div class="mb-4">
@@ -207,17 +207,17 @@ $historicoSemanal = $dashboard->getHistoricoSemanal();
         <!-- TABELA SEMANAL -->
         <div class="card shadow-sm border-0">
             <div class="card-header bg-white fw-bold py-3">
-                Resumo Semanal
+                <?= htmlspecialchars(__('stats.week_title')) ?>
             </div>
             <div class="table-responsive">
                 <table class="table align-middle mb-0">
                     <thead class="table-light">
                         <tr>
-                            <th>Início da Semana</th>
-                            <th>Questões</th>
-                            <th>Acertos</th>
-                            <th>Aproveitamento</th>
-                            <th class="text-end">Status</th>
+                            <th><?= htmlspecialchars(__('stats.th_week_start')) ?></th>
+                            <th><?= htmlspecialchars(__('stats.th_questions')) ?></th>
+                            <th><?= htmlspecialchars(__('stats.th_hits')) ?></th>
+                            <th><?= htmlspecialchars(__('stats.th_performance')) ?></th>
+                            <th class="text-end"><?= htmlspecialchars(__('stats.th_status')) ?></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -238,7 +238,7 @@ $historicoSemanal = $dashboard->getHistoricoSemanal();
                                 </td>
                                 <td class="text-end">
                                     <span class="badge bg-<?= $aprov >= 70 ? 'success' : 'warning' ?> rounded-pill">
-                                        <?= $aprov >= 70 ? 'Meta Batida' : 'Em Evolução' ?>
+                                        <?= $aprov >= 70 ? htmlspecialchars(__('stats.badge_goal')) : htmlspecialchars(__('stats.badge_evolving')) ?>
                                     </span>
                                 </td>
                             </tr>
@@ -260,7 +260,7 @@ $historicoSemanal = $dashboard->getHistoricoSemanal();
                 data: {
                     labels: <?= json_encode($evolucao['labels']) ?>,
                     datasets: [{
-                        label: 'Aproveitamento (%)',
+                        label: <?= json_encode(__('stats.chart_dataset')) ?>,
                         data: <?= json_encode($evolucao['data']) ?>,
                         borderColor: '#a855f7',
                         backgroundColor: isDark ? 'rgba(168, 85, 247, 0.12)' : 'rgba(106, 3, 146, 0.08)',

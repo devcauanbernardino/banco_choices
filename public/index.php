@@ -8,7 +8,7 @@ require_once __DIR__ . '/../config/public_url.php';
     <meta charset="utf-8" />
     <?php require_once __DIR__ . '/../App/Views/includes/theme-head-public.php'; ?>
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Banco de Choices</title>
+    <title><?= htmlspecialchars(__('index.page_title')) ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="<?= htmlspecialchars(public_asset_url('assets/css/buttons-global.css')) ?>" />
     <link rel="stylesheet" href="<?= htmlspecialchars(public_asset_url('assets/css/public-language-selector.css')) ?>" />
@@ -25,16 +25,182 @@ require_once __DIR__ . '/../config/public_url.php';
             --bs-font-sans-serif: "Inter", system-ui, -apple-system, sans-serif;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             font-family: var(--bs-font-sans-serif);
             background-color: #f8fafc;
             overflow-x: hidden;
         }
 
+        .btn-back-to-top {
+            position: fixed;
+            bottom: 1.25rem;
+            right: 1.25rem;
+            z-index: 1040;
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            box-shadow: 0 4px 16px rgba(106, 3, 146, 0.32);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition:
+                opacity 0.25s ease,
+                visibility 0.25s ease,
+                transform 0.25s ease,
+                box-shadow 0.2s ease,
+                filter 0.2s ease;
+        }
+
+        .btn-back-to-top.is-visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
         .navbar {
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
             background-color: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
+        }
+
+        /* Landing: logo + toggler + CTAs em viewports estreitas */
+        .landing-navbar > .container {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            row-gap: 0.5rem;
+        }
+
+        .landing-navbar .navbar-brand {
+            flex: 1 1 auto;
+            min-width: 0;
+            max-width: calc(100% - 3.75rem);
+            margin-right: 0;
+        }
+
+        .landing-navbar .navbar-brand img {
+            width: auto;
+            max-width: min(200px, 100%);
+            max-height: 48px;
+            height: auto;
+            object-fit: contain;
+        }
+
+        @media (min-width: 992px) {
+            .landing-navbar.navbar-expand-lg .navbar-toggler {
+                display: none !important;
+            }
+
+            .landing-navbar .navbar-brand {
+                max-width: none;
+            }
+
+            .landing-navbar .navbar-brand img {
+                max-height: 56px;
+            }
+        }
+
+        @media (max-width: 991.98px) {
+            .landing-navbar .navbar-toggler.landing-navbar-toggler {
+                flex-shrink: 0;
+                margin-left: auto;
+                padding: 0;
+                width: 3rem;
+                height: 3rem;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                border: 1px solid rgba(106, 3, 146, 0.14);
+                border-radius: 14px;
+                background: linear-gradient(165deg, rgba(106, 3, 146, 0.09) 0%, rgba(106, 3, 146, 0.03) 100%);
+                box-shadow:
+                    0 1px 2px rgba(15, 23, 42, 0.05),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.85);
+                color: var(--bs-primary);
+                transition:
+                    background 0.2s ease,
+                    box-shadow 0.2s ease,
+                    transform 0.18s ease,
+                    border-color 0.2s ease;
+            }
+
+            .landing-navbar .navbar-toggler.landing-navbar-toggler:hover {
+                background: linear-gradient(165deg, rgba(106, 3, 146, 0.14) 0%, rgba(106, 3, 146, 0.06) 100%);
+                border-color: rgba(106, 3, 146, 0.22);
+                box-shadow: 0 6px 18px rgba(106, 3, 146, 0.14);
+                transform: translateY(-1px);
+            }
+
+            .landing-navbar .navbar-toggler.landing-navbar-toggler:focus-visible {
+                outline: 2px solid rgba(106, 3, 146, 0.45);
+                outline-offset: 3px;
+            }
+
+            .landing-navbar .navbar-toggler.landing-navbar-toggler[aria-expanded="true"] {
+                background: rgba(106, 3, 146, 0.12);
+                border-color: rgba(106, 3, 146, 0.28);
+                box-shadow: inset 0 1px 3px rgba(106, 3, 146, 0.12);
+            }
+
+            .landing-navbar-toggler-svg {
+                display: block;
+                width: 1.75rem;
+                height: 1.75rem;
+                flex-shrink: 0;
+            }
+
+            .landing-navbar .navbar-collapse {
+                flex-basis: 100%;
+                width: 100%;
+                border-top: 1px solid rgba(15, 23, 42, 0.08);
+                margin-top: 0.25rem;
+                padding-top: 0.75rem;
+            }
+
+            .landing-navbar .navbar-nav {
+                width: 100%;
+                margin-bottom: 0.5rem !important;
+            }
+
+            .landing-navbar .navbar-nav .nav-link {
+                padding-left: 0;
+                padding-right: 0;
+            }
+
+            .landing-navbar .navbar-actions--landing {
+                width: 100%;
+                justify-content: stretch;
+            }
+
+            .landing-navbar .navbar-actions__inner {
+                width: 100%;
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .landing-navbar .navbar-actions__divider {
+                display: none !important;
+            }
+
+            .landing-navbar .bc-lang-selector {
+                width: 100%;
+            }
+
+            .landing-navbar .btn-navbar-lang,
+            .landing-navbar .btn-nav-login,
+            .landing-navbar .navbar-cta-register {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .landing-navbar .dropdown-menu {
+                width: 100%;
+                min-width: 0;
+            }
         }
 
         .nav-link:hover {
@@ -113,14 +279,15 @@ require_once __DIR__ . '/../config/public_url.php';
             transform: scale(1.02);
         }
 
-        .btn {
+        /* Não aplicar a .btn-primary: senão o texto fica roxo sobre fundo roxo (Bootstrap + buttons-global). */
+        .btn:not(.btn-primary) {
             color: var(--bs-primary);
             border-color: var(--bs-primary);
             padding: 0.75rem 1.5rem;
             font-weight: 600;
         }
 
-        .btn:hover {
+        .btn:not(.btn-primary):hover {
             background-color: var(--bs-primary);
             color: white;
         }
@@ -149,6 +316,53 @@ require_once __DIR__ . '/../config/public_url.php';
             background-color: white;
             border-color: var(--bs-primary);
             color: var(--bs-primary);
+        }
+
+        /*
+         * Voltar ao topo: .btn global aplica padding grande — sem !important o ícone fica descentrado.
+         */
+        .btn.btn-primary.btn-back-to-top {
+            display: inline-flex !important;
+            align-items: center;
+            justify-content: center;
+            padding: 0 !important;
+            margin: 0;
+            line-height: 0;
+            min-width: 3rem;
+            min-height: 3rem;
+            color: #fff;
+            background-color: var(--bs-primary);
+            border-color: var(--bs-primary);
+        }
+
+        .btn.btn-primary.btn-back-to-top svg {
+            display: block;
+            width: 1.35rem;
+            height: 1.35rem;
+            margin: 0;
+            flex-shrink: 0;
+            stroke: #fff;
+        }
+
+        .btn.btn-primary.btn-back-to-top:hover,
+        .btn.btn-primary.btn-back-to-top:focus-visible {
+            color: #fff !important;
+            background-color: var(--bs-primary) !important;
+            border-color: var(--bs-primary) !important;
+            filter: brightness(1.1);
+            box-shadow: 0 8px 28px rgba(106, 3, 146, 0.45);
+            transform: translateY(-2px);
+        }
+
+        .btn.btn-primary.btn-back-to-top:hover svg,
+        .btn.btn-primary.btn-back-to-top:focus-visible svg {
+            stroke: #fff;
+        }
+
+        .btn.btn-primary.btn-back-to-top:active {
+            filter: brightness(0.95);
+            transform: translateY(0) !important;
+            box-shadow: 0 3px 12px rgba(106, 3, 146, 0.35);
         }
 
         .hero-section {
@@ -200,186 +414,123 @@ require_once __DIR__ . '/../config/public_url.php';
         }
 
         .site-footer {
-            position: relative;
-            background: linear-gradient(165deg, #150520 0%, #2d0a42 38%, #1e0b2e 100%);
-            color: #cbd5e1;
-            overflow: hidden;
+            background: #f8fafc;
+            color: #334155;
+            border-top: 1px solid #e2e8f0;
         }
 
-        .site-footer::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, #6a0392, #c084fc, #002147);
-            z-index: 2;
+        .footer-min-logo {
+            display: inline-block;
+            max-height: 44px;
+            width: auto;
+            object-fit: contain;
         }
 
-        .site-footer .footer-glow {
-            position: absolute;
-            width: 480px;
-            height: 480px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(106, 3, 146, 0.35) 0%, transparent 70%);
-            top: -120px;
-            right: -100px;
-            pointer-events: none;
-            z-index: 0;
+        .footer-min-tagline {
+            font-size: 0.9375rem;
+            line-height: 1.65;
+            color: #64748b;
+            max-width: 26rem;
         }
 
-        .site-footer .footer-glow-2 {
-            position: absolute;
-            width: 360px;
-            height: 360px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(0, 33, 71, 0.25) 0%, transparent 70%);
-            bottom: -80px;
-            left: -80px;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .site-footer .container {
-            position: relative;
-            z-index: 1;
-        }
-
-        .footer-heading {
-            font-size: 0.72rem;
-            font-weight: 700;
+        .footer-min-heading {
+            font-size: 0.6875rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
             text-transform: uppercase;
-            letter-spacing: 0.14em;
-            color: rgba(255, 255, 255, 0.5);
-            margin-bottom: 1.1rem;
+            color: #94a3b8;
+            margin-bottom: 0.75rem;
         }
 
-        .footer-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.35rem;
-            color: #e2e8f0;
-            text-decoration: none;
+        .footer-min-link {
+            display: inline-block;
+            padding: 0.2rem 0;
             font-size: 0.9375rem;
             font-weight: 500;
-            padding: 0.2rem 0;
-            transition: color 0.2s ease, transform 0.2s ease;
+            color: #475569;
+            text-decoration: none;
+            transition: color 0.15s ease;
         }
 
-        .footer-link:hover {
-            color: #fff;
-            transform: translateX(4px);
+        .footer-min-link:hover {
+            color: var(--bs-primary);
         }
 
-        .footer-brand-lead {
-            font-size: 0.95rem;
-            line-height: 1.65;
-            color: #94a3b8;
-            max-width: 22rem;
-        }
-
-        .footer-contact-panel {
-            background: rgba(255, 255, 255, 0.07);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        .footer-min-cta {
+            background: #fff;
+            border: 1px solid #e2e8f0;
             border-radius: 1rem;
-            padding: 1.5rem 1.75rem;
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
-        }
-
-        .footer-contact-panel .footer-contact-title {
-            font-size: 1rem;
-            font-weight: 700;
-            color: #fff;
-            margin-bottom: 0.35rem;
-        }
-
-        .footer-contact-panel .footer-contact-sub {
-            font-size: 0.875rem;
-            color: #94a3b8;
-            margin-bottom: 1rem;
-        }
-
-        .footer-btn-outline {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.55rem 1.15rem;
-            border-radius: 999px;
-            font-size: 0.875rem;
-            font-weight: 600;
-            border: 1px solid rgba(255, 255, 255, 0.35);
-            color: #fff;
-            text-decoration: none;
-            transition: background 0.2s ease, border-color 0.2s ease;
-        }
-
-        .footer-btn-outline:hover {
-            background: rgba(255, 255, 255, 0.12);
-            border-color: rgba(255, 255, 255, 0.55);
-            color: #fff;
-        }
-
-        .footer-btn-primary {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.55rem 1.15rem;
-            border-radius: 999px;
-            font-size: 0.875rem;
-            font-weight: 600;
-            background: linear-gradient(135deg, #6a0392, #8b2ec7);
-            color: #fff;
-            text-decoration: none;
-            border: none;
-            box-shadow: 0 4px 16px rgba(106, 3, 146, 0.45);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .footer-btn-primary:hover {
-            color: #fff;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(106, 3, 146, 0.5);
-        }
-
-        .footer-legal-box {
-            background: rgba(0, 0, 0, 0.22);
-            border: 1px solid rgba(255, 255, 255, 0.07);
-            border-radius: 0.875rem;
             padding: 1.35rem 1.5rem;
-            font-size: 0.8125rem;
-            line-height: 1.65;
+        }
+
+        .footer-min-cta-title {
+            font-size: 1.0625rem;
+            font-weight: 700;
+            color: #0f172a;
+            letter-spacing: -0.02em;
+        }
+
+        .footer-min-cta-sub {
+            font-size: 0.875rem;
+            color: #64748b;
+            line-height: 1.55;
+        }
+
+        .footer-min-mail {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--bs-primary);
+            text-decoration: none;
+            white-space: nowrap;
+            border: 1px solid #e2e8f0;
+            background: #fff;
+            border-radius: 0.5rem;
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .footer-min-mail:hover {
+            border-color: rgba(106, 3, 146, 0.25);
+            box-shadow: 0 1px 8px rgba(106, 3, 146, 0.08);
+            text-decoration: none;
+        }
+
+        .footer-min-rule {
+            border-color: #e2e8f0 !important;
+        }
+
+        .footer-min-legal-box {
+            font-size: 0.75rem;
+            line-height: 1.6;
             color: #94a3b8;
         }
 
-        .footer-legal-box p {
-            margin-bottom: 0.85rem;
+        .footer-min-legal-box p {
+            margin-bottom: 0.65rem;
         }
 
-        .footer-legal-box p:last-child {
+        .footer-min-legal-box p:last-child {
             margin-bottom: 0;
         }
 
-        .footer-legal-box strong {
-            color: #cbd5e1;
+        .footer-min-legal-box strong {
+            color: #64748b;
             font-weight: 600;
         }
 
-        .footer-bottom-bar {
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
-            padding-top: 1.75rem;
-            margin-top: 2.5rem;
-        }
-
-        .footer-copyright {
+        .footer-min-bottom {
             font-size: 0.8125rem;
             color: #94a3b8;
         }
 
-        .footer-trust {
-            font-size: 0.78rem;
-            color: rgba(255, 255, 255, 0.35);
-            max-width: 36rem;
+        .footer-min-site {
+            color: #64748b;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.8125rem;
+        }
+
+        .footer-min-site:hover {
+            color: var(--bs-primary);
         }
 
         .container {
@@ -388,14 +539,16 @@ require_once __DIR__ . '/../config/public_url.php';
     </style>
 </head>
 
-<body>
-    <nav class="navbar navbar-expand-lg navbar-light sticky-top py-3">
+<body id="top">
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top py-2 py-lg-3 landing-navbar">
         <div class="container">
-            <a class="navbar-brand d-flex align-items-center fw-bold text-primary" href="index.php">
-                <img src="<?= htmlspecialchars(public_asset_url('img/logo-bd-transparente.png')) ?>" alt="Banco de Choices" style="width: 200px; height: auto; max-height: 56px; object-fit: contain;" />
+            <a class="navbar-brand d-flex align-items-center fw-bold text-primary" href="#top" aria-label="<?= htmlspecialchars(__('index.back_to_top')) ?>">
+                <img src="<?= htmlspecialchars(public_asset_url('img/logo-bd-transparente.png')) ?>" alt="Banco de Choices" width="200" height="56" decoding="async" />
             </a>
-            <button class="navbar-toggler" data-bs-target="#navbarNav" data-bs-toggle="collapse" type="button">
-                <span class="navbar-toggler-icon"></span>
+            <button class="navbar-toggler landing-navbar-toggler" type="button" data-bs-target="#navbarNav" data-bs-toggle="collapse" aria-controls="navbarNav" aria-expanded="false" aria-label="<?= htmlspecialchars(__('index.nav.menu_aria')) ?>">
+                <svg class="landing-navbar-toggler-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M5 8h14M5 12h14M5 16h14" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" />
+                </svg>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto me-lg-4">
@@ -626,90 +779,100 @@ require_once __DIR__ . '/../config/public_url.php';
         </div>
     </section>
 
-    <footer class="site-footer pt-5 pb-4">
-        <div class="footer-glow" aria-hidden="true"></div>
-        <div class="footer-glow-2" aria-hidden="true"></div>
-        <div class="container pt-4 pb-2">
-            <div class="row g-4 g-lg-5 justify-content-between">
-                <div class="col-lg-4 col-md-6">
-                    <a class="d-inline-flex align-items-center mb-3 text-decoration-none" href="index.php">
-                        <img src="<?= htmlspecialchars(public_asset_url('img/logo-bd-transparente.png')) ?>" alt="Banco de Choices" style="width: 168px; height: auto; max-height: 56px; object-fit: contain;" />
+    <footer class="site-footer">
+        <div class="container py-5">
+            <div class="row g-4 g-lg-5 align-items-start">
+                <div class="col-lg-5">
+                    <a class="d-inline-block mb-3" href="#top" aria-label="<?= htmlspecialchars(__('index.back_to_top')) ?>">
+                        <img class="footer-min-logo" src="<?= htmlspecialchars(public_asset_url('img/logo-bd-transparente.png')) ?>" alt="Banco de Choices" width="180" height="48" decoding="async" />
                     </a>
-                    <p class="footer-brand-lead mb-4">
+                    <p class="footer-min-tagline mb-0">
                         <?= htmlspecialchars(__('index.footer.brand')) ?>
                     </p>
                 </div>
-
-                <div class="col-6 col-md-3 col-lg-2">
-                    <p class="footer-heading mb-0"><?= htmlspecialchars(__('index.footer.platform')) ?></p>
+                <div class="col-6 col-md-4 col-lg-2">
+                    <p class="footer-min-heading mb-0"><?= htmlspecialchars(__('index.footer.platform')) ?></p>
                     <ul class="list-unstyled mt-3 mb-0">
-                        <li class="mb-2"><a class="footer-link" href="login.php"><?= htmlspecialchars(__('index.footer.f1')) ?></a></li>
-                        <li class="mb-2"><a class="footer-link" href="login.php"><?= htmlspecialchars(__('index.footer.f2')) ?></a></li>
-                        <li class="mb-2"><a class="footer-link" href="#materias"><?= htmlspecialchars(__('index.footer.f3')) ?></a></li>
+                        <li><a class="footer-min-link" href="login.php"><?= htmlspecialchars(__('index.footer.f1')) ?></a></li>
+                        <li><a class="footer-min-link" href="login.php"><?= htmlspecialchars(__('index.footer.f2')) ?></a></li>
+                        <li><a class="footer-min-link" href="#materias"><?= htmlspecialchars(__('index.footer.f3')) ?></a></li>
                     </ul>
                 </div>
-
-                <div class="col-6 col-md-3 col-lg-2">
-                    <p class="footer-heading mb-0"><?= htmlspecialchars(__('index.footer.support')) ?></p>
+                <div class="col-6 col-md-4 col-lg-2">
+                    <p class="footer-min-heading mb-0"><?= htmlspecialchars(__('index.footer.support')) ?></p>
                     <ul class="list-unstyled mt-3 mb-0">
-                        <li class="mb-2"><a class="footer-link" href="login.php"><?= htmlspecialchars(__('index.footer.s1')) ?></a></li>
-                        <li class="mb-2"><a class="footer-link" href="#contacto"><?= htmlspecialchars(__('index.footer.s2')) ?></a></li>
-                        <li class="mb-2"><a class="footer-link" href="#caracteristicas"><?= htmlspecialchars(__('index.footer.s3')) ?></a></li>
+                        <li><a class="footer-min-link" href="login.php"><?= htmlspecialchars(__('index.footer.s1')) ?></a></li>
+                        <li><a class="footer-min-link" href="#contacto"><?= htmlspecialchars(__('index.footer.s2')) ?></a></li>
+                        <li><a class="footer-min-link" href="#caracteristicas"><?= htmlspecialchars(__('index.footer.s3')) ?></a></li>
                     </ul>
                 </div>
-
-                <div class="col-md-6 col-lg-3">
-                    <p class="footer-heading mb-0"><?= htmlspecialchars(__('index.footer.legal')) ?></p>
+                <div class="col-md-4 col-lg-3">
+                    <p class="footer-min-heading mb-0"><?= htmlspecialchars(__('index.footer.legal')) ?></p>
                     <ul class="list-unstyled mt-3 mb-0">
-                        <li class="mb-2"><a class="footer-link" href="#terminos"><?= htmlspecialchars(__('index.footer.l1')) ?></a></li>
-                        <li class="mb-2"><a class="footer-link" href="#privacidad"><?= htmlspecialchars(__('index.footer.l2')) ?></a></li>
-                        <li class="mb-2"><a class="footer-link" href="#lgpd"><?= htmlspecialchars(__('index.footer.l3')) ?></a></li>
-                        <li class="mb-2"><a class="footer-link" href="#cookies"><?= htmlspecialchars(__('index.footer.l4')) ?></a></li>
+                        <li><a class="footer-min-link" href="#terminos"><?= htmlspecialchars(__('index.footer.l1')) ?></a></li>
+                        <li><a class="footer-min-link" href="#privacidad"><?= htmlspecialchars(__('index.footer.l2')) ?></a></li>
+                        <li><a class="footer-min-link" href="#lgpd"><?= htmlspecialchars(__('index.footer.l3')) ?></a></li>
+                        <li><a class="footer-min-link" href="#cookies"><?= htmlspecialchars(__('index.footer.l4')) ?></a></li>
                     </ul>
                 </div>
             </div>
 
-            <div class="footer-contact-panel mt-4 mt-lg-5" id="contacto">
-                <div class="row align-items-center gy-3">
+            <div class="footer-min-cta mt-5" id="contacto">
+                <div class="row align-items-center g-4">
                     <div class="col-lg-7">
-                        <p class="footer-contact-title mb-1"><?= htmlspecialchars(__('index.footer.cta_title')) ?></p>
-                        <p class="footer-contact-sub mb-0"><?= htmlspecialchars(__('index.footer.cta_sub')) ?></p>
+                        <p class="footer-min-cta-title mb-1"><?= htmlspecialchars(__('index.footer.cta_title')) ?></p>
+                        <p class="footer-min-cta-sub mb-0"><?= htmlspecialchars(__('index.footer.cta_sub')) ?></p>
                     </div>
                     <div class="col-lg-5">
-                        <div class="d-flex flex-column flex-sm-row flex-lg-column flex-xl-row gap-2 justify-content-lg-end">
-                            <a class="footer-btn-primary justify-content-center" href="selecionar-materias.php"><?= htmlspecialchars(__('index.footer.cta_btn')) ?></a>
-                            <a class="footer-btn-outline justify-content-center" href="mailto:contato@bancodechoices.com">contato@bancodechoices.com</a>
+                        <div class="d-flex flex-column flex-sm-row flex-wrap align-items-stretch align-items-sm-center gap-2 justify-content-lg-end">
+                            <a class="btn btn-primary rounded-pill px-4 fw-semibold" href="selecionar-materias.php"><?= htmlspecialchars(__('index.footer.cta_btn')) ?></a>
+                            <a class="footer-min-mail d-inline-flex align-items-center justify-content-center px-3 py-2" href="mailto:contato@bancodechoices.com">contato@bancodechoices.com</a>
                         </div>
-                        <p class="small mt-2 mb-0 text-center text-lg-end" style="color: rgba(255,255,255,0.45);">
-                            <a class="text-decoration-none" style="color: rgba(255,255,255,0.65);" href="https://bancodechoices.com" target="_blank" rel="noopener noreferrer">bancodechoices.com</a>
-                        </p>
                     </div>
                 </div>
             </div>
 
-            <div class="footer-legal-box mt-4">
-                <p id="terminos" style="scroll-margin-top: 5rem;"><strong>Términos.</strong> Los servicios de BancodeChoices se ofrecen bajo los términos generales de uso del sitio. El acceso implica la aceptación de estas condiciones.</p>
-                <p id="privacidad" style="scroll-margin-top: 5rem;"><strong>Privacidad.</strong> Tratamos los datos personales conforme a nuestra política de privacidad y la normativa aplicable.</p>
-                <p id="lgpd" style="scroll-margin-top: 5rem;"><strong>LGPD.</strong> Cumplimos con la protección de datos personales (Ley Nº 13.709/2018 y principios equivalentes en la región).</p>
-                <p id="cookies" class="mb-0" style="scroll-margin-top: 5rem;"><strong>Cookies.</strong> Utilizamos cookies necesarias para el funcionamiento del sitio; podés ajustar preferencias en tu navegador.</p>
+            <div class="footer-min-legal-box mt-5 pt-4 border-top footer-min-rule">
+                <p id="terminos" style="scroll-margin-top: 5rem;"><strong><?= htmlspecialchars(__('index.footer.legal_terms_head')) ?></strong> <?= htmlspecialchars(__('index.footer.legal_terms_p')) ?></p>
+                <p id="privacidad" style="scroll-margin-top: 5rem;"><strong><?= htmlspecialchars(__('index.footer.legal_privacy_head')) ?></strong> <?= htmlspecialchars(__('index.footer.legal_privacy_p')) ?></p>
+                <p id="lgpd" style="scroll-margin-top: 5rem;"><strong><?= htmlspecialchars(__('index.footer.legal_lgpd_head')) ?></strong> <?= htmlspecialchars(__('index.footer.legal_lgpd_p')) ?></p>
+                <p id="cookies" class="mb-0" style="scroll-margin-top: 5rem;"><strong><?= htmlspecialchars(__('index.footer.legal_cookies_head')) ?></strong> <?= htmlspecialchars(__('index.footer.legal_cookies_p')) ?></p>
             </div>
 
-            <div class="footer-bottom-bar">
-                <div class="row align-items-center g-3">
-                    <div class="col-md-6">
-                        <p class="footer-copyright mb-0">© <?= (int) date('Y') ?> BancodeChoices. Todos los derechos reservados.</p>
-                    </div>
-                    <div class="col-md-6 text-md-end">
-                        <p class="footer-trust mb-0 ms-md-auto">
-                            Datos personales tratados de forma segura y transparente, únicamente para los fines informados.
-                        </p>
-                    </div>
+            <div class="mt-4 pt-4 border-top footer-min-rule d-flex flex-column flex-md-row gap-3 justify-content-between align-items-start align-items-md-center">
+                <p class="footer-min-bottom mb-0">© <?= (int) date('Y') ?> BancodeChoices. <?= htmlspecialchars(__('index.footer.rights_reserved')) ?></p>
+                <div class="d-flex flex-column flex-sm-row gap-2 gap-sm-4 align-items-start align-items-sm-center text-md-end">
+                    <p class="footer-min-bottom mb-0" style="max-width: 22rem;">
+                        <?= htmlspecialchars(__('index.footer.trust_line')) ?>
+                    </p>
+                    <a class="footer-min-site" href="https://bancodechoices.com" target="_blank" rel="noopener noreferrer">bancodechoices.com</a>
                 </div>
             </div>
         </div>
     </footer>
 
+    <button type="button" class="btn btn-primary btn-back-to-top" id="backToTop" aria-label="<?= htmlspecialchars(__('index.back_to_top')) ?>" title="<?= htmlspecialchars(__('index.back_to_top')) ?>">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M18 15l-6-6-6 6" />
+        </svg>
+    </button>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        (function () {
+            var btn = document.getElementById('backToTop');
+            if (!btn) return;
+            var threshold = 400;
+            function updateVisibility() {
+                btn.classList.toggle('is-visible', window.scrollY > threshold);
+            }
+            window.addEventListener('scroll', updateVisibility, { passive: true });
+            updateVisibility();
+            btn.addEventListener('click', function () {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        })();
+    </script>
 
 </body>
 
