@@ -24,11 +24,6 @@ $main_links = sidebar_nav_links();
     <?php endforeach; ?>
 </nav>
 
-<div class="app-sidebar-section">
-    <span class="app-sidebar-section-label"><?= htmlspecialchars(__('sidebar.appearance')) ?></span>
-    <?php require __DIR__ . '/theme-mode-toggle.php'; ?>
-</div>
-
 <div class="app-sidebar-footer">
     <span class="app-sidebar-section-label"><?= htmlspecialchars(__('sidebar.account')) ?></span>
     <a class="app-sidebar-link<?= $pagina_atual === 'perfil.php' ? ' active' : '' ?>" href="<?= htmlspecialchars(app_url('perfil.php')) ?>"

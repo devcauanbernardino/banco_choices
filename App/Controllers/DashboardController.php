@@ -202,7 +202,8 @@ class DashboardController
 
         foreach ($resultados as $row) {
             $labels[] = date('d/m', strtotime($row['data']));
-            $data[] = round($row['desempenho'], 1);
+            $raw = $row['desempenho'] ?? null;
+            $data[] = round((float) ($raw !== null && $raw !== '' ? $raw : 0), 1);
         }
 
         return ['labels' => $labels, 'data' => $data];

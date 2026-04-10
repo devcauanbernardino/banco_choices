@@ -141,11 +141,19 @@ $materiasCompradas = $_SESSION['usuario']['materias'] ?? [];
 
     <?php require_once __DIR__ . '/includes/sidebar.php'; ?>
 
-    <header class="app-mobile-topbar d-lg-none justify-content-center">
-        <span class="fw-bold"><?= htmlspecialchars(__('bank.mobile_title')) ?></span>
-    </header>
+    <?php
+    $app_toolbar_mode = 'mobile';
+    $app_toolbar_title = (string) __('bank.mobile_title');
+    require __DIR__ . '/includes/app-private-toolbar.php';
+    unset($app_toolbar_mode);
+    ?>
 
     <main class="app-main p-4">
+        <?php
+        $app_toolbar_mode = 'desktop';
+        require __DIR__ . '/includes/app-private-toolbar.php';
+        unset($app_toolbar_mode);
+        ?>
 
         <div class="container py-4" style="max-width: 750px;">
 

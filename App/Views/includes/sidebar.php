@@ -52,7 +52,7 @@ $logoUrl = public_asset_url('img/logo-bd-transparente.png');
     </div>
 </aside>
 
-<!-- Painel mobile: tema + sair -->
+<!-- Painel mobile: idioma + sair -->
 <div class="offcanvas offcanvas-bottom app-offcanvas-more" tabindex="-1" id="sidebarMobile"
     aria-labelledby="sidebarMobileLabel">
     <div class="app-offcanvas-more-handle" aria-hidden="true"></div>
@@ -64,13 +64,6 @@ $logoUrl = public_asset_url('img/logo-bd-transparente.png');
     </div>
     <div class="offcanvas-body pb-4">
         <div class="app-sidebar-section px-0">
-            <span class="app-sidebar-section-label"><?= htmlspecialchars(__('sidebar.appearance')) ?></span>
-            <?php
-            $theme_mode_toggle_sheet = true;
-            require __DIR__ . '/theme-mode-toggle.php';
-            ?>
-        </div>
-        <div class="app-sidebar-section px-0 mt-3">
             <span class="app-sidebar-section-label"><?= htmlspecialchars(__('lang.selector_label')) ?></span>
             <div class="mt-2">
                 <?php

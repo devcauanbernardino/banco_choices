@@ -69,17 +69,6 @@ $materias = $objUsuario->buscarMateriasDoUsuario($usuario['id']);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        .content {
-            transition: 0.3s;
-        }
-
-        /* Header Moderno */
-        header {
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-        }
-
         /* Cards Estilizados */
         .card {
             border: none;
@@ -143,24 +132,6 @@ $materias = $objUsuario->buscarMateriasDoUsuario($usuario['id']);
             padding: 15px 10px;
         }
 
-        .dashboard-header-logo-wrap {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 44px;
-            height: 44px;
-            border-radius: 12px;
-            background: #fff;
-            padding: 6px;
-            box-shadow: 0 2px 10px rgba(106, 3, 146, 0.14);
-        }
-
-        .dashboard-header-logo-wrap img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-
     </style>
 </head>
 
@@ -168,26 +139,21 @@ $materias = $objUsuario->buscarMateriasDoUsuario($usuario['id']);
 
     <?php require_once __DIR__ . '/includes/sidebar.php'; ?>
 
-    <div class="content">
-        <header class="px-4 py-3 d-flex justify-content-between align-items-center sticky-top border-bottom bg-white">
-            <a class="d-lg-none text-decoration-none" href="<?= htmlspecialchars(app_url('dashboard.php')) ?>"
-                aria-label="<?= htmlspecialchars(__('dashboard.header.aria')) ?>">
-                <span class="dashboard-header-logo-wrap">
-                    <img src="<?= htmlspecialchars(public_asset_url('img/logo-bd-transparente.png')) ?>" alt="" width="32" height="32">
-                </span>
-            </a>
+    <?php
+    $app_toolbar_mode = 'mobile';
+    $app_toolbar_title = (string) __('nav.dashboard');
+    require __DIR__ . '/includes/app-private-toolbar.php';
+    unset($app_toolbar_mode);
+    ?>
 
-            <div class="d-flex gap-3 align-items-center ms-auto">
-                <a href="<?= htmlspecialchars(app_url('perfil.php')) ?>">
-                    <img src="https://ui-avatars.com/api/?name=<?= urlencode($usuario['nome']) ?>&background=6a0392&color=fff"
-                        class="rounded-circle" style="width: 35px;" alt="avatar">
-                </a>
-            </div>
-        </header>
-
-        <main class="p-4">
+    <main class="app-main p-4">
+        <?php
+        $app_toolbar_mode = 'desktop';
+        require __DIR__ . '/includes/app-private-toolbar.php';
+        unset($app_toolbar_mode);
+        ?>
             <!-- Boas-vindas -->
-            <div class="mb-4 d-flex justify-content-between align-items-end">
+            <div class="app-page-header d-flex justify-content-between align-items-end flex-wrap gap-3">
                 <div>
                     <h2 class="fw-bold mb-1"><?= htmlspecialchars(sprintf(__('dashboard.greeting'), explode(' ', $usuario['nome'])[0])) ?></h2>
                     <p class="text-muted mb-0"><?= htmlspecialchars(__('dashboard.greeting_sub')) ?></p>
@@ -315,8 +281,7 @@ $materias = $objUsuario->buscarMateriasDoUsuario($usuario['id']);
                     </div>
                 </div>
             </div>
-        </main>
-    </div>
+    </main>
     <?php require_once __DIR__ . '/includes/private-footer-scripts.php'; ?>
 </body>
 

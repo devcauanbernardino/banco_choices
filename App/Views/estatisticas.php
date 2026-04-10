@@ -45,9 +45,6 @@ $historicoSemanal = $dashboard->getHistoricoSemanal();
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
     <link rel="stylesheet" href="<?= htmlspecialchars(public_asset_url('assets/css/sidebar.css')) ?>">
 
     <style>
@@ -86,6 +83,17 @@ $historicoSemanal = $dashboard->getHistoricoSemanal();
             border-radius: 10px;
         }
 
+        /* Altura fixa evita loop de resize do Chart.js (maintainAspectRatio: false) */
+        .stats-chart-wrap {
+            height: 300px;
+            position: relative;
+            width: 100%;
+        }
+
+        .stats-chart-wrap canvas {
+            max-height: none;
+        }
+
     </style>
 </head>
 
@@ -93,14 +101,22 @@ $historicoSemanal = $dashboard->getHistoricoSemanal();
 
     <?php require_once __DIR__ . '/includes/sidebar.php'; ?>
 
-    <header class="app-mobile-topbar d-lg-none justify-content-center">
-        <span class="fw-bold"><?= htmlspecialchars(__('stats.mobile_title')) ?></span>
-    </header>
+    <?php
+    $app_toolbar_mode = 'mobile';
+    $app_toolbar_title = (string) __('stats.mobile_title');
+    require __DIR__ . '/includes/app-private-toolbar.php';
+    unset($app_toolbar_mode);
+    ?>
 
     <main class="app-main p-4">
+        <?php
+        $app_toolbar_mode = 'desktop';
+        require __DIR__ . '/includes/app-private-toolbar.php';
+        unset($app_toolbar_mode);
+        ?>
 
         <!-- HEADER -->
-        <header class="bg-white shadow-sm rounded-3 px-4 py-3 d-flex justify-content-between align-items-center mb-4">
+        <header class="app-page-header d-flex justify-content-between align-items-center flex-wrap gap-3">
             <div>
                 <h5 class="mb-0 fw-bold"><?= htmlspecialchars(__('stats.heading')) ?></h5>
                 <small class="text-muted"><?= htmlspecialchars(__('stats.subhead')) ?></small>
@@ -173,7 +189,9 @@ $historicoSemanal = $dashboard->getHistoricoSemanal();
                 <div class="card shadow-sm h-100">
                     <div class="card-body">
                         <h6 class="fw-bold mb-4"><?= htmlspecialchars(__('stats.chart_title')) ?></h6>
-                        <canvas id="chartEvolucao" style="max-height: 300px;"></canvas>
+                        <div class="stats-chart-wrap">
+                            <canvas id="chartEvolucao"></canvas>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -222,7 +240,10 @@ $historicoSemanal = $dashboard->getHistoricoSemanal();
                     </thead>
                     <tbody>
                         <?php foreach ($historicoSemanal as $sem):
-                            $aprov = round(($sem['acertos'] / $sem['total']) * 100, 1);
+                            $semTotal = (int) ($sem['total'] ?? 0);
+                            $aprov = $semTotal > 0
+                                ? round(((int) ($sem['acertos'] ?? 0) / $semTotal) * 100, 1)
+                                : 0.0;
                         ?>
                             <tr>
                                 <td class="fw-bold"><?= date('d/m/Y', strtotime($sem['inicio_semana'])) ?></td>
@@ -249,12 +270,17 @@ $historicoSemanal = $dashboard->getHistoricoSemanal();
         </div>
     </main>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
     <script>
         (function () {
-            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-            const tickColor = isDark ? '#9ca3af' : '#6b7280';
-            const gridColor = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)';
-            const ctx = document.getElementById('chartEvolucao').getContext('2d');
+            var canvas = document.getElementById('chartEvolucao');
+            if (!canvas || typeof Chart === 'undefined') {
+                return;
+            }
+            var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            var tickColor = isDark ? '#9ca3af' : '#6b7280';
+            var gridColor = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)';
+            var ctx = canvas.getContext('2d');
             new Chart(ctx, {
                 type: 'line',
                 data: {
@@ -274,6 +300,7 @@ $historicoSemanal = $dashboard->getHistoricoSemanal();
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
+                    animation: { duration: 400 },
                     plugins: {
                         legend: {
                             display: false
@@ -285,13 +312,13 @@ $historicoSemanal = $dashboard->getHistoricoSemanal();
                             max: 100,
                             ticks: { color: tickColor },
                             grid: isDark
-                                ? { color: gridColor }
+                                ? { color: gridColor, borderDash: [] }
                                 : { display: false }
                         },
                         x: {
                             ticks: { color: tickColor },
                             grid: isDark
-                                ? { color: gridColor }
+                                ? { color: gridColor, borderDash: [] }
                                 : { display: false }
                         }
                     }

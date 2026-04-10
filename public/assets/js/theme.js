@@ -38,11 +38,15 @@
       btn.setAttribute('aria-pressed', dark ? 'true' : 'false');
       btn.classList.toggle('is-dark', dark);
     });
-    document.querySelectorAll('.js-theme-mode-btn').forEach(function (btn) {
-      var want = btn.getAttribute('data-theme');
-      var pressed = want === theme;
-      btn.setAttribute('aria-pressed', pressed ? 'true' : 'false');
-      btn.classList.toggle('is-active', pressed);
+    document.querySelectorAll('.js-theme-single-toggle').forEach(function (btn) {
+      var icon = btn.querySelector('.js-theme-single-icon');
+      var toDark = btn.getAttribute('data-aria-to-dark') || '';
+      var toLight = btn.getAttribute('data-aria-to-light') || '';
+      if (icon) {
+        icon.textContent = dark ? 'dark_mode' : 'light_mode';
+      }
+      btn.setAttribute('aria-pressed', dark ? 'true' : 'false');
+      btn.setAttribute('aria-label', dark ? toLight : toDark);
     });
   }
 
@@ -55,7 +59,7 @@
     }
   }
 
-  document.addEventListener('DOMContentLoaded', function () {
+  function bindThemeUi() {
     initFromStorage();
 
     document.querySelectorAll('.js-theme-toggle').forEach(function (el) {
@@ -65,19 +69,25 @@
     });
 
     document.querySelectorAll('.js-theme-toggle-btn').forEach(function (btn) {
-      btn.addEventListener('click', function () {
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
         var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
         applyTheme(next);
       });
     });
 
-    document.querySelectorAll('.js-theme-mode-btn').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        var next = btn.getAttribute('data-theme');
-        if (next === 'dark' || next === 'light') {
-          applyTheme(next);
-        }
+    document.querySelectorAll('.js-theme-single-toggle').forEach(function (btn) {
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        var cur = document.documentElement.getAttribute('data-theme') || 'light';
+        applyTheme(cur === 'dark' ? 'light' : 'dark');
       });
     });
-  });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bindThemeUi);
+  } else {
+    bindThemeUi();
+  }
 })();

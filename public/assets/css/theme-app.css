@@ -301,16 +301,17 @@
   color: #fff !important;
 }
 
-[data-theme="dark"] .app-sidebar-theme-row--sheet .app-sidebar-theme-seg,
-[data-bs-theme="dark"] .app-sidebar-theme-row--sheet .app-sidebar-theme-seg {
+[data-theme="dark"] .app-sidebar-theme-row--sheet .app-theme-toggle-single--wide,
+[data-bs-theme="dark"] .app-sidebar-theme-row--sheet .app-theme-toggle-single--wide {
   background: var(--app-surface-2);
   border-color: var(--app-border);
+  color: var(--app-muted);
 }
 
-[data-theme="dark"] .app-sidebar-theme-row--sheet .app-sidebar-theme-opt.is-active,
-[data-bs-theme="dark"] .app-sidebar-theme-row--sheet .app-sidebar-theme-opt.is-active {
-  background: rgba(106, 3, 146, 0.28);
+[data-theme="dark"] .app-sidebar-theme-row--sheet .app-theme-toggle-single--wide:hover,
+[data-bs-theme="dark"] .app-sidebar-theme-row--sheet .app-theme-toggle-single--wide:hover {
   color: #e9d5ff;
+  background: rgba(124, 58, 237, 0.18);
 }
 
 [data-theme="dark"] .modal-content {
@@ -343,37 +344,40 @@
   border-color: var(--app-border) !important;
 }
 
-/* ——— Dashboard (.content) ——— */
-[data-theme="dark"] .content > header {
-  background: rgba(20, 20, 26, 0.92) !important;
-  backdrop-filter: blur(12px);
-  border-color: var(--app-border) !important;
-}
-
-[data-theme="dark"] .content .table thead th {
-  color: var(--app-muted) !important;
-  border-bottom-color: var(--app-border) !important;
-}
-
-[data-theme="dark"] .content .table tbody td {
-  border-bottom-color: var(--app-border) !important;
-}
-
-[data-theme="dark"] .content .table .text-dark {
-  color: var(--app-text) !important;
-}
-
-[data-theme="dark"] .content .card:hover {
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.4) !important;
-}
-
-/* ——— Simulados ——— */
-[data-theme="dark"] .page-header {
+/* ——— Dashboard / páginas com .app-main ——— */
+[data-theme="dark"] .app-page-header {
   background: var(--app-surface) !important;
+  border-color: var(--app-border);
   color: var(--app-text);
   box-shadow: var(--app-shadow);
 }
 
+[data-theme="dark"] .app-page-header .text-dark {
+  color: var(--app-text) !important;
+}
+
+[data-theme="dark"] .content .table thead th,
+[data-theme="dark"] .app-main .table thead th {
+  color: var(--app-muted) !important;
+  border-bottom-color: var(--app-border) !important;
+}
+
+[data-theme="dark"] .content .table tbody td,
+[data-theme="dark"] .app-main .table tbody td {
+  border-bottom-color: var(--app-border) !important;
+}
+
+[data-theme="dark"] .content .table .text-dark,
+[data-theme="dark"] .app-main .table .text-dark {
+  color: var(--app-text) !important;
+}
+
+[data-theme="dark"] .content .card:hover,
+[data-theme="dark"] .app-main .card:hover {
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* ——— Simulados ——— */
 [data-theme="dark"] .page-header h3.text-dark {
   color: var(--app-text) !important;
 }

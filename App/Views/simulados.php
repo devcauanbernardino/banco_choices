@@ -61,13 +61,10 @@ $stats = $dashboard->getStats();
             font-family: 'Segoe UI', sans-serif;
         }
 
-        /* Cabeçalho da Página */
-        .page-header {
-            background: white;
-            padding: 2rem;
-            border-radius: var(--card-radius);
+        /* Cabeçalho da página: superfície em sidebar.css (.app-page-header) */
+        .page-header.app-page-header {
+            padding: 1.5rem 1.75rem;
             margin-bottom: 2rem;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
         }
 
         /* Filtros */
@@ -160,7 +157,7 @@ $stats = $dashboard->getStats();
                 padding-top: 1rem !important;
             }
 
-            .page-header {
+            .page-header.app-page-header {
                 flex-direction: column;
                 align-items: stretch !important;
                 gap: 1rem;
@@ -168,7 +165,7 @@ $stats = $dashboard->getStats();
                 margin-bottom: 1.25rem !important;
             }
 
-            .page-header .btn {
+            .page-header.app-page-header .btn {
                 width: 100%;
             }
 
@@ -188,14 +185,22 @@ $stats = $dashboard->getStats();
 
     <?php require_once __DIR__ . '/includes/sidebar.php'; ?>
 
-    <header class="app-mobile-topbar d-lg-none justify-content-center">
-        <span class="fw-bold"><?= htmlspecialchars(__('simulados.mobile_title')) ?></span>
-    </header>
+    <?php
+    $app_toolbar_mode = 'mobile';
+    $app_toolbar_title = (string) __('simulados.mobile_title');
+    require __DIR__ . '/includes/app-private-toolbar.php';
+    unset($app_toolbar_mode);
+    ?>
 
     <main class="app-main p-4 simulados-main">
-        
+        <?php
+        $app_toolbar_mode = 'desktop';
+        require __DIR__ . '/includes/app-private-toolbar.php';
+        unset($app_toolbar_mode);
+        ?>
+
         <!-- Cabeçalho Dinâmico -->
-        <div class="page-header d-flex justify-content-between align-items-center">
+        <div class="app-page-header page-header d-flex justify-content-between align-items-center flex-wrap gap-3">
             <div>
                 <h3 class="fw-bold mb-1 text-dark"><?= htmlspecialchars(__('simulados.heading')) ?></h3>
                 <p class="text-muted mb-0"><?= htmlspecialchars(__('simulados.subtitle_before')) ?><strong><?= (int) $stats['total_simulados'] ?></strong><?= htmlspecialchars(__('simulados.subtitle_after')) ?></p>
