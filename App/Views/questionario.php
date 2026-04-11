@@ -606,6 +606,7 @@ $progresso = (($indiceAtual + 1) / $totalQuestoes) * 100;
 
                     <!-- FORMULÁRIO: Envia a resposta para o ProcessaController toda vez que o rádio muda -->
                     <form id="formResposta" method="post" action="<?= htmlspecialchars(app_url('processa.php')) ?>">
+                        <?= csrf_field() ?>
                         <div class="card-body p-4 p-md-5">
                             <p class="quiz-question-text">
                                 <?= htmlspecialchars($questao->getData()['pergunta'] ?? $questao->getData()['texto'] ?? __('quiz.no_text')) ?>
@@ -663,12 +664,14 @@ $progresso = (($indiceAtual + 1) / $totalQuestoes) * 100;
 
                     <div class="quiz-card-footer d-flex flex-column flex-sm-row justify-content-between align-items-stretch align-items-sm-center gap-3">
                         <form action="<?= htmlspecialchars(app_url('processa.php')) ?>" method="post" class="order-2 order-sm-1">
+                            <?= csrf_field() ?>
                             <button type="submit" name="voltar" value="1" class="btn btn-outline-primary btn-lg py-3 fw-bold px-4 rounded-3 d-inline-flex align-items-center justify-content-center gap-2 w-100 w-sm-auto" <?= $indiceAtual == 0 ? 'disabled' : '' ?>>
                                 <span class="material-icons">arrow_back</span> Anterior
                             </button>
                         </form>
 
                         <form method="post" action="<?= htmlspecialchars(app_url('processa.php')) ?>" class="order-1 order-sm-2">
+                            <?= csrf_field() ?>
                             <button type="submit" class="btn btn-primary btn-lg py-3 fw-bold px-4 rounded-3 d-inline-flex align-items-center justify-content-center gap-2 w-100 w-sm-auto" name="avancar" value="1">
                                 <?= ($indiceAtual + 1 === $totalQuestoes) ? 'Finalizar simulado' : 'Próxima questão' ?>
                                 <span class="material-icons">arrow_forward</span>
@@ -688,6 +691,7 @@ $progresso = (($indiceAtual + 1) / $totalQuestoes) * 100;
 
                     <div class="map-container">
                         <form method="post" action="<?= htmlspecialchars(app_url('processa.php')) ?>">
+                            <?= csrf_field() ?>
                             <div class="question-map-grid">
                                 <?php foreach ($todasQuestoes as $i => $q):
                                     $classeBotao = 'map-btn-pending';

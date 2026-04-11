@@ -99,8 +99,9 @@ try {
         exit;
     }
 
-    if (session_status() === PHP_SESSION_NONE) {
-        session_start();
+    if (!csrf_validate(isset($_POST['_csrf']) ? (string) $_POST['_csrf'] : null)) {
+        header('Location: ' . app_url('bancoperguntas.php'));
+        exit;
     }
 
     if (!isset($_SESSION['usuario']['id'])) {

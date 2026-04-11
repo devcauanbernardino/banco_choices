@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 require_once __DIR__ . '/../../config/public_url.php';
 
 /**
@@ -27,6 +29,10 @@ class PerfilController
 
         if (!$usuario_id) {
             $this->redirect('login.php');
+        }
+
+        if (!csrf_validate(isset($postData['_csrf']) ? (string) $postData['_csrf'] : null)) {
+            $this->redirect('perfil.php?erro=falha_ao_salvar');
         }
 
         $nome = filter_var($postData['nome'] ?? '', FILTER_SANITIZE_SPECIAL_CHARS);

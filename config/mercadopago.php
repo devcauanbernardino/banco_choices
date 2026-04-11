@@ -3,6 +3,45 @@
 require_once __DIR__ . '/bootstrap_env.php';
 
 /**
+ * URL pública absoluta (scheme + host + path até public/) para back_urls e webhook.
+ * Se SITE_URL tiver só o host (ex.: http://localhost) e a app estiver em subpasta,
+ * acrescenta app_base_path() para não dar 404 ao voltar do Mercado Pago.
+ */
+function mercadopago_site_url(): string
+{
+    require_once __DIR__ . '/public_url.php';
+
+    $raw = rtrim((string) (getenv('SITE_URL') ?: ''), '/');
+    $appPath = app_base_path();
+
+    if ($raw === '') {
+        if (PHP_SAPI !== 'cli' && !empty($_SERVER['HTTP_HOST'])) {
+            $https = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off';
+            $scheme = $https ? 'https' : 'http';
+            $host = (string) $_SERVER['HTTP_HOST'];
+
+            return rtrim($scheme . '://' . $host . ($appPath === '' ? '' : $appPath), '/');
+        }
+
+        return rtrim('https://bancodechoices.com', '/');
+    }
+
+    $parts = parse_url($raw);
+    if ($parts === false || !isset($parts['scheme'], $parts['host'])) {
+        return $raw;
+    }
+
+    $envPath = isset($parts['path']) ? rtrim((string) $parts['path'], '/') : '';
+    if ($appPath !== '' && ($envPath === '' || $envPath === '/')) {
+        $port = isset($parts['port']) ? ':' . (int) $parts['port'] : '';
+
+        return rtrim($parts['scheme'] . '://' . $parts['host'] . $port . $appPath, '/');
+    }
+
+    return $raw;
+}
+
+/**
  * Configuração centralizada Mercado Pago (credenciais apenas via ambiente).
  *
  * MP_ACCESS_TOKEN — obrigatório para API / SDK
@@ -29,7 +68,7 @@ function mercadopago_config(): array
         'access_token' => is_string($access) ? trim($access) : '',
         'public_key' => is_string($public) ? trim($public) : '',
         'webhook_secret' => is_string($webhookSecret) ? trim($webhookSecret) : '',
-        'site_url' => rtrim((string) (getenv('SITE_URL') ?: 'https://bancodechoices.com'), '/'),
+        'site_url' => mercadopago_site_url(),
         'currency_id' => $currency,
     ];
 }

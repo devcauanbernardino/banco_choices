@@ -125,6 +125,36 @@ class Usuario
         return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
     }
 
+    /**
+     * Último plano (monthly / semester / annual) em pedidos_itens cujo pedido
+     * corresponde ao e-mail do utilizador na tabela users (evita divergência com a sessão).
+     * Não exige status: itens só existem após pagamento aprovado no fulfillment.
+     */
+    public function buscarUltimoPlanoIdParaUsuarioId(int $userId): ?string
+    {
+        if ($userId <= 0) {
+            return null;
+        }
+
+        $stmt = $this->conn->prepare(
+            'SELECT pi.plano_id
+             FROM pedidos_itens pi
+             INNER JOIN pedidos p ON p.id = pi.pedido_id
+             INNER JOIN users u ON u.id = :uid
+                AND TRIM(LOWER(p.email)) = TRIM(LOWER(u.email))
+             ORDER BY p.id DESC, pi.id DESC
+             LIMIT 1'
+        );
+        $stmt->execute([':uid' => $userId]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        if (!$row) {
+            return null;
+        }
+        $id = trim((string) ($row['plano_id'] ?? ''));
+
+        return $id !== '' ? $id : null;
+    }
+
     public function buscarMateriasDoUsuario(int $usuarioId): array
     {
         $sql = "

@@ -9,6 +9,10 @@ header('Content-Type: application/json; charset=utf-8');
 
 $country = strtoupper(preg_replace('/[^A-Za-z]/', '', (string) ($_GET['country'] ?? '')));
 $postalRaw = trim((string) ($_GET['postal'] ?? ''));
+$hint = trim((string) ($_GET['hint'] ?? ''));
+if (strlen($hint) > 96) {
+    $hint = '';
+}
 
 if (strlen($country) !== 2 || $postalRaw === '') {
     echo json_encode(['ok' => false, 'error' => 'invalid_input'], JSON_UNESCAPED_UNICODE);
@@ -22,6 +26,27 @@ if (strlen($postalRaw) > 32) {
 
 function http_get(string $url): array
 {
+    if (function_exists('curl_init')) {
+        $ch = curl_init($url);
+        if ($ch !== false) {
+            curl_setopt_array($ch, [
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_TIMEOUT => 12,
+                CURLOPT_HTTPHEADER => ['Accept: application/json'],
+                CURLOPT_USERAGENT => 'BancoChoices/1.0 (postal-lookup; +https://www.openstreetmap.org/copyright)',
+            ]);
+            $raw = curl_exec($ch);
+            $status = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            curl_close($ch);
+            if (!is_string($raw)) {
+                $raw = '';
+            }
+
+            return ['status' => $status, 'raw' => $raw, 'json' => $raw !== '' ? json_decode($raw, true) : null];
+        }
+    }
+
     $ctx = stream_context_create([
         'http' => [
             'timeout' => 12,
@@ -30,12 +55,18 @@ function http_get(string $url): array
         ],
     ]);
     $raw = @file_get_contents($url, false, $ctx);
-    $status = 200;
-    if (!empty($http_response_header[0]) && preg_match('/HTTP\/\S+\s+(\d+)/', $http_response_header[0], $m)) {
+    $status = 0;
+    if (isset($http_response_header) && is_array($http_response_header) && !empty($http_response_header[0]) && preg_match('/HTTP\/\S+\s+(\d+)/', $http_response_header[0], $m)) {
         $status = (int) $m[1];
     }
+    if ($raw === false) {
+        return ['status' => $status, 'raw' => '', 'json' => null];
+    }
+    if ($status === 0) {
+        $status = 200;
+    }
 
-    return ['status' => $status, 'raw' => $raw !== false ? $raw : '', 'json' => is_string($raw) && $raw !== '' ? json_decode($raw, true) : null];
+    return ['status' => $status, 'raw' => $raw, 'json' => $raw !== '' ? json_decode($raw, true) : null];
 }
 
 function respond_ok(array $payload): void
@@ -112,6 +143,106 @@ function postal_variants(string $iso, string $raw): array
     return array_keys($unique);
 }
 
+/**
+ * @param list<mixed> $items
+ * @return array<string, mixed>|null
+ */
+function nominatim_pick_item(array $items, string $postalForNom): ?array
+{
+    if ($items === []) {
+        return null;
+    }
+    $norm = strtoupper((string) preg_replace('/[^A-Z0-9]/', '', $postalForNom));
+    $fallback = null;
+    foreach ($items as $it) {
+        if (!is_array($it)) {
+            continue;
+        }
+        if ($fallback === null) {
+            $fallback = $it;
+        }
+        $addr = isset($it['address']) && is_array($it['address']) ? $it['address'] : [];
+        $pc = (string) ($addr['postcode'] ?? '');
+        if ($pc === '') {
+            continue;
+        }
+        $pcn = strtoupper((string) preg_replace('/[^A-Z0-9]/', '', $pc));
+        if ($norm !== '' && $pcn !== '' && ($norm === $pcn || strpos($pcn, $norm) === 0 || strpos($norm, $pcn) === 0)) {
+            return $it;
+        }
+    }
+
+    return is_array($fallback) ? $fallback : null;
+}
+
+/**
+ * @return array<string, mixed>|null
+ */
+function nominatim_lookup(string $countryIso, string $ccLower, string $postalForNom, string $hint): ?array
+{
+    $trimHint = trim($hint);
+    $tries = [
+        ['postalcode' => $postalForNom, 'countrycodes' => $ccLower],
+        ['q' => $postalForNom, 'countrycodes' => $ccLower],
+    ];
+    if ($trimHint !== '') {
+        $tries[] = ['q' => $postalForNom . ', ' . $trimHint, 'countrycodes' => $ccLower];
+        $tries[] = ['q' => $trimHint . ' ' . $postalForNom, 'countrycodes' => $ccLower];
+    }
+
+    $firstTry = true;
+    foreach ($tries as $base) {
+        if (!$firstTry) {
+            usleep(1100000);
+        }
+        $firstTry = false;
+        $params = $base;
+        $params['format'] = 'json';
+        $params['limit'] = '5';
+        $params['addressdetails'] = '1';
+        $url = 'https://nominatim.openstreetmap.org/search?' . http_build_query($params, '', '&', PHP_QUERY_RFC3986);
+        $nom = http_get($url);
+        if (($nom['status'] ?? 0) !== 200 || !is_array($nom['json']) || $nom['json'] === []) {
+            continue;
+        }
+        $item = nominatim_pick_item($nom['json'], $postalForNom);
+        if (!is_array($item)) {
+            continue;
+        }
+        $addr = isset($item['address']) && is_array($item['address']) ? $item['address'] : [];
+        $place = (string) ($addr['city'] ?? $addr['town'] ?? $addr['village'] ?? $addr['suburb'] ?? $addr['municipality'] ?? '');
+        $state = (string) ($addr['state'] ?? $addr['region'] ?? '');
+        $pc = (string) ($addr['postcode'] ?? $item['name'] ?? $postalForNom);
+        $countryName = (string) ($addr['country'] ?? '');
+        $display = (string) ($item['display_name'] ?? '');
+
+        if ($place === '' && $display !== '') {
+            $parts = explode(',', $display, 2);
+            $place = trim($parts[0] ?? '');
+        }
+
+        $label = build_label($place, $state, $countryName);
+        if ($label === '' && $display !== '') {
+            $label = strlen($display) > 140 ? substr($display, 0, 137) . '…' : $display;
+        }
+        if ($label === '') {
+            continue;
+        }
+
+        return [
+            'source' => 'nominatim',
+            'country' => $countryIso,
+            'postal_formatted' => $pc !== '' ? $pc : $postalForNom,
+            'place_name' => $place,
+            'region' => $state,
+            'region_code' => (string) ($addr['ISO3166-2-lvl4'] ?? ''),
+            'label' => $label,
+        ];
+    }
+
+    return null;
+}
+
 // --- Brasil: ViaCEP ---
 if ($country === 'BR') {
     $cep = preg_replace('/\D/', '', $postalRaw) ?? '';
@@ -155,6 +286,16 @@ foreach (postal_variants($country, $postalRaw) as $variant) {
         continue;
     }
     $place0 = $zj['places'][0];
+    foreach ($zj['places'] as $candidate) {
+        if (!is_array($candidate)) {
+            continue;
+        }
+        $lat = trim((string) ($candidate['latitude'] ?? ''));
+        if ($lat !== '') {
+            $place0 = $candidate;
+            break;
+        }
+    }
     if (!is_array($place0)) {
         continue;
     }
@@ -175,54 +316,15 @@ foreach (postal_variants($country, $postalRaw) as $variant) {
     ]);
 }
 
-// --- Nominatim (fallback) ---
+// --- Nominatim (fallback, várias estratégias + texto do campo país) ---
 $postalForNom = trim(preg_replace('/\s+/u', ' ', $postalRaw) ?? '');
 if ($postalForNom === '') {
     respond_fail('not_found');
 }
 
-$query = http_build_query([
-    'postalcode' => $postalForNom,
-    'countrycodes' => $cc,
-    'format' => 'json',
-    'limit' => 1,
-    'addressdetails' => 1,
-], '', '&', PHP_QUERY_RFC3986);
-
-$nomUrl = 'https://nominatim.openstreetmap.org/search?' . $query;
-$nom = http_get($nomUrl);
-if (($nom['status'] ?? 0) !== 200 || !is_array($nom['json']) || $nom['json'] === []) {
+$nomPayload = nominatim_lookup($country, $cc, $postalForNom, $hint);
+if ($nomPayload === null) {
     respond_fail('not_found');
 }
 
-$item = $nom['json'][0];
-if (!is_array($item)) {
-    respond_fail('not_found');
-}
-
-$addr = isset($item['address']) && is_array($item['address']) ? $item['address'] : [];
-$place = (string) ($addr['city'] ?? $addr['town'] ?? $addr['village'] ?? $addr['suburb'] ?? $addr['municipality'] ?? '');
-$state = (string) ($addr['state'] ?? $addr['region'] ?? '');
-$pc = (string) ($addr['postcode'] ?? $item['name'] ?? $postalForNom);
-$countryName = (string) ($addr['country'] ?? '');
-$display = (string) ($item['display_name'] ?? '');
-
-if ($place === '' && $display !== '') {
-    $parts = explode(',', $display, 2);
-    $place = trim($parts[0] ?? '');
-}
-
-$label = build_label($place, $state, $countryName);
-if ($label === '' && $display !== '') {
-    $label = strlen($display) > 140 ? substr($display, 0, 137) . '…' : $display;
-}
-
-respond_ok([
-    'source' => 'nominatim',
-    'country' => $country,
-    'postal_formatted' => $pc !== '' ? $pc : $postalForNom,
-    'place_name' => $place,
-    'region' => $state,
-    'region_code' => (string) ($addr['ISO3166-2-lvl4'] ?? ''),
-    'label' => $label,
-]);
+respond_ok($nomPayload);

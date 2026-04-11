@@ -2,16 +2,10 @@
 
 declare(strict_types=1);
 
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
-require_once __DIR__ . '/../config/bootstrap_env.php';
-loadProjectEnv();
-
-require_once __DIR__ . '/../config/conexao.php';
 require_once __DIR__ . '/../config/public_url.php';
+require_once __DIR__ . '/../config/conexao.php';
 require_once __DIR__ . '/../config/signup_flow.php';
+require_once __DIR__ . '/../config/pricing_display.php';
 
 // Verificar se matérias foram selecionadas
 if (empty($_SESSION['selected_materias'])) {
@@ -22,15 +16,30 @@ if (empty($_SESSION['selected_materias'])) {
 $conexao = new Conexao();
 $pdo = $conexao->conectar();
 
-// Buscar detalhes das matérias selecionadas
-$materiasIds = $_SESSION['selected_materias'];
-$placeholders = implode(',', $materiasIds);
-$materiasDetails = $pdo->query("SELECT id, nome FROM materias WHERE id IN ($placeholders)")->fetchAll(PDO::FETCH_ASSOC);
+// Buscar detalhes das matérias selecionadas (IDs sempre inteiros + prepared statement)
+$materiasIds = array_values(
+    array_unique(
+        array_map('intval', (array) ($_SESSION['selected_materias'] ?? []))
+    )
+);
+$materiasIds = array_values(array_filter($materiasIds, static fn (int $id): bool => $id > 0));
+if ($materiasIds === []) {
+    header('Location: selecionar-materias.php');
+    exit;
+}
+$placeholders = implode(',', array_fill(0, count($materiasIds), '?'));
+$stmt = $pdo->prepare("SELECT id, nome FROM materias WHERE id IN ($placeholders)");
+$stmt->execute($materiasIds);
+$materiasDetails = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 $plans = signup_plans_for_display();
 
 // Procesar selección de plano
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!csrf_validate(isset($_POST['_csrf']) ? (string) $_POST['_csrf'] : null)) {
+        header('Location: selecionar-plano.php');
+        exit;
+    }
     $planId = $_POST['plan_id'] ?? null;
     
     // Encontrar el plan seleccionado
@@ -624,6 +633,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <?php foreach ($plans as $plan): ?>
                 <?php $hasBadge = !empty($plan['badge']); ?>
                 <form method="POST" class="plan-form">
+                    <?= csrf_field() ?>
                     <div class="plan-card<?= $plan['popular'] ? ' popular' : '' ?>">
                         <div class="plan-badge-slot">
                             <?php if ($hasBadge): ?>
@@ -638,10 +648,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                         <div class="plan-price-block">
                             <div class="plan-price">
-                                <span class="plan-price-amount">$ <?= number_format($plan['price'] * count($materiasDetails), 2, ',', '.') ?></span>
-                                <span class="plan-price-currency">ARS</span>
+                                <span class="plan-price-amount"><?= htmlspecialchars(pricing_format_ars_for_checkout((float) $plan['price'] * count($materiasDetails))) ?></span>
+                                <span class="plan-price-currency"><?= htmlspecialchars(pricing_display_currency_label()) ?></span>
                             </div>
                             <p class="plan-price-period">Total · <?= htmlspecialchars($plan['duration']) ?></p>
+                            <p class="plan-price-ars-note small text-muted mb-0 mt-1" style="font-size:0.8rem;">
+                                <?= htmlspecialchars(sprintf(__('signup.checkout.mp_settlement_ars'), pricing_format_ars_settlement((float) $plan['price'] * count($materiasDetails)))) ?>
+                            </p>
                         </div>
 
                         <ul class="plan-features">

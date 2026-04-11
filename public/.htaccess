@@ -1,0 +1,12 @@
+# Document root do servidor deve apontar para esta pasta (public/) em produção.
+
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+    Header set X-Frame-Options "SAMEORIGIN"
+</IfModule>
+
+# Descomente em produção com HTTPS estável (evita enviar o cabeçalho em HTTP local).
+# <IfModule mod_headers.c>
+#     Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains" env=HTTPS
+# </IfModule>

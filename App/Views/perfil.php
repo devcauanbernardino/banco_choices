@@ -4,8 +4,6 @@
  * OBJETIVO: Exibir e permitir a edição dos dados do usuário logado.
  */
 
-session_start();
-
 require_once __DIR__ . '/../../config/public_url.php';
 require_once __DIR__ . '/../../config/conexao.php';
 require_once __DIR__ . '/../Controllers/DashboardController.php';
@@ -133,7 +131,7 @@ require __DIR__ . '/includes/app-private-toolbar.php';
 unset($app_toolbar_mode);
 ?>
 
-<main class="app-main p-3 p-lg-4">
+<main class="app-main px-3 px-lg-4 pb-3 pb-lg-4 pt-0">
     <?php
     $app_toolbar_mode = 'desktop';
     require __DIR__ . '/includes/app-private-toolbar.php';
@@ -205,21 +203,13 @@ unset($app_toolbar_mode);
                         </div>
                     </div>
                 </div>
-
-                <div class="perfil-card shadow-sm p-4">
-                    <h2 class="h6 fw-bold mb-3"><?= htmlspecialchars(__('perfil.appearance')) ?></h2>
-                    <?php
-                    $theme_mode_toggle_sheet = true;
-                    require __DIR__ . '/includes/theme-mode-toggle.php';
-                    ?>
-                    <p class="small text-muted mt-3 mb-0"><?= htmlspecialchars(__('perfil.preference_note')) ?></p>
-                </div>
             </div>
 
             <div class="col-lg-8">
                 <div class="perfil-card shadow-sm p-4 mb-4">
                     <h2 class="h6 fw-bold mb-4"><?= htmlspecialchars(__('perfil.account_data')) ?></h2>
                     <form action="<?= htmlspecialchars(app_url('processa-perfil.php')) ?>" method="post" autocomplete="off">
+                        <?= csrf_field() ?>
                         <div class="row g-3">
                             <div class="col-md-12">
                                 <label class="form-label small fw-semibold text-muted"><?= htmlspecialchars(__('perfil.label_name')) ?></label>

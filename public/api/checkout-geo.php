@@ -12,8 +12,8 @@ $ip = $_SERVER['REMOTE_ADDR'] ?? '';
 if ($ip === '' || $ip === '::1' || $ip === '127.0.0.1') {
     echo json_encode([
         'ok' => true,
-        'country' => 'Argentina',
-        'country_code' => 'AR',
+        'country' => null,
+        'country_code' => null,
         'note' => 'local',
     ], JSON_UNESCAPED_UNICODE);
     exit;
@@ -31,8 +31,8 @@ $raw = @file_get_contents($url, false, $ctx);
 if ($raw === false) {
     echo json_encode([
         'ok' => false,
-        'country' => 'Argentina',
-        'country_code' => 'AR',
+        'country' => null,
+        'country_code' => null,
         'note' => 'fallback',
     ], JSON_UNESCAPED_UNICODE);
     exit;
@@ -42,15 +42,20 @@ $data = json_decode($raw, true);
 if (!is_array($data) || ($data['status'] ?? '') !== 'success') {
     echo json_encode([
         'ok' => false,
-        'country' => 'Argentina',
-        'country_code' => 'AR',
+        'country' => null,
+        'country_code' => null,
         'note' => 'fallback',
     ], JSON_UNESCAPED_UNICODE);
     exit;
 }
 
+$cn = trim((string) ($data['country'] ?? ''));
+$cc = strtoupper((string) preg_replace('/[^A-Za-z]/', '', (string) ($data['countryCode'] ?? '')));
+if (strlen($cc) !== 2) {
+    $cc = '';
+}
 echo json_encode([
     'ok' => true,
-    'country' => (string) ($data['country'] ?? 'Argentina'),
-    'country_code' => (string) ($data['countryCode'] ?? 'AR'),
+    'country' => $cn !== '' ? $cn : null,
+    'country_code' => $cc !== '' ? $cc : null,
 ], JSON_UNESCAPED_UNICODE);

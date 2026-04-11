@@ -3,6 +3,14 @@
  */
 @import url("./theme-tokens.css");
 
+/* Foco em campos (evita anel azul padrão do Bootstrap no painel) */
+.app-main .form-control:focus,
+.app-main .form-select:focus {
+  border-color: var(--bc-purple);
+  box-shadow: 0 0 0 0.2rem rgba(106, 3, 146, 0.22);
+  outline: none;
+}
+
 /* ——— Bootstrap / utilitários ——— */
 [data-theme="dark"] .bg-white {
   background-color: var(--app-surface) !important;
@@ -42,6 +50,32 @@
 
 [data-theme="dark"] .shadow-sm {
   box-shadow: var(--app-shadow) !important;
+}
+
+/*
+ * Primário no escuro: [data-bs-theme="dark"] .btn-primary do Bootstrap vence a especificidade
+ * de .btn-primary em buttons-global.css e ficava fundo claro + texto roxo.
+ */
+[data-theme="dark"] .btn-primary,
+[data-bs-theme="dark"] .btn-primary {
+  --bs-btn-color: #fff;
+  --bs-btn-bg: var(--bc-purple);
+  --bs-btn-border-color: var(--bc-purple);
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: #7c3aed;
+  --bs-btn-hover-border-color: #8b5cf6;
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: #550275;
+  --bs-btn-active-border-color: #550275;
+  --bs-btn-disabled-color: rgba(255, 255, 255, 0.7);
+  --bs-btn-disabled-bg: rgba(106, 3, 146, 0.4);
+  --bs-btn-disabled-border-color: rgba(106, 3, 146, 0.4);
+  --bs-btn-focus-shadow-rgb: 124, 58, 237;
+}
+
+[data-theme="dark"] .btn-primary .material-icons,
+[data-bs-theme="dark"] .btn-primary .material-icons {
+  color: inherit;
 }
 
 [data-theme="dark"] .card {
@@ -90,6 +124,8 @@
   background-color: var(--app-surface);
   border-color: var(--bc-purple);
   color: var(--app-text);
+  box-shadow: 0 0 0 0.2rem rgba(106, 3, 146, 0.28);
+  outline: none;
 }
 
 [data-theme="dark"] .form-control::placeholder {
@@ -354,6 +390,25 @@
 
 [data-theme="dark"] .app-page-header .text-dark {
   color: var(--app-text) !important;
+}
+
+/* Links no conteúdo do painel: roxo da marca, não azul do link padrão */
+.app-main .link-primary {
+  color: rgb(var(--bs-primary-rgb)) !important;
+}
+
+.app-main .link-primary:hover,
+.app-main .link-primary:focus-visible {
+  color: var(--bc-purple-dark, #550275) !important;
+}
+
+[data-theme="dark"] .app-main .link-primary {
+  color: #c4b5fd !important;
+}
+
+[data-theme="dark"] .app-main .link-primary:hover,
+[data-theme="dark"] .app-main .link-primary:focus-visible {
+  color: #e9d5ff !important;
 }
 
 [data-theme="dark"] .content .table thead th,

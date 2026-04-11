@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 require_once __DIR__ . '/../../config/public_url.php';
 require_once __DIR__ . '/../Models/Question.php';
 require_once __DIR__ . '/../Session/SimulationSession.php';
@@ -19,6 +22,10 @@ class ProcessaController
 
     public function handleRequest(array $postData): void
     {
+        if (!csrf_validate(isset($postData['_csrf']) ? (string) $postData['_csrf'] : null)) {
+            $this->redirect('/questionario.php');
+        }
+
         if (!$this->session->isActive()) {
             $this->redirect('index.php');
         }
@@ -114,6 +121,23 @@ class ProcessaController
         $this->redirect('/questionario.php');
     }
 
+    /** Fim do tempo no modo exame (redirecionamento do cliente). */
+    public function handleTimeout(): void
+    {
+        if (!$this->session->isActive()) {
+            $this->redirect('/bancoperguntas.php');
+        }
+
+        $this->ensureUsuarioAutorizadoNoSimulado();
+
+        $modo = (string) ($this->session->get('modo') ?? '');
+        if ($modo === 'exame') {
+            $this->redirect('/resultado.php');
+        }
+
+        $this->redirect('/questionario.php');
+    }
+
     private function redirect(string $url): void
     {
         if (preg_match('#^https?://#i', $url)) {
@@ -128,4 +152,12 @@ class ProcessaController
 
 $session = new SimulationSession();
 $controller = new ProcessaController($session);
-$controller->handleRequest($_POST);
+
+if (isset($_GET['timeout']) && (string) $_GET['timeout'] !== '' && (string) $_GET['timeout'] !== '0') {
+    $controller->handleTimeout();
+} elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $controller->handleRequest($_POST);
+} else {
+    header('Location: ' . app_url('questionario.php'));
+    exit;
+}

@@ -113,6 +113,7 @@ $registroOk = isset($_GET['registered']) && $_GET['registered'] === '1';
                     <?php endif; ?>
 
                     <form action="login-process.php" method="post" id="loginForm" class="login-form">
+                        <?= csrf_field() ?>
                         <div class="login-field">
                             <label class="login-field-label" for="emailInput">
                                 <?= htmlspecialchars(__('login.email')) ?>

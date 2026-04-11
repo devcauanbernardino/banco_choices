@@ -72,6 +72,7 @@ function signup_plan_definitions(): array
 function signup_plan_for_display_by_id(string $id): ?array
 {
     $defs = signup_plan_definitions();
+    $id = strtolower(trim($id));
     if (!isset($defs[$id])) {
         return null;
     }
@@ -105,4 +106,57 @@ function signup_plans_for_display(): array
     }
 
     return $out;
+}
+
+/**
+ * Plano padrão para matérias extra quando não há histórico em pedidos_itens
+ * (ex.: primeira conta sem compra registada ainda — o cadastro público já inclui plano).
+ */
+function addon_plan_fallback_id(): string
+{
+    return 'semester';
+}
+
+/**
+ * Preço cobrado por cada matéria nova (fluxo autenticado).
+ * Independente do valor “pacote” mensal/semestral/anual do cadastro.
+ * Opcional: variável de ambiente ADDON_PRICE_PER_MATERIA (ex.: 29.90).
+ */
+function addon_price_per_materia(): float
+{
+    $env = getenv('ADDON_PRICE_PER_MATERIA');
+    if ($env !== false && $env !== '') {
+        $v = str_replace(',', '.', trim((string) $env));
+        if (is_numeric($v)) {
+            $f = (float) $v;
+            if ($f > 0) {
+                return $f;
+            }
+        }
+    }
+
+    return 29.90;
+}
+
+/**
+ * Resolve o plano usado no checkout de matérias extra: último plan_id em pedidos_itens
+ * ou o fallback. Não há ecrã de escolha de plano neste fluxo.
+ *
+ * @return array<string, mixed>
+ */
+function addon_resolve_plan_for_extra_materias(?string $planoIdDoUltimoPedido): array
+{
+    if ($planoIdDoUltimoPedido !== null && $planoIdDoUltimoPedido !== '') {
+        $p = signup_plan_for_display_by_id($planoIdDoUltimoPedido);
+        if ($p !== null) {
+            return $p;
+        }
+    }
+
+    $fb = signup_plan_for_display_by_id(addon_plan_fallback_id());
+    if ($fb === null) {
+        throw new RuntimeException('addon_plan_fallback_id inválido');
+    }
+
+    return $fb;
 }

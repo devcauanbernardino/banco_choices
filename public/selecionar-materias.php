@@ -2,15 +2,8 @@
 
 declare(strict_types=1);
 
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
-require_once __DIR__ . '/../config/bootstrap_env.php';
-loadProjectEnv();
-
-require_once __DIR__ . '/../config/conexao.php';
 require_once __DIR__ . '/../config/public_url.php';
+require_once __DIR__ . '/../config/conexao.php';
 
 $conexao = new Conexao();
 $pdo = $conexao->conectar();
@@ -18,6 +11,10 @@ $pdo = $conexao->conectar();
 $materias = $pdo->query('SELECT id, nome FROM materias ORDER BY nome')->fetchAll(PDO::FETCH_ASSOC);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!csrf_validate(isset($_POST['_csrf']) ? (string) $_POST['_csrf'] : null)) {
+        header('Location: selecionar-materias.php');
+        exit;
+    }
     $selectedMaterias = $_POST['materias'] ?? [];
 
     if ($selectedMaterias === []) {
@@ -692,6 +689,7 @@ function materia_visual_meta(string $nome): array
                 </div>
             <?php else: ?>
                 <form method="post" id="materiasForm" novalidate>
+                    <?= csrf_field() ?>
                     <div class="form-section">
                         <div class="section-label"><?= htmlspecialchars(__('signup.section.available')) ?></div>
                         <div class="materias-container">

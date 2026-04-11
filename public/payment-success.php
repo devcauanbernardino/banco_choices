@@ -1,11 +1,7 @@
 <?php
 
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+declare(strict_types=1);
 
-require_once __DIR__ . '/../config/bootstrap_env.php';
-loadProjectEnv();
 require_once __DIR__ . '/../config/public_url.php';
 
 $status = $_GET['status'] ?? null;
@@ -14,6 +10,7 @@ $orderId = $_GET['order_id'] ?? null;
 error_log('payment-success invoked; status=' . var_export($status, true) . ' order_id=' . var_export($orderId, true));
 
 $pending = $_SESSION['pending_order'] ?? null;
+$checkoutKindPending = is_array($pending) ? (string) ($pending['checkout_kind'] ?? 'signup') : 'signup';
 $userEmail = is_array($pending) ? (string) ($pending['email'] ?? '') : '';
 $userName = is_array($pending) ? (string) ($pending['name'] ?? '') : '';
 
@@ -26,7 +23,24 @@ if (isset($_GET['error']) && $_GET['error'] === 'payment_failed') {
 } elseif ($status === 'approved' || $status === 'pending') {
     $paymentSuccess = true;
     $processingReturn = true;
-    unset($_SESSION['pending_order'], $_SESSION['selected_materias'], $_SESSION['selected_plan']);
+    if ($checkoutKindPending === 'addon' && isset($_SESSION['usuario']['id'])) {
+        require_once __DIR__ . '/../config/conexao.php';
+        require_once __DIR__ . '/../App/Models/Usuario.php';
+        $cx = new Conexao();
+        $pdoOk = $cx->conectar();
+        $umOk = new Usuario($pdoOk);
+        $_SESSION['usuario']['materias'] = $umOk->buscarMateriasDoUsuario((int) $_SESSION['usuario']['id']);
+    }
+    unset($_SESSION['pending_order']);
+    if ($checkoutKindPending !== 'addon') {
+        unset($_SESSION['selected_materias'], $_SESSION['selected_plan']);
+    }
+    unset(
+        $_SESSION['addon_materias'],
+        $_SESSION['addon_plan'],
+        $_SESSION['addon_plan_from_account'],
+        $_SESSION['checkout_draft_addon']
+    );
 } else {
     $paymentSuccess = false;
     $errorMessage = __('signup.err.payment_unknown');
@@ -326,17 +340,28 @@ $pageTitle = $paymentSuccess
                         </div>
                     <?php endif; ?>
 
-                    <div class="info-box">
-                        <p><i class="bi bi-info-circle me-2"></i> <strong><?= htmlspecialchars(__('signup.payment.next_title')) ?></strong></p>
-                        <p><?= htmlspecialchars(__('signup.payment.next1')) ?></p>
-                        <p><?= htmlspecialchars(__('signup.payment.next2')) ?></p>
-                        <p><?= htmlspecialchars(__('signup.payment.next3')) ?></p>
-                    </div>
+                    <?php if ($checkoutKindPending === 'addon' && isset($_SESSION['usuario']['id'])): ?>
+                        <div class="info-box">
+                            <p><i class="bi bi-info-circle me-2"></i> <strong><?= htmlspecialchars(__('addon.payment.next_title')) ?></strong></p>
+                            <p><?= htmlspecialchars(__('addon.payment.next_p')) ?></p>
+                        </div>
+                        <a href="<?= htmlspecialchars(app_url('dashboard.php')) ?>" class="btn btn-primary btn-lg py-3 fw-bold shadow-sm d-inline-flex align-items-center mt-3">
+                            <i class="bi bi-speedometer2 me-2"></i>
+                            <?= htmlspecialchars(__('addon.payment.btn_panel')) ?>
+                        </a>
+                    <?php else: ?>
+                        <div class="info-box">
+                            <p><i class="bi bi-info-circle me-2"></i> <strong><?= htmlspecialchars(__('signup.payment.next_title')) ?></strong></p>
+                            <p><?= htmlspecialchars(__('signup.payment.next1')) ?></p>
+                            <p><?= htmlspecialchars(__('signup.payment.next2')) ?></p>
+                            <p><?= htmlspecialchars(__('signup.payment.next3')) ?></p>
+                        </div>
 
-                    <a href="<?= htmlspecialchars(getenv('SITE_URL') ?: 'https://bancodechoices.com') ?>/login.php" class="btn btn-primary btn-lg py-3 fw-bold shadow-sm d-inline-flex align-items-center mt-3">
-                        <i class="bi bi-box-arrow-in-right me-2"></i>
-                        <?= htmlspecialchars(__('signup.payment.btn_login')) ?>
-                    </a>
+                        <a href="<?= htmlspecialchars(app_url('login.php')) ?>" class="btn btn-primary btn-lg py-3 fw-bold shadow-sm d-inline-flex align-items-center mt-3">
+                            <i class="bi bi-box-arrow-in-right me-2"></i>
+                            <?= htmlspecialchars(__('signup.payment.btn_login')) ?>
+                        </a>
+                    <?php endif; ?>
 
                 <?php else: ?>
                     <div class="error-icon">
@@ -358,7 +383,7 @@ $pageTitle = $paymentSuccess
                         <p><?= htmlspecialchars(__('signup.payment.error_tip3')) ?></p>
                     </div>
 
-                    <a href="selecionar-materias.php" class="btn btn-primary btn-lg py-3 fw-bold shadow-sm d-inline-flex align-items-center mt-3">
+                    <a href="<?= htmlspecialchars(app_url('selecionar-materias.php')) ?>" class="btn btn-primary btn-lg py-3 fw-bold shadow-sm d-inline-flex align-items-center mt-3">
                         <i class="bi bi-arrow-left me-2"></i>
                         <?= htmlspecialchars(__('signup.payment.back_start')) ?>
                     </a>

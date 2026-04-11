@@ -65,6 +65,20 @@
     }
 }
 
+/* Conteúdo do botão (ícone + texto): wrapper interno — padding aqui não compete com .btn */
+.bc-lang-btn-inner {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: nowrap;
+    box-sizing: border-box;
+}
+
+.app-sidebar .btn-navbar-lang--sidebar-desktop .bc-lang-btn-inner {
+    width: 100%;
+    justify-content: center;
+}
+
 .navbar-actions--landing .btn-navbar-lang .bc-lang-icon-svg,
 .app-sidebar .btn-navbar-lang .bc-lang-icon-svg,
 .app-offcanvas-more .btn-navbar-lang .bc-lang-icon-svg {

@@ -2,6 +2,48 @@
   var KEY = 'bancochoices-sidebar-collapsed';
   var html = document.documentElement;
 
+  function forEachSidebarTooltipTarget(sidebar, fn) {
+    if (!sidebar) return;
+    var sel = [
+      'a.app-sidebar-brand-link',
+      'a.app-sidebar-link',
+      'button.app-sidebar-collapse-btn.js-sidebar-toggle',
+      '.app-sidebar-section--lang .bc-lang-selector > button.dropdown-toggle',
+    ].join(', ');
+    sidebar.querySelectorAll(sel).forEach(fn);
+  }
+
+  function disposeSidebarTooltips() {
+    var sidebar = document.getElementById('appSidebarDesktop');
+    if (!sidebar || typeof bootstrap === 'undefined' || !bootstrap.Tooltip) return;
+    forEachSidebarTooltipTarget(sidebar, function (el) {
+      var inst = bootstrap.Tooltip.getInstance(el);
+      if (inst) inst.dispose();
+    });
+  }
+
+  function refreshSidebarTooltips() {
+    disposeSidebarTooltips();
+    if (!html.classList.contains('sidebar-collapsed')) return;
+    var sidebar = document.getElementById('appSidebarDesktop');
+    if (!sidebar || typeof bootstrap === 'undefined' || !bootstrap.Tooltip) return;
+    forEachSidebarTooltipTarget(sidebar, function (el) {
+      var fromTitle = (el.getAttribute('title') || '').trim();
+      var fromAria = (el.getAttribute('aria-label') || '').trim();
+      var text = fromTitle || fromAria;
+      if (!text) return;
+      var opts = {
+        placement: 'right',
+        container: document.body,
+        customClass: 'app-sidebar-collapsed-tooltip',
+      };
+      if (!fromTitle && fromAria) {
+        opts.title = fromAria;
+      }
+      new bootstrap.Tooltip(el, opts);
+    });
+  }
+
   function apply(collapsed) {
     html.classList.toggle('sidebar-collapsed', collapsed);
     try {
@@ -21,6 +63,7 @@
         label.textContent = collapsed ? 'Expandir painel' : 'Recolher painel';
       }
     });
+    refreshSidebarTooltips();
   }
 
   function init() {

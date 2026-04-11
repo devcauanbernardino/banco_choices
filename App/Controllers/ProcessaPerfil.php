@@ -1,12 +1,12 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * ARQUIVO: processa_perfil.php
  * OBJETIVO: Ponto de entrada para o processamento do perfil usando Orientação a Objetos.
  */
 
-session_start();
-
-// 1. Carregamos as dependências
 require_once __DIR__ . '/../../config/public_url.php';
 require_once __DIR__ . '/../../config/conexao.php';
 require_once __DIR__ . '/../Models/Usuario.php';

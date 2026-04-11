@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+require_once __DIR__ . '/app_bootstrap.php';
+
 /**
  * Internacionalização: região/idioma (sessão + cookie).
  */
@@ -25,9 +27,8 @@ function locale_bootstrap(): void
     }
     $done = true;
 
-    if (session_status() === PHP_SESSION_NONE) {
-        @session_start();
-    }
+    app_ensure_initialized();
+    app_session_start();
 
     $supported = locale_supported();
     $current = LOCALE_DEFAULT;

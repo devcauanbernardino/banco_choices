@@ -1,5 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
+require_once __DIR__ . '/../../config/app_bootstrap.php';
+
 /**
  * Estado do simulado na sessão PHP (única definição; evita divergência entre controllers).
  */
@@ -9,9 +13,7 @@ class SimulationSession
 
     public function __construct()
     {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
+        app_session_start();
     }
 
     public function init($data): void

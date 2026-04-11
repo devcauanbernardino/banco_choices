@@ -1,5 +1,7 @@
 <?php
-session_start();
+
+declare(strict_types=1);
+
 require_once __DIR__ . '/../../config/public_url.php';
 require_once __DIR__ . '/../../config/conexao.php';
 require_once __DIR__ . '/../Models/Usuario.php';
@@ -18,6 +20,10 @@ class UsuarioController
     public function cadastrar(): void
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            $this->redirect('acessoinvalido');
+        }
+
+        if (!csrf_validate(isset($_POST['_csrf']) ? (string) $_POST['_csrf'] : null)) {
             $this->redirect('acessoinvalido');
         }
 

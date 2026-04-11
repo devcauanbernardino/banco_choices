@@ -5,8 +5,6 @@
  * OBJETIVO: Exibir o painel de evolução e análise detalhada do aluno.
  */
 
-session_start();
-
 // 1. Carregamos as dependências
 require_once __DIR__ . '/../../config/public_url.php';
 require_once __DIR__ . '/../../config/conexao.php';
@@ -108,7 +106,7 @@ $historicoSemanal = $dashboard->getHistoricoSemanal();
     unset($app_toolbar_mode);
     ?>
 
-    <main class="app-main p-4">
+    <main class="app-main px-4 pb-4 pt-0">
         <?php
         $app_toolbar_mode = 'desktop';
         require __DIR__ . '/includes/app-private-toolbar.php';

@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 require_once __DIR__ . '/../../config/public_url.php';
 require_once __DIR__ . '/../../config/conexao.php';
+require_once __DIR__ . '/../../config/test_users.php';
 require_once __DIR__ . '/../Models/Usuario.php';
 
 
@@ -11,11 +14,6 @@ class LoginController
 
     public function __construct()
     {
-        // Garante que a sessão esteja iniciada
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
-
         // Cria conexão com o banco
         $conexao = new Conexao();
         $this->db = $conexao->conectar();
@@ -25,6 +23,10 @@ class LoginController
     {
         // Permite apenas POST
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            $this->redirect(app_url('login.php?error=acessoinvalido'));
+        }
+
+        if (!csrf_validate(isset($_POST['_csrf']) ? (string) $_POST['_csrf'] : null)) {
             $this->redirect(app_url('login.php?error=acessoinvalido'));
         }
 
@@ -48,8 +50,10 @@ class LoginController
             session_regenerate_id(true);
         }
 
-        // Matérias padrão do sistema (IDs alinhados a CriarController: 1 e 2)
-        $usuarioModel->garantirMateriasParaUsuario((int) $usuario['id'], [1, 2]);
+        // Matérias padrão 1 e 2 (exceto contas de teste listadas em config/test_users.php)
+        if (!test_user_skips_default_materias((string) ($usuario['email'] ?? ''))) {
+            $usuarioModel->garantirMateriasParaUsuario((int) $usuario['id'], [1, 2]);
+        }
         $usuario['materias'] = $usuarioModel->buscarMateriasDoUsuario((int) $usuario['id']);
 
         //Sessão do usuário (PADRÃO DO SISTEMA)

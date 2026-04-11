@@ -4,8 +4,6 @@
  * OBJETIVO: Listar o histórico completo de simulados do usuário com filtros.
  */
 
-session_start();
-
 // 1. Carregamento de dependências
 require_once __DIR__ . '/../../config/public_url.php';
 require_once __DIR__ . '/../../config/conexao.php';
@@ -192,7 +190,7 @@ $stats = $dashboard->getStats();
     unset($app_toolbar_mode);
     ?>
 
-    <main class="app-main p-4 simulados-main">
+    <main class="app-main px-4 pb-4 pt-0 simulados-main">
         <?php
         $app_toolbar_mode = 'desktop';
         require __DIR__ . '/includes/app-private-toolbar.php';

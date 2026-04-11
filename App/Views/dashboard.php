@@ -4,8 +4,6 @@
  * OBJETIVO: Painel principal do usuário com resumo de atividades e métricas rápidas.
  */
 
-session_start();
-
 // 1. Carregamos as dependências
 require_once __DIR__ . '/../../config/public_url.php';
 require_once __DIR__ . '/auth/AuthController.php';
@@ -146,7 +144,7 @@ $materias = $objUsuario->buscarMateriasDoUsuario($usuario['id']);
     unset($app_toolbar_mode);
     ?>
 
-    <main class="app-main p-4">
+    <main class="app-main px-4 pb-4 pt-0">
         <?php
         $app_toolbar_mode = 'desktop';
         require __DIR__ . '/includes/app-private-toolbar.php';
@@ -156,7 +154,10 @@ $materias = $objUsuario->buscarMateriasDoUsuario($usuario['id']);
             <div class="app-page-header d-flex justify-content-between align-items-end flex-wrap gap-3">
                 <div>
                     <h2 class="fw-bold mb-1"><?= htmlspecialchars(sprintf(__('dashboard.greeting'), explode(' ', $usuario['nome'])[0])) ?></h2>
-                    <p class="text-muted mb-0"><?= htmlspecialchars(__('dashboard.greeting_sub')) ?></p>
+                    <p class="text-muted mb-1"><?= htmlspecialchars(__('dashboard.greeting_sub')) ?></p>
+                    <p class="mb-0">
+                        <a href="<?= htmlspecialchars(app_url('comprar-materias.php')) ?>" class="link-primary fw-semibold text-decoration-none"><?= htmlspecialchars(__('dashboard.buy_more_cta')) ?></a>
+                    </p>
                 </div>
                 <div class="d-none d-md-block">
                     <span class="badge bg-primary-soft text-primary p-2 px-3 rounded-pill">

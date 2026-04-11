@@ -1,6 +1,4 @@
 <?php
-session_start();
-
 require_once __DIR__ . '/../../config/public_url.php';
 
 if (!isset($_SESSION['usuario'])) {
@@ -148,7 +146,7 @@ $materiasCompradas = $_SESSION['usuario']['materias'] ?? [];
     unset($app_toolbar_mode);
     ?>
 
-    <main class="app-main p-4">
+    <main class="app-main px-4 pb-4 pt-0">
         <?php
         $app_toolbar_mode = 'desktop';
         require __DIR__ . '/includes/app-private-toolbar.php';
@@ -170,6 +168,7 @@ $materiasCompradas = $_SESSION['usuario']['materias'] ?? [];
                 <!-- Corpo do Formulário -->
                 <div class="setup-body">
                     <form action="<?= htmlspecialchars(app_url('criar.php')) ?>" method="post">
+                        <?= csrf_field() ?>
 
                         <!-- Seleção de Matéria -->
                         <select class="form-select form-select-lg mb-4" name="materia" required>

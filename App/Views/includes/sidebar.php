@@ -4,6 +4,7 @@ declare(strict_types=1);
  * Sidebar desktop + barra inferior mobile + painel "Mais" (tema / sair).
  */
 require_once __DIR__ . '/../../../config/public_url.php';
+require_once __DIR__ . '/../../../config/test_users.php';
 require_once __DIR__ . '/sidebar-nav-config.php';
 
 if (session_status() === PHP_SESSION_ACTIVE && isset($_SESSION['usuario']['id'])) {
@@ -15,7 +16,10 @@ if (session_status() === PHP_SESSION_ACTIVE && isset($_SESSION['usuario']['id'])
         $cx = new Conexao();
         $pdo = $cx->conectar();
         $um = new Usuario($pdo);
-        $um->garantirMateriasParaUsuario((int) $_SESSION['usuario']['id'], [1, 2]);
+        $sessEmail = (string) ($_SESSION['usuario']['email'] ?? '');
+        if (!test_user_skips_default_materias($sessEmail)) {
+            $um->garantirMateriasParaUsuario((int) $_SESSION['usuario']['id'], [1, 2]);
+        }
         $_SESSION['usuario']['materias'] = $um->buscarMateriasDoUsuario((int) $_SESSION['usuario']['id']);
     }
 }
@@ -28,7 +32,8 @@ $logoUrl = public_asset_url('img/logo-bd-transparente.png');
 <!-- Sidebar desktop -->
 <aside class="app-sidebar d-none d-lg-flex flex-column" id="appSidebarDesktop" aria-label="<?= htmlspecialchars(__('nav.menu_aria')) ?>">
     <div class="app-sidebar-brand">
-        <a class="app-sidebar-brand-link text-decoration-none" href="<?= htmlspecialchars(app_url('dashboard.php')) ?>">
+        <a class="app-sidebar-brand-link text-decoration-none" href="<?= htmlspecialchars(app_url('dashboard.php')) ?>"
+            title="<?= htmlspecialchars(__('nav.dashboard')) ?>">
             <span class="app-sidebar-logo-wrap" aria-hidden="true">
                 <img src="<?= htmlspecialchars($logoUrl) ?>" alt="" width="40" height="40" class="app-sidebar-logo">
             </span>
@@ -39,12 +44,13 @@ $logoUrl = public_asset_url('img/logo-bd-transparente.png');
         </a>
     </div>
     <?php require __DIR__ . '/sidebar-nav-links.php'; ?>
-    <div class="app-sidebar-section px-3 pb-3 mt-auto pt-3 app-sidebar-section--lang">
+    <div class="app-sidebar-section app-sidebar-section--lang pb-3 mt-auto pt-3">
         <span class="app-sidebar-section-label"><?= htmlspecialchars(__('lang.selector_label')) ?></span>
         <div class="mt-2">
             <?php
             $bc_lang_menu_landing = true;
-            $bc_lang_selector_btn_class = 'btn btn-navbar-lang dropdown-toggle d-inline-flex align-items-center gap-2 w-100';
+            $bc_lang_compact_btn = true;
+            $bc_lang_selector_btn_class = 'btn btn-navbar-lang btn-navbar-lang--sidebar-desktop dropdown-toggle d-inline-flex align-items-center gap-2 w-100';
             $bc_lang_popper_fixed = true;
             require __DIR__ . '/language-selector.php';
             ?>
@@ -56,29 +62,34 @@ $logoUrl = public_asset_url('img/logo-bd-transparente.png');
 <div class="offcanvas offcanvas-bottom app-offcanvas-more" tabindex="-1" id="sidebarMobile"
     aria-labelledby="sidebarMobileLabel">
     <div class="app-offcanvas-more-handle" aria-hidden="true"></div>
-    <div class="offcanvas-header border-bottom border-opacity-10">
+    <div class="offcanvas-header app-offcanvas-more__header border-0">
         <div class="d-flex align-items-center gap-2" id="sidebarMobileLabel">
-            <span class="fw-bold"><?= htmlspecialchars(__('sidebar.more_options')) ?></span>
+            <span class="app-offcanvas-more__title"><?= htmlspecialchars(__('sidebar.more_options')) ?></span>
         </div>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="<?= htmlspecialchars(__('sidebar.close')) ?>"></button>
+        <button type="button" class="btn-close app-offcanvas-more__close" data-bs-dismiss="offcanvas"
+            aria-label="<?= htmlspecialchars(__('sidebar.close')) ?>"></button>
     </div>
-    <div class="offcanvas-body pb-4">
-        <div class="app-sidebar-section px-0">
-            <span class="app-sidebar-section-label"><?= htmlspecialchars(__('lang.selector_label')) ?></span>
-            <div class="mt-2">
-                <?php
-                $bc_lang_menu_landing = true;
-                $bc_lang_selector_btn_class = 'btn btn-navbar-lang dropdown-toggle d-inline-flex align-items-center gap-2 w-100';
-                $bc_lang_popper_fixed = false;
-                require __DIR__ . '/language-selector.php';
-                ?>
+    <div class="offcanvas-body app-offcanvas-more__body">
+        <div class="app-more-panel" role="group" aria-label="<?= htmlspecialchars(__('sidebar.more_options')) ?>">
+            <div class="app-more-panel__row">
+                <span class="app-more-panel__row-label" id="sidebarMobileLangLabel"><?= htmlspecialchars(__('lang.selector_label')) ?></span>
+                <div class="app-more-panel__row-control" aria-labelledby="sidebarMobileLangLabel">
+                    <?php
+                    $bc_lang_menu_landing = true;
+                    $bc_lang_compact_btn = true;
+                    $bc_lang_selector_btn_class = 'btn btn-navbar-lang btn-navbar-lang--more-sheet dropdown-toggle d-inline-flex align-items-center gap-2';
+                    $bc_lang_popper_fixed = true;
+                    require __DIR__ . '/language-selector.php';
+                    ?>
+                </div>
             </div>
+            <div class="app-more-panel__divider" aria-hidden="true"></div>
+            <a class="app-more-panel__logout" href="<?= htmlspecialchars(app_url('logout.php')) ?>"
+                title="<?= htmlspecialchars(__('sidebar.logout')) ?>">
+                <span class="material-icons" aria-hidden="true">logout</span>
+                <span><?= htmlspecialchars(__('sidebar.logout')) ?></span>
+            </a>
         </div>
-        <a class="app-sidebar-link app-sidebar-link-logout mt-3 d-flex rounded-3" href="<?= htmlspecialchars(app_url('logout.php')) ?>"
-            title="<?= htmlspecialchars(__('sidebar.logout')) ?>">
-            <span class="material-icons" aria-hidden="true">logout</span>
-            <span class="app-sidebar-link-text"><?= htmlspecialchars(__('sidebar.logout')) ?></span>
-        </a>
     </div>
 </div>
 

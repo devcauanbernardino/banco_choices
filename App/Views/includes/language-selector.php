@@ -17,6 +17,8 @@ $variants = [
 $bc_lang_selector_btn_class = $bc_lang_selector_btn_class ?? 'btn btn-sm btn-outline-secondary dropdown-toggle d-inline-flex align-items-center gap-1';
 $bc_lang_menu_landing = !empty($bc_lang_menu_landing);
 $bc_lang_popper_fixed = !empty($bc_lang_popper_fixed);
+/** Painel app / sidebar: só globo + código (BR/US/AR), sem rótulo longo no botão */
+$useCompactLangBtn = isset($bc_lang_compact_btn) && $bc_lang_compact_btn;
 
 $menuClass = 'dropdown-menu dropdown-menu-end shadow-sm';
 if ($bc_lang_menu_landing) {
@@ -39,15 +41,23 @@ $bc_lang_codes = [
         type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false"
         aria-label="<?= htmlspecialchars(__('lang.selector_aria')) ?>"<?= $bc_lang_popper_fixed ? ' data-bs-popper-config=\'{"strategy":"fixed"}\'' : '' ?>>
         <?php if ($bc_lang_menu_landing): ?>
-            <svg class="bc-lang-icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" stroke-width="1.5"/>
-                <path d="M2 12H22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                <path d="M12 2C14.5013 4.73835 15.9228 8.29203 16 12C15.9228 15.708 14.5013 19.2616 12 22C9.49872 19.2616 8.07725 15.708 8 12C8.07725 8.29203 9.49872 4.73835 12 2Z" stroke="currentColor" stroke-width="1.5"/>
-            </svg>
+            <div class="bc-lang-btn-inner">
+                <svg class="bc-lang-icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" stroke-width="1.5"/>
+                    <path d="M2 12H22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    <path d="M12 2C14.5013 4.73835 15.9228 8.29203 16 12C15.9228 15.708 14.5013 19.2616 12 22C9.49872 19.2616 8.07725 15.708 8 12C8.07725 8.29203 9.49872 4.73835 12 2Z" stroke="currentColor" stroke-width="1.5"/>
+                </svg>
+                <?php if ($useCompactLangBtn): ?>
+                    <span class="bc-lang-btn-code fw-semibold" aria-hidden="true"><?= htmlspecialchars($bc_lang_codes[$current] ?? '') ?></span>
+                <?php else: ?>
+                    <span class="bc-lang-btn-code d-inline d-sm-none fw-semibold" aria-hidden="true"><?= htmlspecialchars($bc_lang_codes[$current] ?? '') ?></span>
+                    <span class="d-none d-sm-inline"><?= htmlspecialchars(__('lang.selector_label')) ?></span>
+                <?php endif; ?>
+            </div>
         <?php else: ?>
             <span class="bc-lang-icon" aria-hidden="true" style="font-size: 1.1rem;">🌐</span>
+            <span class="d-none d-sm-inline"><?= htmlspecialchars(__('lang.selector_label')) ?></span>
         <?php endif; ?>
-        <span class="d-none d-sm-inline"><?= htmlspecialchars(__('lang.selector_label')) ?></span>
     </button>
     <ul class="<?= htmlspecialchars($menuClass) ?>"<?= $bc_lang_menu_landing ? '' : ' style="min-width: 220px;"' ?>>
         <?php if ($bc_lang_menu_landing): ?>

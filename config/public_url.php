@@ -62,4 +62,5 @@ if (!function_exists('app_url')) {
 }
 
 require_once __DIR__ . '/locale.php';
+require_once __DIR__ . '/csrf.php';
 locale_bootstrap();
